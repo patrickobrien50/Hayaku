@@ -1,0 +1,764 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A58B74C61EB8F359E619A05 /* Pods_HayakuUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFD227652FED9CDF140ED8 /* Pods_HayakuUITests.framework */; };
+		6C0E36E4228626D00068F91D /* StreamsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */; };
+		6C0E36E622865CAF0068F91D /* StreamsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0E36E522865CAF0068F91D /* StreamsCollectionViewCell.swift */; };
+		6C26655422828BB1009617A2 /* FavoritesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C26655322828BB1009617A2 /* FavoritesCollectionViewCell.swift */; };
+		6C328EB722792E420011EB99 /* SeriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C328EB622792E420011EB99 /* SeriesViewController.swift */; };
+		6C328EBB227A17610011EB99 /* SeriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */; };
+		6C36C6C92163E0DE00CDCF1D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */; };
+		6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */; };
+		6C4CB7F5228CE1670084C365 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */; };
+		6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */; };
+		6CCDAB9B20B22F2E002D8B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */; };
+		6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */; };
+		6CCDABA020B22F2E002D8B86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */; };
+		6CCDABA220B22F2E002D8B86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDABA120B22F2E002D8B86 /* Assets.xcassets */; };
+		6CCDABA520B22F2E002D8B86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */; };
+		6CCDABB020B22F2E002D8B86 /* HayakuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABAF20B22F2E002D8B86 /* HayakuTests.swift */; };
+		6CCDABBB20B22F2E002D8B86 /* HayakuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABBA20B22F2E002D8B86 /* HayakuUITests.swift */; };
+		6CCDABC920B23023002D8B86 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABC820B23023002D8B86 /* PopularViewController.swift */; };
+		6CCDABCB20B23032002D8B86 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCA20B23032002D8B86 /* SearchViewController.swift */; };
+		6CCDABCD20B2326E002D8B86 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCC20B2326E002D8B86 /* DataModels.swift */; };
+		6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */; };
+		6CE5166F2285407700CE492A /* PopularCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */; };
+		6CE51671228541C400CE492A /* PopularGameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */; };
+		6CE6838122946FB900E5E544 /* LeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */; };
+		6CE683832294CE6600E5E544 /* RunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE683822294CE6600E5E544 /* RunTableViewCell.swift */; };
+		E79268FCB03238CCFF3C1A72 /* Pods_Hayaku.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 747C248EB6C94B2ECACA93D0 /* Pods_Hayaku.framework */; };
+		F323C0D5F7756D966D7615FD /* Pods_HayakuTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46B9933E3EBD5C195153D22 /* Pods_HayakuTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6CCDABAC20B22F2E002D8B86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6CCDAB8F20B22F2E002D8B86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6CCDAB9620B22F2E002D8B86;
+			remoteInfo = Hayaku;
+		};
+		6CCDABB720B22F2E002D8B86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6CCDAB8F20B22F2E002D8B86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6CCDAB9620B22F2E002D8B86;
+			remoteInfo = Hayaku;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		29A0AB6AFEB06102EDD62253 /* Pods-HayakuUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HayakuUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HayakuUITests/Pods-HayakuUITests.release.xcconfig"; sourceTree = "<group>"; };
+		344D06F1F3ACBD94B6521BBD /* Pods-HayakuUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HayakuUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HayakuUITests/Pods-HayakuUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		40E6194C70F5194010F852F8 /* Pods-HayakuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HayakuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HayakuTests/Pods-HayakuTests.release.xcconfig"; sourceTree = "<group>"; };
+		59A420B775D4301FFFE38C54 /* Pods-HayakuTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HayakuTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HayakuTests/Pods-HayakuTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamsCollectionViewController.swift; sourceTree = "<group>"; };
+		6C0E36E522865CAF0068F91D /* StreamsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamsCollectionViewCell.swift; sourceTree = "<group>"; };
+		6C26655322828BB1009617A2 /* FavoritesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionViewCell.swift; sourceTree = "<group>"; };
+		6C328EB622792E420011EB99 /* SeriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesViewController.swift; sourceTree = "<group>"; };
+		6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesTableViewCell.swift; sourceTree = "<group>"; };
+		6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResultTableViewCell.swift; sourceTree = "<group>"; };
+		6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
+		6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariablesTableViewController.swift; sourceTree = "<group>"; };
+		6CCDAB9720B22F2E002D8B86 /* Hayaku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hayaku.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionViewController.swift; sourceTree = "<group>"; };
+		6CCDAB9F20B22F2E002D8B86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6CCDABA120B22F2E002D8B86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6CCDABA420B22F2E002D8B86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6CCDABA620B22F2E002D8B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CCDABAB20B22F2E002D8B86 /* HayakuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HayakuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CCDABAF20B22F2E002D8B86 /* HayakuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HayakuTests.swift; sourceTree = "<group>"; };
+		6CCDABB120B22F2E002D8B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CCDABB620B22F2E002D8B86 /* HayakuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HayakuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CCDABBA20B22F2E002D8B86 /* HayakuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HayakuUITests.swift; sourceTree = "<group>"; };
+		6CCDABBC20B22F2E002D8B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CCDABC820B23023002D8B86 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
+		6CCDABCA20B23032002D8B86 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		6CCDABCC20B2326E002D8B86 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
+		6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableController.swift; sourceTree = "<group>"; };
+		6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCollectionViewController.swift; sourceTree = "<group>"; };
+		6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularGameCollectionViewCell.swift; sourceTree = "<group>"; };
+		6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableViewController.swift; sourceTree = "<group>"; };
+		6CE683822294CE6600E5E544 /* RunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTableViewCell.swift; sourceTree = "<group>"; };
+		747C248EB6C94B2ECACA93D0 /* Pods_Hayaku.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hayaku.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		86A765CDBC3DCDB77DE8D317 /* Pods-Hayaku.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hayaku.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hayaku/Pods-Hayaku.debug.xcconfig"; sourceTree = "<group>"; };
+		CB143F9FB4BE546606DCB442 /* Pods-Hayaku.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hayaku.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hayaku/Pods-Hayaku.release.xcconfig"; sourceTree = "<group>"; };
+		D0EFD227652FED9CDF140ED8 /* Pods_HayakuUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HayakuUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F46B9933E3EBD5C195153D22 /* Pods_HayakuTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HayakuTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6CCDAB9420B22F2E002D8B86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E79268FCB03238CCFF3C1A72 /* Pods_Hayaku.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CCDABA820B22F2E002D8B86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F323C0D5F7756D966D7615FD /* Pods_HayakuTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CCDABB320B22F2E002D8B86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A58B74C61EB8F359E619A05 /* Pods_HayakuUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6CCDAB8E20B22F2E002D8B86 = {
+			isa = PBXGroup;
+			children = (
+				6CCDAB9920B22F2E002D8B86 /* Hayaku */,
+				6CCDABAE20B22F2E002D8B86 /* HayakuTests */,
+				6CCDABB920B22F2E002D8B86 /* HayakuUITests */,
+				6CCDAB9820B22F2E002D8B86 /* Products */,
+				8DD046725C994AB39B8B41F9 /* Pods */,
+				D8ADAA192700B2C4498F12CF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6CCDAB9820B22F2E002D8B86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CCDAB9720B22F2E002D8B86 /* Hayaku.app */,
+				6CCDABAB20B22F2E002D8B86 /* HayakuTests.xctest */,
+				6CCDABB620B22F2E002D8B86 /* HayakuUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6CCDAB9920B22F2E002D8B86 /* Hayaku */ = {
+			isa = PBXGroup;
+			children = (
+				6CCDABCC20B2326E002D8B86 /* DataModels.swift */,
+				6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */,
+				6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */,
+				6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */,
+				6CCDABC820B23023002D8B86 /* PopularViewController.swift */,
+				6CCDABCA20B23032002D8B86 /* SearchViewController.swift */,
+				6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */,
+				6C328EB622792E420011EB99 /* SeriesViewController.swift */,
+				6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */,
+				6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */,
+				6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */,
+				6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */,
+				6CE683822294CE6600E5E544 /* RunTableViewCell.swift */,
+				6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */,
+				6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */,
+				6C0E36E522865CAF0068F91D /* StreamsCollectionViewCell.swift */,
+				6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */,
+				6C26655322828BB1009617A2 /* FavoritesCollectionViewCell.swift */,
+				6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */,
+				6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */,
+				6CCDABA120B22F2E002D8B86 /* Assets.xcassets */,
+				6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */,
+				6CCDABA620B22F2E002D8B86 /* Info.plist */,
+			);
+			path = Hayaku;
+			sourceTree = "<group>";
+		};
+		6CCDABAE20B22F2E002D8B86 /* HayakuTests */ = {
+			isa = PBXGroup;
+			children = (
+				6CCDABAF20B22F2E002D8B86 /* HayakuTests.swift */,
+				6CCDABB120B22F2E002D8B86 /* Info.plist */,
+			);
+			path = HayakuTests;
+			sourceTree = "<group>";
+		};
+		6CCDABB920B22F2E002D8B86 /* HayakuUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6CCDABBA20B22F2E002D8B86 /* HayakuUITests.swift */,
+				6CCDABBC20B22F2E002D8B86 /* Info.plist */,
+			);
+			path = HayakuUITests;
+			sourceTree = "<group>";
+		};
+		8DD046725C994AB39B8B41F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				86A765CDBC3DCDB77DE8D317 /* Pods-Hayaku.debug.xcconfig */,
+				CB143F9FB4BE546606DCB442 /* Pods-Hayaku.release.xcconfig */,
+				59A420B775D4301FFFE38C54 /* Pods-HayakuTests.debug.xcconfig */,
+				40E6194C70F5194010F852F8 /* Pods-HayakuTests.release.xcconfig */,
+				344D06F1F3ACBD94B6521BBD /* Pods-HayakuUITests.debug.xcconfig */,
+				29A0AB6AFEB06102EDD62253 /* Pods-HayakuUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D8ADAA192700B2C4498F12CF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				747C248EB6C94B2ECACA93D0 /* Pods_Hayaku.framework */,
+				F46B9933E3EBD5C195153D22 /* Pods_HayakuTests.framework */,
+				D0EFD227652FED9CDF140ED8 /* Pods_HayakuUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6CCDAB9620B22F2E002D8B86 /* Hayaku */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CCDABBF20B22F2E002D8B86 /* Build configuration list for PBXNativeTarget "Hayaku" */;
+			buildPhases = (
+				F55ACB589AB17D6912B82481 /* [CP] Check Pods Manifest.lock */,
+				6CCDAB9320B22F2E002D8B86 /* Sources */,
+				6CCDAB9420B22F2E002D8B86 /* Frameworks */,
+				6CCDAB9520B22F2E002D8B86 /* Resources */,
+				9726B5F2F3104B79069F9518 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hayaku;
+			productName = Hayaku;
+			productReference = 6CCDAB9720B22F2E002D8B86 /* Hayaku.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6CCDABAA20B22F2E002D8B86 /* HayakuTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CCDABC220B22F2E002D8B86 /* Build configuration list for PBXNativeTarget "HayakuTests" */;
+			buildPhases = (
+				388DBE79537FF8236A1A8937 /* [CP] Check Pods Manifest.lock */,
+				6CCDABA720B22F2E002D8B86 /* Sources */,
+				6CCDABA820B22F2E002D8B86 /* Frameworks */,
+				6CCDABA920B22F2E002D8B86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CCDABAD20B22F2E002D8B86 /* PBXTargetDependency */,
+			);
+			name = HayakuTests;
+			productName = HayakuTests;
+			productReference = 6CCDABAB20B22F2E002D8B86 /* HayakuTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6CCDABB520B22F2E002D8B86 /* HayakuUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CCDABC520B22F2E002D8B86 /* Build configuration list for PBXNativeTarget "HayakuUITests" */;
+			buildPhases = (
+				ADC1C7F90FE29101A5D00533 /* [CP] Check Pods Manifest.lock */,
+				6CCDABB220B22F2E002D8B86 /* Sources */,
+				6CCDABB320B22F2E002D8B86 /* Frameworks */,
+				6CCDABB420B22F2E002D8B86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CCDABB820B22F2E002D8B86 /* PBXTargetDependency */,
+			);
+			name = HayakuUITests;
+			productName = HayakuUITests;
+			productReference = 6CCDABB620B22F2E002D8B86 /* HayakuUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6CCDAB8F20B22F2E002D8B86 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "Patrick O'Brien";
+				TargetAttributes = {
+					6CCDAB9620B22F2E002D8B86 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					6CCDABAA20B22F2E002D8B86 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6CCDAB9620B22F2E002D8B86;
+					};
+					6CCDABB520B22F2E002D8B86 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6CCDAB9620B22F2E002D8B86;
+					};
+				};
+			};
+			buildConfigurationList = 6CCDAB9220B22F2E002D8B86 /* Build configuration list for PBXProject "Hayaku" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6CCDAB8E20B22F2E002D8B86;
+			productRefGroup = 6CCDAB9820B22F2E002D8B86 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6CCDAB9620B22F2E002D8B86 /* Hayaku */,
+				6CCDABAA20B22F2E002D8B86 /* HayakuTests */,
+				6CCDABB520B22F2E002D8B86 /* HayakuUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6CCDAB9520B22F2E002D8B86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CCDABA520B22F2E002D8B86 /* LaunchScreen.storyboard in Resources */,
+				6CCDABA220B22F2E002D8B86 /* Assets.xcassets in Resources */,
+				6CCDABA020B22F2E002D8B86 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CCDABA920B22F2E002D8B86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CCDABB420B22F2E002D8B86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		388DBE79537FF8236A1A8937 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HayakuTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9726B5F2F3104B79069F9518 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Hayaku/Pods-Hayaku-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hayaku/Pods-Hayaku-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ADC1C7F90FE29101A5D00533 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HayakuUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F55ACB589AB17D6912B82481 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Hayaku-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6CCDAB9320B22F2E002D8B86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C328EB722792E420011EB99 /* SeriesViewController.swift in Sources */,
+				6CE51671228541C400CE492A /* PopularGameCollectionViewCell.swift in Sources */,
+				6C26655422828BB1009617A2 /* FavoritesCollectionViewCell.swift in Sources */,
+				6CE6838122946FB900E5E544 /* LeaderboardsTableViewController.swift in Sources */,
+				6C36C6C92163E0DE00CDCF1D /* GameViewController.swift in Sources */,
+				6C4CB7F5228CE1670084C365 /* CustomNavigationController.swift in Sources */,
+				6C0E36E4228626D00068F91D /* StreamsCollectionViewController.swift in Sources */,
+				6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */,
+				6C328EBB227A17610011EB99 /* SeriesTableViewCell.swift in Sources */,
+				6CCDABC920B23023002D8B86 /* PopularViewController.swift in Sources */,
+				6C0E36E622865CAF0068F91D /* StreamsCollectionViewCell.swift in Sources */,
+				6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */,
+				6CE5166F2285407700CE492A /* PopularCollectionViewController.swift in Sources */,
+				6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */,
+				6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */,
+				6CCDABCD20B2326E002D8B86 /* DataModels.swift in Sources */,
+				6CCDABCB20B23032002D8B86 /* SearchViewController.swift in Sources */,
+				6CCDAB9B20B22F2E002D8B86 /* AppDelegate.swift in Sources */,
+				6CE683832294CE6600E5E544 /* RunTableViewCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CCDABA720B22F2E002D8B86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CCDABB020B22F2E002D8B86 /* HayakuTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CCDABB220B22F2E002D8B86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CCDABBB20B22F2E002D8B86 /* HayakuUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6CCDABAD20B22F2E002D8B86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6CCDAB9620B22F2E002D8B86 /* Hayaku */;
+			targetProxy = 6CCDABAC20B22F2E002D8B86 /* PBXContainerItemProxy */;
+		};
+		6CCDABB820B22F2E002D8B86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6CCDAB9620B22F2E002D8B86 /* Hayaku */;
+			targetProxy = 6CCDABB720B22F2E002D8B86 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CCDAB9F20B22F2E002D8B86 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6CCDABA420B22F2E002D8B86 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6CCDABBD20B22F2E002D8B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6CCDABBE20B22F2E002D8B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6CCDABC020B22F2E002D8B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 86A765CDBC3DCDB77DE8D317 /* Pods-Hayaku.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B4LU6DP8T7;
+				INFOPLIST_FILE = Hayaku/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Elysia.Hayaku;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6CCDABC120B22F2E002D8B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB143F9FB4BE546606DCB442 /* Pods-Hayaku.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B4LU6DP8T7;
+				INFOPLIST_FILE = Hayaku/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Elysia.Hayaku;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6CCDABC320B22F2E002D8B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59A420B775D4301FFFE38C54 /* Pods-HayakuTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 255C29L7GA;
+				INFOPLIST_FILE = HayakuTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Elysia.HayakuTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hayaku.app/Hayaku";
+			};
+			name = Debug;
+		};
+		6CCDABC420B22F2E002D8B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E6194C70F5194010F852F8 /* Pods-HayakuTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 255C29L7GA;
+				INFOPLIST_FILE = HayakuTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Elysia.HayakuTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hayaku.app/Hayaku";
+			};
+			name = Release;
+		};
+		6CCDABC620B22F2E002D8B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 344D06F1F3ACBD94B6521BBD /* Pods-HayakuUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 255C29L7GA;
+				INFOPLIST_FILE = HayakuUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Elysia.HayakuUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Hayaku;
+			};
+			name = Debug;
+		};
+		6CCDABC720B22F2E002D8B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 29A0AB6AFEB06102EDD62253 /* Pods-HayakuUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 255C29L7GA;
+				INFOPLIST_FILE = HayakuUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Elysia.HayakuUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Hayaku;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6CCDAB9220B22F2E002D8B86 /* Build configuration list for PBXProject "Hayaku" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CCDABBD20B22F2E002D8B86 /* Debug */,
+				6CCDABBE20B22F2E002D8B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CCDABBF20B22F2E002D8B86 /* Build configuration list for PBXNativeTarget "Hayaku" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CCDABC020B22F2E002D8B86 /* Debug */,
+				6CCDABC120B22F2E002D8B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CCDABC220B22F2E002D8B86 /* Build configuration list for PBXNativeTarget "HayakuTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CCDABC320B22F2E002D8B86 /* Debug */,
+				6CCDABC420B22F2E002D8B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6CCDABC520B22F2E002D8B86 /* Build configuration list for PBXNativeTarget "HayakuUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CCDABC620B22F2E002D8B86 /* Debug */,
+				6CCDABC720B22F2E002D8B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6CCDAB8F20B22F2E002D8B86 /* Project object */;
+}

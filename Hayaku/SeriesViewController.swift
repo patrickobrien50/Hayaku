@@ -24,8 +24,8 @@ class SeriesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         if let url = URL(string: (series?.assets.coverLarge.uri)!) {
             self.seriesImageView.kf.setImage(with: url)
-            self.seriesImageView.frame = CGRect(x: 0, y: 0, width: (series?.assets.coverLarge.width)!
-                , height:  (series?.assets.coverLarge.height)!)
+//            self.seriesImageView.frame = CGRect(x: 0, y: 0, width: (series?.assets.coverLarge.width)!
+//                , height:  (series?.assets.coverLarge.height)!)
             
         }
             
@@ -71,9 +71,9 @@ class SeriesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.seriesTableView.rowHeight = 95
         let cell = seriesTableView.dequeueReusableCell(withIdentifier: "SeriesGameCell", for: indexPath) as! SeriesTableViewCell
-        let imageSize = cell.imageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
+//        let imageSize = cell.imageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
         cell.seriesTableViewCellLabel.text = games[indexPath.row].names.international
-        let url = URL(string: games[indexPath.row].assets.cover(for: imageSize)!.uri)
+        let url = URL(string: games[indexPath.row].assets.coverMedium.uri)
         cell.seriesTableViewCellImageView.kf.setImage(with: url)
         return cell
     }

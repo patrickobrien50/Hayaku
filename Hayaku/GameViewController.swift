@@ -17,6 +17,7 @@ class GameViewController: UITableViewController {
     var seriesName : String?
     var categories = [Category]()
     var favorites: [Game] {
+        
         get {
             if let favoriteStuff = UserDefaults.standard.data(forKey: "favorites") {
                 if let favoritesData = try? JSONDecoder().decode([Game].self, from: favoriteStuff) {
@@ -61,11 +62,15 @@ class GameViewController: UITableViewController {
         let favorite = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(favoriteButtonTapped))
         self.navigationItem.rightBarButtonItem = favorite
         self.navigationItem.rightBarButtonItem?.isEnabled = true
+        
+        
         seriesNameLabel.textColor = UIColor(red: 120/255, green: 0/255, blue: 237/255, alpha: 1.0)
         
         
         
         if game == nil && gameName == nil {
+            
+            // If coming from SearchViewController or SeriesViewController.
             let gameUrl = "http://www.speedrun.com/api/v1/games/" + gameId! + "?embed=categories,variables,platforms"
             guard let url = URL(string: gameUrl) else { return }
             
@@ -78,8 +83,8 @@ class GameViewController: UITableViewController {
                     self.game = gamesData?.data
                     self.game?.variables = variablesData
                     self.title = gamesData?.data.names.international
-                    self.getSeriesName(seriesUrl: String(describing: gamesData!.data.links[6].uri))
                     if let game = gamesData?.data {
+                        self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
                         for category in game.categories!.data {
                             for link in category.links {
                                 if link.rel == "leaderboard" {
@@ -88,17 +93,14 @@ class GameViewController: UITableViewController {
                                 }
                             }
                         }
-                        print(self.categories)
                         self.tableView.reloadData()
-                        print("yes")
-                        self.testView.frame.size.height = CGFloat(game.assets.coverLarge.height)
-                        print(game.assets.coverLarge.height)
-                        self.testView.frame.size.width = CGFloat(game.assets.coverLarge.width)
-                        print(game.assets.coverLarge.width)
+//                        self.testView.frame.size.height = CGFloat(game.assets.coverLarge.height)
+//                        print(game.assets.coverLarge.height)
+//                        self.testView.frame.size.width = CGFloat(game.assets.coverLarge.width)
+//                        print(game.assets.coverLarge.width)
                         self.testView.layer.backgroundColor = UIColor.black.cgColor
                         self.testView.frame.origin = self.seriesNameLabel.frame.origin
                     }
-                    
 
 
                     //                let imageSize = self.gameImageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
@@ -131,7 +133,6 @@ class GameViewController: UITableViewController {
                     }
                     for favGame in self.favorites {
                         if gamesData?.data.id == favGame.id {
-                            print("Game Found")
                             self.navigationItem.rightBarButtonItem?.isEnabled = false
                         }
                     }
@@ -140,33 +141,59 @@ class GameViewController: UITableViewController {
             }
             dataRequest.resume()
         } else if game != nil && gameName == nil {
+            
+            //If coming from the FavoritesCollectionViewController
+            
             if let game = game {
-                for category in game.categories!.data {
-                    self.categories.append(category)
-                }
+                
                 self.tableView.reloadData()
                 self.title = game.names.international
                 self.navigationItem.rightBarButtonItem?.isEnabled = false
-                let url = URL(string: game.assets.coverMedium.uri)
-                gameImageView.kf.setImage(with: url)
+                if let url = URL(string: (game.assets.coverMedium.uri)) {
+                    self.gameImageView.kf.setImage(with: url)
+                    self.gameImageView.layer.shadowColor = UIColor.black.cgColor
+                    self.gameImageView.layer.shadowOpacity = 1
+                    self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
+                    
+                }
+                
                 getSeriesName(seriesUrl: game.links[6].uri)
                 let releaseDateArray = game.releaseDate.components(separatedBy: "-")
                 self.releasedLabel.text = releaseDateArray[0]
-                if let platforms = game.platforms?.data {
-                    var platformString = ""
-                    for (index, platform) in platforms.enumerated() {
-                        if index < platforms.count - 1 {
-                            platformString += platform.name + ", "
-                        } else {
-                            platformString += platform.name
+                for category in game.categories!.data {
+                    for link in category.links {
+                        if link.rel == "leaderboard" {
+                            self.categories.append(category)
+                            
                         }
                     }
-                    self.platformsLabel.text = platformString
                 }
+                if let platforms = game.platforms?.data {
+                    
+                    var platformString = ""
+                    
+                    for (index, platform) in platforms.enumerated() {
+                        if index < platforms.count - 1 {
+                            
+                            platformString += platform.name + ", "
+                            
+                        } else {
+                            
+                            platformString += platform.name
+                        }
+                        
+                    }
+                    
+                    self.platformsLabel.text = platformString
+                    
+                }
+                
             }
             self.animateGameViewStuff()
 
         } else {
+            
+            //If coming from the PopularGamesCollectionViewController
             let gameUrl = "http://www.speedrun.com/api/v1/games?name=" + gameName!.replacingOccurrences(of: " ", with: "%20") + "&embed=categories,variables,platforms&max=1"
             guard let url = URL(string: gameUrl) else { return }
             
@@ -179,7 +206,12 @@ class GameViewController: UITableViewController {
                     if let game = gamesData?.data[0] {
                         self.game = game
                         for category in game.categories!.data {
-                            self.categories.append(category)
+                            for link in category.links {
+                                if link.rel == "leaderboard" {
+                                    self.categories.append(category)
+                                    
+                                }
+                            }
                         }
                         print(self.categories)
                         self.tableView.reloadData()
@@ -190,16 +222,26 @@ class GameViewController: UITableViewController {
                     self.getSeriesName(seriesUrl: String(describing: gamesData!.data[0].links[6].uri))
                     self.title = gamesData?.data[0].names.international
 
-
-                    //                let imageSize = self.gameImageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
-                    // Do any additional setup after loading the view.
                     
                     if let url = URL(string: (gamesData?.data[0].assets.coverMedium.uri)!) {
                         self.gameImageView.kf.setImage(with: url)
+                        self.gameImageView.layer.shadowColor = UIColor.black.cgColor
+                        self.gameImageView.layer.shadowOpacity = 1
+                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
                     }
+                    
+                    
                     self.seriesNameLabel.text = self.seriesName
                     if let  releaseDateArray = gamesData?.data[0].releaseDate.components(separatedBy: "-") {
                         self.releasedLabel.text = releaseDateArray[0]
+                    }
+                    for category in (gamesData?.data[0].categories?.data)! {
+                        for link in category.links {
+                            if link.rel == "leaderboard" {
+                                self.categories.append(category)
+                                
+                            }
+                        }
                     }
                     if let platforms = gamesData?.data[0].platforms?.data {
                         var platformString = ""
@@ -234,8 +276,9 @@ class GameViewController: UITableViewController {
 
     
     func getSeriesName(seriesUrl: String) {
+        print("Here")
         
-            guard let url = URL(string: seriesUrl as String) else { return }
+            guard let url = URL(string: seriesUrl) else { return }
             
             let dataRequest = URLSession.shared.dataTask(with: url) {
                 (data, response, error) in
@@ -337,10 +380,14 @@ class GameViewController: UITableViewController {
                 print(category.name)
             }
         }
+        
+    
         variablesViewController.gameId = game?.id
         variablesViewController.categoryId = self.categories[indexPath.row].id
         variablesViewController.game = self.game
         self.navigationController?.pushViewController(variablesViewController, animated: true)
+        
+
     }
     
     

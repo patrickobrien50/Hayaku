@@ -113,14 +113,15 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             var urlComponents = URLComponents(string: "http://www.speedrun.com/api/v1/games")
             urlComponents?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "10")]
             guard let url = urlComponents?.url else { return }
-            
+            print(url)
             let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 guard let data = data else { return }
-                let gamesData = try? JSONDecoder().decode(ResultsGameResponse.self, from: data)
+                let gamesData = try! JSONDecoder().decode(ResultsGameResponse.self, from: data)
                 
                 DispatchQueue.main.async {
                     if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
-                        resultsController.games = gamesData?.data ?? []
+                        resultsController.games = gamesData.data
+                        print(gamesData.data)
                     }
                 }
             }

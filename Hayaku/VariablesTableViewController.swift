@@ -28,7 +28,6 @@ class VariablesTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = leaderboardsBarButton
         self.navigationItem.rightBarButtonItem?.isEnabled = true
         
-        leaderboardUrlString += "\(gameId!)/category/\(categoryId!)?"
         if let variableUrl = variableURL {
             guard let url = URL(string: variableUrl) else { return }
             
@@ -41,20 +40,24 @@ class VariablesTableViewController: UITableViewController {
                     
                     if let variables = variablesData?.data {
                         self.variables = variables
-                        self.tableView.reloadData()
-                        for variable in variables {
-                            var choices = [Choices]()
-                            var keys = [String]()
-                            for value in variable.values.values.values {
-                                choices.append(value)
+                        for (index, variable) in variables.enumerated() {
+                            if variable.isSubcategory == true {
                                 
+                                var choices = [Choices]()
+                                var keys = [String]()
+                                for key in variable.values.values.keys {
+                                    
+                                    keys.append("var-\(variable.id)=\(key)")
+                                    choices.append(variable.values.values[key]!)
+                                }
+                                self.keysForChoices.append(keys)
+                                self.choices.append(choices)
+                            } else if variable.isSubcategory == false {
+                                self.variables.remove(at: index)
                             }
-                            for key in variable.values.values.keys {
-                                keys.append("var-\(variable.id)=\(key)")
-                            }
-                            self.keysForChoices.append(keys)
-                            self.choices.append(choices)
+
                         }
+                        self.tableView.reloadData()
                     }
 
                 }
@@ -137,21 +140,28 @@ class VariablesTableViewController: UITableViewController {
     
     @objc func leaderboardsButtonPressed() {
         let cells = tableView.visibleCells
+        var runInformation = ""
+        leaderboardUrlString += "\(gameId!)/category/\(categoryId!)?"
         
         for cell in cells {
             if cell.accessoryType == .checkmark {
                 if let indexPath = tableView.indexPath(for: cell) {
+                    runInformation += "| \(choices[indexPath.section][indexPath.row].label) |"
                     leaderboardUrlString += "\(keysForChoices[indexPath.section][indexPath.row])&"
                 }
             }
         }
-        leaderboardUrlString += "&embed=players"
+        leaderboardUrlString += "embed=players"
         
         
         let leaderboardsView = storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
         leaderboardsView.leaderboardUrlString = leaderboardUrlString
+        leaderboardsView.runInformation = runInformation
+        print(leaderboardUrlString)
         leaderboardsView.game = self.game
         self.navigationController?.pushViewController(leaderboardsView, animated: true)
+        leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/"
+
     }
  
 

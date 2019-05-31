@@ -102,6 +102,7 @@ struct GameAssets : Codable {
     var trophy1st: GameImageData
     var trophy2nd: GameImageData
     var trophy3rd: GameImageData
+    var background: GameImageData?
     
     func cover(for size: CGSize) -> GameImageData? {
         let references = [coverMedium, coverLarge, coverSmall].compactMap({ $0 })
@@ -117,16 +118,17 @@ struct GameAssets : Codable {
         case trophy1st = "trophy-1st"
         case trophy2nd = "trophy-2nd"
         case trophy3rd = "trophy-3rd"
+        case background = "background"
     }
 }
 
 struct GameImageData : Codable {
     var uri: String
-    var height: Int
-    var width: Int
+    var height: Int?
+    var width: Int?
     
     var size: CGSize {
-        return CGSize(width: width, height: height)
+        return CGSize(width: width!, height: height!)
     }
 }
 
@@ -165,6 +167,15 @@ struct Variable : Codable {
     var id: String
     var name: String
     var values: VariablesValues
+    var isSubcategory: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case values = "values"
+        case isSubcategory = "is-subcategory"
+    }
+
 }
 
 struct Choices : Codable {
@@ -215,6 +226,7 @@ struct RunPosition : Codable {
 
 struct Run : Codable {
     var players: [Player]
+    var comment: String?
     var times: Times
     var weblink: String
     var videos: Video?
@@ -236,3 +248,9 @@ struct MediaPlatform : Codable {
     var uri: String?
 }
 
+struct TwitchResponse : Codable {
+    var title : String?
+    var description : String?
+    var game : String?
+    var preview : String
+}

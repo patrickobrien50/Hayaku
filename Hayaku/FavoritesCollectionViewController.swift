@@ -80,8 +80,6 @@ class FavoritesCollectionViewController: UICollectionViewController {
         cell.favoriteGameCellImageView.layer.shadowColor = UIColor.black.cgColor
         cell.favoriteGameCellImageView.layer.shadowOpacity = 1
         cell.favoriteGameCellImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.borderWidth = 1
      
         return cell
         

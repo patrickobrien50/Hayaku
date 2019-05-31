@@ -16,6 +16,7 @@ class LeaderboardsTableViewController: UITableViewController {
     var game: Game?
     var leaderboardUrlString: String?
     var loaded = false
+    var runInformation = ""
     
 
     override func viewDidLoad() {
@@ -30,7 +31,7 @@ class LeaderboardsTableViewController: UITableViewController {
             
             guard let data = data else { return }
             
-            var leaderboardsData = try? JSONDecoder().decode(LeaderboardsResponse.self, from: data)
+            let leaderboardsData = try? JSONDecoder().decode(LeaderboardsResponse.self, from: data)
             
             DispatchQueue.main.async {
                 if let leaderboards = leaderboardsData?.data {
@@ -79,7 +80,6 @@ class LeaderboardsTableViewController: UITableViewController {
         cell.runTimeLabel.text = runs[indexPath.row].run.times.primary.replacingOccurrences(of: "PT", with: "").lowercased()
         cell.runPositionLabel.text = String(describing: runs[indexPath.row].place)
         
-        
         if players[indexPath.row].rel == "guest" {
             cell.runnerNameLabel.text = players[indexPath.row].name
         }
@@ -127,6 +127,12 @@ class LeaderboardsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(runs[indexPath.row])
+        let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
+        runViewController.runInformation = runInformation
+        runViewController.run = runs[indexPath.row].run
+        runViewController.player = players[indexPath.row]
+        
+        self.navigationController?.pushViewController(runViewController, animated: true)
     }
 
 }

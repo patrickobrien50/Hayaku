@@ -17,6 +17,7 @@ class PopularCollectionViewController: UICollectionViewController {
     
     var imageUrls = [String]()
     var names = [String]()
+    var playerCount = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,13 +52,14 @@ class PopularCollectionViewController: UICollectionViewController {
         if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
             
             // #maincontainer .row #main .maincontent .panel #listingOptions
+            for item in doc.css(".listcell p") {
+                playerCount.append(String(describing: item.text!))
+            }
             for item in doc.css(".listcell div") {
                 names.append(String(describing: item.text!))
             }
             for item in doc.css(".listcell a img") {
-                self.imageUrls.append("https://www.speedrun.com" + String(describing: item["src"]!))
-                var string = item.innerHTML
-                
+                self.imageUrls.append("https://www.speedrun.com" + String(describing: item["src"]!))                
             }
         }
     }
@@ -89,6 +91,7 @@ class PopularCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PopularCell", for: indexPath) as! PopularGameCollectionViewCell
         cell.popularGameImageView.kf.setImage(with: URL(string: imageUrls[indexPath.row]))
         cell.popularGameLabel.text = names[indexPath.row]
+        cell.playerCountLabel.text = playerCount[indexPath.row]
         return cell
     }
     

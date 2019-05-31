@@ -12,5 +12,6 @@ class PopularGameCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var popularGameImageView: UIImageView!
     @IBOutlet weak var popularGameLabel: UILabel!
+    @IBOutlet weak var playerCountLabel: UILabel!
     
 }

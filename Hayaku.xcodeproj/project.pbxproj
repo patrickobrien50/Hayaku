@@ -32,6 +32,7 @@
 		6CE51671228541C400CE492A /* PopularGameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */; };
 		6CE6838122946FB900E5E544 /* LeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */; };
 		6CE683832294CE6600E5E544 /* RunTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE683822294CE6600E5E544 /* RunTableViewCell.swift */; };
+		6CE68385229528D800E5E544 /* RunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE68384229528D800E5E544 /* RunViewController.swift */; };
 		E79268FCB03238CCFF3C1A72 /* Pods_Hayaku.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 747C248EB6C94B2ECACA93D0 /* Pods_Hayaku.framework */; };
 		F323C0D5F7756D966D7615FD /* Pods_HayakuTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F46B9933E3EBD5C195153D22 /* Pods_HayakuTests.framework */; };
 /* End PBXBuildFile section */
@@ -88,6 +89,7 @@
 		6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularGameCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableViewController.swift; sourceTree = "<group>"; };
 		6CE683822294CE6600E5E544 /* RunTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunTableViewCell.swift; sourceTree = "<group>"; };
+		6CE68384229528D800E5E544 /* RunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunViewController.swift; sourceTree = "<group>"; };
 		747C248EB6C94B2ECACA93D0 /* Pods_Hayaku.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hayaku.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86A765CDBC3DCDB77DE8D317 /* Pods-Hayaku.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hayaku.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hayaku/Pods-Hayaku.debug.xcconfig"; sourceTree = "<group>"; };
 		CB143F9FB4BE546606DCB442 /* Pods-Hayaku.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hayaku.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hayaku/Pods-Hayaku.release.xcconfig"; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */,
 				6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */,
 				6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */,
+				6CE68384229528D800E5E544 /* RunViewController.swift */,
 				6CE683822294CE6600E5E544 /* RunTableViewCell.swift */,
 				6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */,
 				6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */,
@@ -447,6 +450,7 @@
 				6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */,
 				6CE5166F2285407700CE492A /* PopularCollectionViewController.swift in Sources */,
 				6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */,
+				6CE68385229528D800E5E544 /* RunViewController.swift in Sources */,
 				6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */,
 				6CCDABCD20B2326E002D8B86 /* DataModels.swift in Sources */,
 				6CCDABCB20B23032002D8B86 /* SearchViewController.swift in Sources */,

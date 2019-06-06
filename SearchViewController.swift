@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Alamofire
 import Kingfisher
+import Siesta
 
-class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating, UISearchControllerDelegate{
+class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating, UISearchControllerDelegate {
     
     var searchController: UISearchController!
     
@@ -21,21 +23,24 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             UserDefaults.standard.set(newValue, forKey: "recentSearches")
         }
     }
+    
+    
+
+
+
 
     
 
     @IBOutlet var previousSearchesTableView: UITableView!
-    
     
 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         
-
+    
         
         
         previousSearchesTableView.tableFooterView = UIView()
@@ -167,15 +172,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchController.isActive = true
     }
     
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+
 
 }
 
@@ -341,6 +339,8 @@ class SearchResultsTableViewController: UITableViewController {
 //            }
 //        }
 //    }
+    
+
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch sections[indexPath.section] {

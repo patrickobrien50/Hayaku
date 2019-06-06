@@ -22,6 +22,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     var runInformation: String?
     
 
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var runInformationLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -31,6 +32,11 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     override func viewDidLoad() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         super.viewDidLoad()
+        
+        
+        containerView.layer.cornerRadius = 10.0
+        guard let data = try? Data(contentsOf: URL(string: backgroundURL!)!) else { return }
+        view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
         thumbnailImageView.isUserInteractionEnabled = true
         thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
         commentLabel.text = run?.comment
@@ -56,10 +62,10 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                     (data, respone, error) in
                     
                     guard let data = data else { return }
-                    let twitchData = try! JSONDecoder().decode(TwitchResponse.self, from: data)
+                    let twitchData = try? JSONDecoder().decode(TwitchResponse.self, from: data)
                     
                     DispatchQueue.main.async {
-                        self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.preview))
+                        self.thumbnailImageView.kf.setImage(with: URL(string: twitchData?.preview ?? "https://placekitten.com/g/300/200"))
                     }
                     
                 }
@@ -86,6 +92,8 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 let youtubeImageLink = "https://img.youtube.com/vi/\(youtubeVideoId)/hqdefault.jpg"
                 
                 thumbnailImageView.kf.setImage(with: URL(string: youtubeImageLink))
+            } else if videoLink.contains("puu.sh") {
+                thumbnailImageView.kf.setImage(with: URL(string: "https://placekitten.com/g/300/200"))
             }
         }
 

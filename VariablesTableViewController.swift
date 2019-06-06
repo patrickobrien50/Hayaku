@@ -18,6 +18,7 @@ class VariablesTableViewController: UITableViewController {
     var keysForChoices = [[String]]()
     var choices = [[Choices]]()
     var game : Game?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

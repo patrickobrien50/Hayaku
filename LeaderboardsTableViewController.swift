@@ -131,6 +131,7 @@ class LeaderboardsTableViewController: UITableViewController {
         runViewController.runInformation = runInformation
         runViewController.run = runs[indexPath.row].run
         runViewController.player = players[indexPath.row]
+        runViewController.backgroundURL = game?.assets.background?.uri
         
         self.navigationController?.pushViewController(runViewController, animated: true)
     }

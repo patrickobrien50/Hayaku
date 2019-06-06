@@ -9,11 +9,12 @@
 import UIKit
 import Kanna
 import Alamofire
+import Siesta
 
 
 private let reuseIdentifier = "Cell"
 
-class PopularCollectionViewController: UICollectionViewController {
+class PopularCollectionViewController: UICollectionViewController, ResourceObserver {
     
     var imageUrls = [String]()
     var names = [String]()
@@ -92,6 +93,7 @@ class PopularCollectionViewController: UICollectionViewController {
         cell.popularGameImageView.kf.setImage(with: URL(string: imageUrls[indexPath.row]))
         cell.popularGameLabel.text = names[indexPath.row]
         cell.playerCountLabel.text = playerCount[indexPath.row]
+        cell.layer.cornerRadius = 10.0
         return cell
     }
     
@@ -132,6 +134,10 @@ class PopularCollectionViewController: UICollectionViewController {
     
     }
     */
+    
+    func resourceChanged(_ resource: Resource, event: ResourceEvent) {
+        
+    }
 
     
     func animateTableViewCells() {

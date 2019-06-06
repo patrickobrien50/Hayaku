@@ -12,6 +12,8 @@ import Kanna
 
 private let reuseIdentifier = "Cell"
 
+import Siesta
+
 class StreamsCollectionViewController: UICollectionViewController {
     
     var gameUrlName : String?
@@ -20,9 +22,15 @@ class StreamsCollectionViewController: UICollectionViewController {
     var streamHeaders = [String]()
     var viewerCount = [String]()
     var users = [String]()
+    var backgroundURL : String? 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let data = try? Data(contentsOf: URL(string: backgroundURL!)!) else { return }
+        
+        
+        self.collectionView?.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
+        
         self.title = "Streams"
         Alamofire.request("https://www.speedrun.com/" + gameUrlName! + "/streams").responseString { response in
             print("\(response.result.isSuccess)")
@@ -50,6 +58,7 @@ class StreamsCollectionViewController: UICollectionViewController {
                 let testString = item.text!
                 let stringArray = testString.components(separatedBy: "'")
                 formString = stringArray[1]
+                print(formString)
             }
             // #maincontainer .row #main .maincontent .panel #listingOptions
 
@@ -86,6 +95,7 @@ class StreamsCollectionViewController: UICollectionViewController {
         cell.streamTitleLabel.text = streamHeaders[indexPath.row]
         cell.viewerCountLabel.text = viewerCount[indexPath.row]
         cell.streamerLabel.text = users[indexPath.row]
+        cell.layer.cornerRadius = 10.0
 //        cell.transform = CGAffineTransform(translationX: 500.0, y: 0.0)
 
 
@@ -190,4 +200,12 @@ class StreamsCollectionViewController: UICollectionViewController {
 //            cell.streamerLabel.alpha = 1
 //        })
 //    }
+}
+
+extension StreamsCollectionViewController : ResourceObserver {
+    
+    func resourceChanged(_ resource: Resource, event: ResourceEvent) {
+        
+    }
+    
 }

@@ -17,6 +17,7 @@
 		6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */; };
 		6C4CB7F5228CE1670084C365 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */; };
 		6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */; };
+		6C99DC8522A84642004FC199 /* SpeedRunAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */; };
 		6CCDAB9B20B22F2E002D8B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */; };
 		6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */; };
 		6CCDABA020B22F2E002D8B86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */; };
@@ -68,6 +69,7 @@
 		6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResultTableViewCell.swift; sourceTree = "<group>"; };
 		6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariablesTableViewController.swift; sourceTree = "<group>"; };
+		6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedRunAPI.swift; sourceTree = "<group>"; };
 		6CCDAB9720B22F2E002D8B86 /* Hayaku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hayaku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionViewController.swift; sourceTree = "<group>"; };
@@ -125,9 +127,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C99DC8822A8465F004FC199 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */,
+				6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */,
+				6CCDABC820B23023002D8B86 /* PopularViewController.swift */,
+				6CCDABCA20B23032002D8B86 /* SearchViewController.swift */,
+				6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */,
+				6C328EB622792E420011EB99 /* SeriesViewController.swift */,
+				6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */,
+				6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */,
+				6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */,
+				6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */,
+				6CE68384229528D800E5E544 /* RunViewController.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		6C99DC8922A8468A004FC199 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				6C0E36E522865CAF0068F91D /* StreamsCollectionViewCell.swift */,
+				6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */,
+				6CE683822294CE6600E5E544 /* RunTableViewCell.swift */,
+				6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */,
+				6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */,
+				6C26655322828BB1009617A2 /* FavoritesCollectionViewCell.swift */,
+			);
+			path = "Custom Cells";
+			sourceTree = "<group>";
+		};
 		6CCDAB8E20B22F2E002D8B86 = {
 			isa = PBXGroup;
 			children = (
+				6C99DC8822A8465F004FC199 /* UI */,
 				6CCDAB9920B22F2E002D8B86 /* Hayaku */,
 				6CCDABAE20B22F2E002D8B86 /* HayakuTests */,
 				6CCDABB920B22F2E002D8B86 /* HayakuUITests */,
@@ -151,26 +185,11 @@
 			isa = PBXGroup;
 			children = (
 				6CCDABCC20B2326E002D8B86 /* DataModels.swift */,
-				6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */,
 				6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */,
-				6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */,
-				6CCDABC820B23023002D8B86 /* PopularViewController.swift */,
-				6CCDABCA20B23032002D8B86 /* SearchViewController.swift */,
-				6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */,
-				6C328EB622792E420011EB99 /* SeriesViewController.swift */,
-				6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */,
-				6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */,
-				6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */,
+				6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */,
 				6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */,
-				6CE68384229528D800E5E544 /* RunViewController.swift */,
-				6CE683822294CE6600E5E544 /* RunTableViewCell.swift */,
-				6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */,
 				6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */,
-				6C0E36E522865CAF0068F91D /* StreamsCollectionViewCell.swift */,
-				6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */,
-				6C26655322828BB1009617A2 /* FavoritesCollectionViewCell.swift */,
-				6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */,
-				6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */,
+				6C99DC8922A8468A004FC199 /* Custom Cells */,
 				6CCDABA120B22F2E002D8B86 /* Assets.xcassets */,
 				6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */,
 				6CCDABA620B22F2E002D8B86 /* Info.plist */,
@@ -381,12 +400,14 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Siesta/Siesta.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Siesta.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -447,6 +468,7 @@
 				6C328EBB227A17610011EB99 /* SeriesTableViewCell.swift in Sources */,
 				6CCDABC920B23023002D8B86 /* PopularViewController.swift in Sources */,
 				6C0E36E622865CAF0068F91D /* StreamsCollectionViewCell.swift in Sources */,
+				6C99DC8522A84642004FC199 /* SpeedRunAPI.swift in Sources */,
 				6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */,
 				6CE5166F2285407700CE492A /* PopularCollectionViewController.swift in Sources */,
 				6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */,

@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import Siesta
 
-class GameViewController: UITableViewController {
+
+class GameViewController: UITableViewController, ResourceObserver {
+    
+    
     
     var seriesId: String?
     var gameName : String?
@@ -51,6 +55,9 @@ class GameViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+ 
         
         gameImageView.alpha = 0
         seriesNameLabel.alpha = 0
@@ -301,6 +308,7 @@ class GameViewController: UITableViewController {
         let urlString = game!.assets.coverSmall.uri
         let stringArray = urlString.components(separatedBy: "/")
         streamsCollectionView?.gameUrlName = stringArray[4]
+        streamsCollectionView?.backgroundURL = game?.assets.background?.uri
         self.navigationController?.pushViewController(streamsCollectionView!, animated: true)
     }
     
@@ -390,6 +398,9 @@ class GameViewController: UITableViewController {
 
     }
     
-    
+    func resourceChanged(_ resource: Resource, event: ResourceEvent) {
+        
+        
+    }
     
 }

@@ -8,12 +8,14 @@
 
 import UIKit
 import Siesta
+import Alamofire
+import Kanna
 
 
 class GameViewController: UITableViewController, ResourceObserver {
     
     
-    
+    var streams = [Stream]()
     var seriesId: String?
     var gameName : String?
     var gameId : String?
@@ -54,8 +56,8 @@ class GameViewController: UITableViewController, ResourceObserver {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        streamsButton.isEnabled = false
+        tableView.tableFooterView = UIView()
         
  
         
@@ -72,6 +74,9 @@ class GameViewController: UITableViewController, ResourceObserver {
         
         
         seriesNameLabel.textColor = UIColor(red: 120/255, green: 0/255, blue: 237/255, alpha: 1.0)
+        
+
+        
         
         
         
@@ -118,6 +123,18 @@ class GameViewController: UITableViewController, ResourceObserver {
                         self.gameImageView.layer.shadowColor = UIColor.black.cgColor
                         self.gameImageView.layer.shadowOpacity = 1
                         self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
+                    }
+                    
+                    let urlString = self.game!.assets.coverSmall.uri
+                    let stringArray = urlString.components(separatedBy: "/")
+                    print(stringArray[4])
+                    Alamofire.request("https://www.speedrun.com/" + stringArray[4] + "/streams").responseString { response in
+                        print("\(response.result.isSuccess)")
+                        if let html = response.result.value {
+                            let parameterString = self.getParameters(html: html)
+                            self.getStreams(string: parameterString)
+                            
+                        }
                     }
                     
                     
@@ -280,6 +297,74 @@ class GameViewController: UITableViewController, ResourceObserver {
         
        
     }
+    
+    func parseHTML(html: String) -> Void {
+        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
+            
+            
+            for streamContainer in doc.css(".listcell") {
+                var viewers: String?
+                var username: String?
+                
+                if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
+                    viewers = "\(splitViewersArray[0]) \(splitViewersArray[1])"
+                    username = "\(splitViewersArray[2])"
+                }
+                let weblink = streamContainer.at_css("a")
+                let imageLink = streamContainer.at_css(".preview")
+                let title = streamContainer.at_css("a[title]")?.text
+                
+                
+                streams.append(Stream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: username!), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+                
+                
+                
+            }
+        }
+    }
+    
+    func getStreams(string: String) {
+        if string != "" {
+            let headers : HTTPHeaders = ["Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"]
+            let separators = CharacterSet(charactersIn: "=&")
+            var stringArray = string.components(separatedBy: separators)
+            var index = 0
+            var parameters = [String: Any]()
+            
+            while index < stringArray.count {
+                parameters[stringArray[index]] = stringArray[index + 1]
+                index += 2
+            }
+            parameters["pagelink"] = "/streams"
+            parameters["pagesize"] = 1
+            Alamofire.request("https://www.speedrun.com/ajax_streamslist.php", method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseString { response in
+                
+                print("\(response.result.isSuccess)")
+                
+                if let html = response.result.value {
+                    self.parseHTML(html: html)
+                    if self.streams.count > 0 {
+                        self.streamsButton.isEnabled = true
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    func getParameters(html: String) -> String {
+        var formString : String?
+        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
+            for item in doc.css(".maincontent .panel.panel-body script"){
+                let testString = item.text!
+                let stringArray = testString.components(separatedBy: "'")
+                formString = stringArray[1]
+            }
+            // #maincontainer .row #main .maincontent .panel #listingOptions
+            
+        }
+        return formString ?? ""
+    }
 
     
     func getSeriesName(seriesUrl: String) {
@@ -300,14 +385,11 @@ class GameViewController: UITableViewController, ResourceObserver {
     }
     
     @IBOutlet weak var gameImageView: UIImageView!
-    
-
+    @IBOutlet weak var streamsButton: UIButton!
     @IBAction func streamsButtonPressed(_ sender: Any) {
         let streamsCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "StreamsView") as? StreamsCollectionViewController
-
-        let urlString = game!.assets.coverSmall.uri
-        let stringArray = urlString.components(separatedBy: "/")
-        streamsCollectionView?.gameUrlName = stringArray[4]
+        streamsCollectionView?.streams = streams
+//        streamsCollectionView?.gameUrlName = stringArray[4]
         streamsCollectionView?.backgroundURL = game?.assets.background?.uri
         self.navigationController?.pushViewController(streamsCollectionView!, animated: true)
     }

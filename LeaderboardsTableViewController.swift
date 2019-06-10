@@ -87,13 +87,13 @@ class LeaderboardsTableViewController: UITableViewController {
         if indexPath.row == 0 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy1st.uri))
             //rgb(255,215,0)
-            cell.backgroundColor = UIColor(red: 255/255, green: 215/255, blue: 0/255, alpha: 1)
+//            cell.backgroundColor = UIColor(red: 255/255, green: 215/255, blue: 0/255, alpha: 1)
         } else if indexPath.row == 1 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy2nd.uri))
-            cell.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1)
+//            cell.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1)
         } else if indexPath.row == 2 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy3rd.uri))
-            cell.backgroundColor = UIColor(red: 205/255, green: 127/255, blue: 50/255, alpha: 1)
+//            cell.backgroundColor = UIColor(red: 205/255, green: 127/255, blue: 50/255, alpha: 1)
             loaded = true
             
         }
@@ -112,13 +112,13 @@ class LeaderboardsTableViewController: UITableViewController {
         if indexPath.row == 0 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy1st.uri))
             //rgb(255,215,0)
-            cell.backgroundColor = UIColor(red: 255/255, green: 215/255, blue: 0/255, alpha: 1)
+//            cell.backgroundColor = UIColor(red: 255/255, green: 215/255, blue: 0/255, alpha: 1)
         } else if indexPath.row == 1 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy2nd.uri))
-            cell.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1)
+//            cell.backgroundColor = UIColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1)
         } else if indexPath.row == 2 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy3rd.uri))
-            cell.backgroundColor = UIColor(red: 205/255, green: 127/255, blue: 50/255, alpha: 1)
+//            cell.backgroundColor = UIColor(red: 205/255, green: 127/255, blue: 50/255, alpha: 1)
             loaded = true
             
         }

@@ -35,8 +35,11 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         
         
         containerView.layer.cornerRadius = 10.0
-        guard let data = try? Data(contentsOf: URL(string: backgroundURL!)!) else { return }
-        view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
+        if let url = URL(string: backgroundURL ?? "") {
+            guard let data = try? Data(contentsOf: url) else { return }
+            view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
+        }
+        thumbnailImageView.image = UIImage(named: "Close Button")
         thumbnailImageView.isUserInteractionEnabled = true
         thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
         commentLabel.text = run?.comment
@@ -65,7 +68,10 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                     let twitchData = try? JSONDecoder().decode(TwitchResponse.self, from: data)
                     
                     DispatchQueue.main.async {
-                        self.thumbnailImageView.kf.setImage(with: URL(string: twitchData?.preview ?? "https://placekitten.com/g/300/200"))
+                        if let urlString = twitchData?.preview {
+                            self.thumbnailImageView.kf.setImage(with: URL(string: urlString))
+
+                        }
                     }
                     
                 }
@@ -93,7 +99,8 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 
                 thumbnailImageView.kf.setImage(with: URL(string: youtubeImageLink))
             } else if videoLink.contains("puu.sh") {
-                thumbnailImageView.kf.setImage(with: URL(string: "https://placekitten.com/g/300/200"))
+                thumbnailImageView.image = UIImage(named: "Close Button")
+                commentLabel.text = "Video Not Available"
             }
         }
 

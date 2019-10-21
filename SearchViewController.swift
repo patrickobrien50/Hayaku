@@ -23,6 +23,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             UserDefaults.standard.set(newValue, forKey: "recentSearches")
         }
     }
+
     
     
 
@@ -49,7 +50,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchController = UISearchController(searchResultsController: searchResultsController)
         self.title = "Search"
         searchController.searchBar.placeholder = "Game or Series"
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
+//        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.previousSearchesTableView.allowsMultipleSelectionDuringEditing = false
@@ -61,6 +62,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
+        
         // Dispose of any resources that can be recreated.
     }
     

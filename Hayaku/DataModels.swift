@@ -178,7 +178,11 @@ struct Variable : Codable {
 
 }
 
-struct Choices : Codable {
+struct Choices : Codable , Comparable {
+    static func < (lhs: Choices, rhs: Choices) -> Bool {
+        return lhs.label < rhs.label
+    }
+    
     var label: String
     var rules: String?
 }
@@ -253,4 +257,19 @@ struct TwitchResponse : Codable {
     var description : String?
     var game : String?
     var preview : String
+}
+
+struct PopularStream {
+    var title: String
+    var viewers : String
+    var username: String
+    var imageLink: String
+    var weblink: String
+}
+
+struct PopularGame {
+    var name: String
+    var playerCount: String
+    var imageLink: String
+    
 }

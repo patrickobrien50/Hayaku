@@ -89,19 +89,12 @@ class SeriesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func animateTableViewCells() {
         let cells = seriesTableView.visibleCells as! [SeriesTableViewCell]
-        let delayFactor: Double = 0.05
         for cell in cells {
-            cell.transform = CGAffineTransform(translationX: 0, y: seriesTableView.rowHeight)
-            let indexPath = seriesTableView.indexPath(for: cell)
-            
+            cell.alpha = 0            
             UIView.animate(
                 withDuration: 1.0,
-                delay: delayFactor * Double(indexPath!.row),
-                usingSpringWithDamping: 0.4,
-                initialSpringVelocity: 0.1,
-                options: [.curveEaseInOut],
                 animations: {
-                    cell.transform = CGAffineTransform(translationX: 0, y: 0)
+                    cell.alpha = 1
             })
         }
     }

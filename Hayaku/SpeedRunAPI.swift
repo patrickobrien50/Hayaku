@@ -25,18 +25,13 @@ class _SpeedRunAPI {
         
         let jsonDecoder = JSONDecoder()
         
-        service.configureTransformer("/games/*") {
-            try jsonDecoder.decode(GamesResponse.self, from: $0.content)
-        }
+
+
         
-        service.configureTransformer("/games/*?embed=categories,variables,platforms") {
-            try jsonDecoder.decode(VariablesResponse.self, from: $0.content)
-        }
-        
-        func games(searchText: String) -> Resource {
+
+        func getLeaderboards() -> Resource {
             return service
-                .resource("/games")
-            
+                .resource("/leaderboards")
         }
         
     }

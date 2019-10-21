@@ -15,17 +15,16 @@
 		6C328EBB227A17610011EB99 /* SeriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */; };
 		6C36C6C92163E0DE00CDCF1D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */; };
 		6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */; };
-		6C4CB7F5228CE1670084C365 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */; };
 		6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */; };
+		6C54E9E422C69E7F00D97B01 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C54E9E322C69E7F00D97B01 /* NetworkManager.swift */; };
+		6C61AF8D234E610A00DCE54A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDABA120B22F2E002D8B86 /* Assets.xcassets */; };
 		6C99DC8522A84642004FC199 /* SpeedRunAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */; };
 		6CCDAB9B20B22F2E002D8B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */; };
 		6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */; };
 		6CCDABA020B22F2E002D8B86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */; };
-		6CCDABA220B22F2E002D8B86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDABA120B22F2E002D8B86 /* Assets.xcassets */; };
 		6CCDABA520B22F2E002D8B86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */; };
 		6CCDABB020B22F2E002D8B86 /* HayakuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABAF20B22F2E002D8B86 /* HayakuTests.swift */; };
 		6CCDABBB20B22F2E002D8B86 /* HayakuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABBA20B22F2E002D8B86 /* HayakuUITests.swift */; };
-		6CCDABC920B23023002D8B86 /* PopularViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABC820B23023002D8B86 /* PopularViewController.swift */; };
 		6CCDABCB20B23032002D8B86 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCA20B23032002D8B86 /* SearchViewController.swift */; };
 		6CCDABCD20B2326E002D8B86 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCC20B2326E002D8B86 /* DataModels.swift */; };
 		6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */; };
@@ -67,8 +66,8 @@
 		6C328EBA227A17610011EB99 /* SeriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesTableViewCell.swift; sourceTree = "<group>"; };
 		6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResultTableViewCell.swift; sourceTree = "<group>"; };
-		6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariablesTableViewController.swift; sourceTree = "<group>"; };
+		6C54E9E322C69E7F00D97B01 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedRunAPI.swift; sourceTree = "<group>"; };
 		6CCDAB9720B22F2E002D8B86 /* Hayaku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hayaku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,7 +82,6 @@
 		6CCDABB620B22F2E002D8B86 /* HayakuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HayakuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCDABBA20B22F2E002D8B86 /* HayakuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HayakuUITests.swift; sourceTree = "<group>"; };
 		6CCDABBC20B22F2E002D8B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6CCDABC820B23023002D8B86 /* PopularViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularViewController.swift; sourceTree = "<group>"; };
 		6CCDABCA20B23032002D8B86 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		6CCDABCC20B2326E002D8B86 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableController.swift; sourceTree = "<group>"; };
@@ -132,11 +130,11 @@
 			children = (
 				6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */,
 				6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */,
-				6CCDABC820B23023002D8B86 /* PopularViewController.swift */,
 				6CCDABCA20B23032002D8B86 /* SearchViewController.swift */,
 				6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */,
 				6C328EB622792E420011EB99 /* SeriesViewController.swift */,
 				6C36C6C82163E0DE00CDCF1D /* GameViewController.swift */,
+				6C54E9E322C69E7F00D97B01 /* NetworkManager.swift */,
 				6C0E36E3228626D00068F91D /* StreamsCollectionViewController.swift */,
 				6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */,
 				6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */,
@@ -161,6 +159,7 @@
 		6CCDAB8E20B22F2E002D8B86 = {
 			isa = PBXGroup;
 			children = (
+				6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */,
 				6C99DC8822A8465F004FC199 /* UI */,
 				6CCDAB9920B22F2E002D8B86 /* Hayaku */,
 				6CCDABAE20B22F2E002D8B86 /* HayakuTests */,
@@ -187,8 +186,6 @@
 				6CCDABCC20B2326E002D8B86 /* DataModels.swift */,
 				6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */,
 				6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */,
-				6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */,
-				6C4CB7F4228CE1670084C365 /* CustomNavigationController.swift */,
 				6C99DC8922A8468A004FC199 /* Custom Cells */,
 				6CCDABA120B22F2E002D8B86 /* Assets.xcassets */,
 				6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */,
@@ -350,7 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6CCDABA520B22F2E002D8B86 /* LaunchScreen.storyboard in Resources */,
-				6CCDABA220B22F2E002D8B86 /* Assets.xcassets in Resources */,
+				6C61AF8D234E610A00DCE54A /* Assets.xcassets in Resources */,
 				6CCDABA020B22F2E002D8B86 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,13 +457,12 @@
 				6C328EB722792E420011EB99 /* SeriesViewController.swift in Sources */,
 				6CE51671228541C400CE492A /* PopularGameCollectionViewCell.swift in Sources */,
 				6C26655422828BB1009617A2 /* FavoritesCollectionViewCell.swift in Sources */,
+				6C54E9E422C69E7F00D97B01 /* NetworkManager.swift in Sources */,
 				6CE6838122946FB900E5E544 /* LeaderboardsTableViewController.swift in Sources */,
 				6C36C6C92163E0DE00CDCF1D /* GameViewController.swift in Sources */,
-				6C4CB7F5228CE1670084C365 /* CustomNavigationController.swift in Sources */,
 				6C0E36E4228626D00068F91D /* StreamsCollectionViewController.swift in Sources */,
 				6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */,
 				6C328EBB227A17610011EB99 /* SeriesTableViewCell.swift in Sources */,
-				6CCDABC920B23023002D8B86 /* PopularViewController.swift in Sources */,
 				6C0E36E622865CAF0068F91D /* StreamsCollectionViewCell.swift in Sources */,
 				6C99DC8522A84642004FC199 /* SpeedRunAPI.swift in Sources */,
 				6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */,
@@ -649,13 +645,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B4LU6DP8T7;
+				DEVELOPMENT_TEAM = 255C29L7GA;
 				INFOPLIST_FILE = Hayaku/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Elysia.Hayaku;
+				MARKETING_VERSION = 1.4;
+				PRODUCT_BUNDLE_IDENTIFIER = Pidove.Hayaku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -665,13 +663,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B4LU6DP8T7;
+				DEVELOPMENT_TEAM = 255C29L7GA;
 				INFOPLIST_FILE = Hayaku/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Elysia.Hayaku;
+				MARKETING_VERSION = 1.4;
+				PRODUCT_BUNDLE_IDENTIFIER = Pidove.Hayaku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

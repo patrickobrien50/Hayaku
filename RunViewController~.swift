@@ -40,8 +40,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         
         if groupPlayers {
             runnerNameLabel.text = groupString!
-            runnerNameLabel.numberOfLines = 0
-            runnerNameLabel.sizeToFit()
+            runnerNameLabel.numberOfLines = (run?.players.count)!
             
         } else {
             if player?.rel == "guest" {

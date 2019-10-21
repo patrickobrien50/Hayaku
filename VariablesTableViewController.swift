@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct ResultVariable {
+    var name: String
+    var choices : [Choices]
+}
+
 class VariablesTableViewController: UITableViewController {
     
     var leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/"
@@ -18,12 +23,14 @@ class VariablesTableViewController: UITableViewController {
     var keysForChoices = [[String]]()
     var choices = [[Choices]]()
     var game : Game?
+    var displayVariables = [ResultVariable]()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Options"
+        navigationController?.navigationBar.prefersLargeTitles = false
         
         let leaderboardsBarButton = UIBarButtonItem(title: "Go!", style: .done, target: self, action: #selector(leaderboardsButtonPressed))
         self.navigationItem.rightBarButtonItem = leaderboardsBarButton
@@ -41,7 +48,7 @@ class VariablesTableViewController: UITableViewController {
                     
                     if let variables = variablesData?.data {
                         self.variables = variables
-                        for (index, variable) in variables.enumerated() {
+                        for variable in variables {
                             if variable.isSubcategory == true {
                                 
                                 var choices = [Choices]()
@@ -53,21 +60,25 @@ class VariablesTableViewController: UITableViewController {
                                 }
                                 self.keysForChoices.append(keys)
                                 self.choices.append(choices)
-                            } else if variable.isSubcategory == false {
-                                self.variables.remove(at: index)
+                                self.displayVariables.append(ResultVariable(name: variable.name, choices: choices))
+
                             }
 
                         }
+            
                         self.tableView.reloadData()
                     }
+                    
 
                 }
                 
+                
             }
             dataTask.resume()
-
         }
 
+        
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -80,18 +91,18 @@ class VariablesTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        if variables.count == 0 {
+        if displayVariables.count == 0 {
             return 1
         }
-        return variables.count
+        return displayVariables.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if variables.count == 0 {
+        if displayVariables.count == 0 {
             return 1
         }
-        return variables[section].values.values.count
+        return displayVariables[section].choices.count
     }
 
     
@@ -102,26 +113,29 @@ class VariablesTableViewController: UITableViewController {
         if indexPath.row == 0 {
             cell.accessoryType = .checkmark
         }
-        if variables.count == 0 {
+        if displayVariables.count == 0 {
             cell.textLabel?.text = "No options available! Press Go!"
             cell.accessoryType = .none
 
         } else {
-            cell.textLabel?.text = choices[indexPath.section][indexPath.row].label
+            cell.textLabel?.text = displayVariables[indexPath.section].choices[indexPath.row].label
 
         }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if variables.count == 0 {
+        
+        
+        if displayVariables.count == 0 {
             return "No options"
         }
-        return variables[section].name
+        
+        return displayVariables[section].name
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if variables.count != 0 {
+        if displayVariables.count != 0 {
             if let tappedCell = tableView.cellForRow(at: indexPath) {
                 let cells = tableView.visibleCells
                 for cell in cells {
@@ -134,8 +148,6 @@ class VariablesTableViewController: UITableViewController {
                 
             }
         }
-
-
     }
     
     

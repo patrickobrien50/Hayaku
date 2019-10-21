@@ -4,7 +4,9 @@
 //
 //  Created by Patrick O'Brien on 10/2/18.
 //  Copyright © 2018 Patrick O'Brien. All rights reserved.
-//
+// <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
+// <div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
 import UIKit
 import Siesta
@@ -15,6 +17,12 @@ import Kanna
 class GameViewController: UITableViewController, ResourceObserver {
     
     
+    let favoriteButton = UIButton(type: .system)
+    let unfavoriteButton = UIButton(type: .system)
+    
+
+
+    
     var streams = [Stream]()
     var seriesId: String?
     var gameName : String?
@@ -22,26 +30,17 @@ class GameViewController: UITableViewController, ResourceObserver {
     var game : Game?
     var seriesName : String?
     var categories = [Category]()
-    var favorites: [Game] {
-        
-        get {
-            if let favoriteStuff = UserDefaults.standard.data(forKey: "favorites") {
-                if let favoritesData = try? JSONDecoder().decode([Game].self, from: favoriteStuff) {
-                    let favoriteGames = favoritesData
-                    return favoriteGames
-                }
-            }
-            return []
-        }
-        set {
-            do {
-                let data = try JSONEncoder().encode(newValue)
-                UserDefaults.standard.set(data, forKey: "favorites")
-            } catch {
-                NSLog("Error saving favorites: \(error)")
-            }
+    var gamesResource: Resource? {
+        didSet{
+            oldValue?.removeObservers(ownedBy: self)
+            oldValue?.cancelLoadIfUnobserved(afterDelay: 0.1)
+            
+            
+            gamesResource?.addObserver(self)
+                            .loadIfNeeded()
         }
     }
+
 
     func animateGameViewStuff() {
         UIView.animate(withDuration: 1.0, animations: {
@@ -55,7 +54,25 @@ class GameViewController: UITableViewController, ResourceObserver {
     let testView = UIView()
 
     override func viewDidLoad() {
+        
+        
+        favoriteButton.setImage(UIImage(systemName: "suit.heart"), for: .normal)
+        favoriteButton.imageView?.contentMode = .scaleAspectFit
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favoriteButton)
+        
+        
+        unfavoriteButton.setImage(UIImage(systemName: "suit.heart.fill"), for: .normal)
+        unfavoriteButton.imageView?.contentMode = .scaleAspectFit
+        unfavoriteButton.addTarget(self, action: #selector(unfavoriteButtonTapped), for: .touchUpInside)
+        
+        
+        
+        
+        
+        
         super.viewDidLoad()
+        navigationController?.navigationBar.prefersLargeTitles = true
         streamsButton.isEnabled = false
         tableView.tableFooterView = UIView()
         
@@ -68,14 +85,11 @@ class GameViewController: UITableViewController, ResourceObserver {
 
         
         
-        let favorite = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(favoriteButtonTapped))
-        self.navigationItem.rightBarButtonItem = favorite
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
+
+
         
         
         seriesNameLabel.textColor = UIColor(red: 120/255, green: 0/255, blue: 237/255, alpha: 1.0)
-        
-
         
         
         
@@ -84,6 +98,7 @@ class GameViewController: UITableViewController, ResourceObserver {
             
             // If coming from SearchViewController or SeriesViewController.
             let gameUrl = "http://www.speedrun.com/api/v1/games/" + gameId! + "?embed=categories,variables,platforms"
+            print(gameUrl)
             guard let url = URL(string: gameUrl) else { return }
             
             
@@ -155,9 +170,9 @@ class GameViewController: UITableViewController, ResourceObserver {
                         }
                         self.platformsLabel.text = platformString
                     }
-                    for favGame in self.favorites {
+                    for favGame in FavoritesManager.shared.favorites {
                         if gamesData?.data.id == favGame.id {
-                            self.navigationItem.rightBarButtonItem?.isEnabled = false
+                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
                         }
                     }
                     self.animateGameViewStuff()
@@ -169,6 +184,18 @@ class GameViewController: UITableViewController, ResourceObserver {
             //If coming from the FavoritesCollectionViewController
             
             if let game = game {
+                
+                let urlString = self.game!.assets.coverSmall.uri
+                let stringArray = urlString.components(separatedBy: "/")
+                
+                Alamofire.request("https://www.speedrun.com/" + stringArray[4] + "/streams").responseString { response in
+                    print("\(response.result.isSuccess)")
+                    if let html = response.result.value {
+                        let parameterString = self.getParameters(html: html)
+                        self.getStreams(string: parameterString)
+                        
+                    }
+                }
                 
                 self.tableView.reloadData()
                 self.title = game.names.international
@@ -218,6 +245,7 @@ class GameViewController: UITableViewController, ResourceObserver {
         } else {
             
             //If coming from the PopularGamesCollectionViewController
+            
             let gameUrl = "http://www.speedrun.com/api/v1/games?name=" + gameName!.replacingOccurrences(of: " ", with: "%20") + "&embed=categories,variables,platforms&max=1"
             guard let url = URL(string: gameUrl) else { return }
             
@@ -229,6 +257,17 @@ class GameViewController: UITableViewController, ResourceObserver {
                 DispatchQueue.main.async {
                     if let game = gamesData?.data[0] {
                         self.game = game
+                        let urlString = self.game!.assets.coverSmall.uri
+                        let stringArray = urlString.components(separatedBy: "/")
+                        
+                        Alamofire.request("https://www.speedrun.com/" + stringArray[4] + "/streams").responseString { response in
+                            print("\(response.result.isSuccess)")
+                            if let html = response.result.value {
+                                let parameterString = self.getParameters(html: html)
+                                self.getStreams(string: parameterString)
+                                
+                            }
+                        }
                         for category in game.categories!.data {
                             for link in category.links {
                                 if link.rel == "leaderboard" {
@@ -280,7 +319,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                         }
                         self.platformsLabel.text = platformString
                     }
-                    for favGame in self.favorites {
+                    for favGame in FavoritesManager.shared.favorites {
                         if gamesData?.data[0].id == favGame.id {
                             print("Game Found")
                             self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -347,7 +386,6 @@ class GameViewController: UITableViewController, ResourceObserver {
                         self.streamsButton.isEnabled = true
                     }
                 }
-                
             }
         }
     }
@@ -395,13 +433,38 @@ class GameViewController: UITableViewController, ResourceObserver {
     }
     
 
+    override func viewWillAppear(_ animated: Bool) {
+        if game != nil {
+            for favorite in FavoritesManager.shared.favorites {
+                if game?.id == favorite.id {
+                    navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: unfavoriteButton)
+                } else {
+                    navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: favoriteButton)
+                }
+            }
+        }
+    }
     
     
     @objc func favoriteButtonTapped() {
-        favorites.append(game!)
+        FavoritesManager.shared.favorites.append(game!)
         print("Got here.")
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: unfavoriteButton)
+
+    }
     
+    
+    @objc func unfavoriteButtonTapped() {
+        print("Got There")
+        
+        for (index, favorite) in FavoritesManager.shared.favorites.enumerated() {
+            if game?.id == favorite.id {
+                FavoritesManager.shared.favorites.remove(at: index)
+            }
+        }
+        navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: favoriteButton)
+
+        
     }
     
     
@@ -460,10 +523,13 @@ class GameViewController: UITableViewController, ResourceObserver {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = categories[indexPath.row]
         let variablesViewController = storyboard?.instantiateViewController(withIdentifier: "VariablesView") as! VariablesTableViewController
+        var variableURL = ""
+        var displayVariables = [ResultVariable]()
+        
         
         for item in category.links {
             if item.rel == "variables" {
-                variablesViewController.variableURL = item.uri
+                variableURL = item.uri
                 print(item.uri)
             }
             if item.rel == "leaderboard" {
@@ -471,11 +537,67 @@ class GameViewController: UITableViewController, ResourceObserver {
             }
         }
         
-    
-        variablesViewController.gameId = game?.id
-        variablesViewController.categoryId = self.categories[indexPath.row].id
-        variablesViewController.game = self.game
-        self.navigationController?.pushViewController(variablesViewController, animated: true)
+            guard let url = URL(string: variableURL) else { return }
+            
+            let dataTask = URLSession.shared.dataTask(with: url) {
+                (data, response, error) in
+                guard let data = data else { return }
+                
+                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
+                DispatchQueue.main.async {
+                    
+                    if let variables = variablesData?.data {
+                        variablesViewController.variables = variables
+                        for variable in variables {
+                            if variable.isSubcategory == true {
+                                
+                                var choices = [Choices]()
+                                var keys = [String]()
+                                for key in variable.values.values.keys {
+                                    
+                                    keys.append("var-\(variable.id)=\(key)")
+                                    choices.append(variable.values.values[key]!)
+                                }
+                                variablesViewController.keysForChoices.append(keys)
+                                variablesViewController.choices.append(choices)
+                                displayVariables.append(ResultVariable(name: variable.name, choices: choices))
+                                
+                                
+                                
+                            }
+                            
+                        }
+                    }
+                    
+                    
+                    if displayVariables.count == 0 {
+        
+                        let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
+                        leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
+                        leaderboardController.game = self.game
+                        self.navigationController?.pushViewController(leaderboardController, animated: true)
+                        
+                    } else {
+                        variablesViewController.gameId = self.game?.id
+                        variablesViewController.categoryId = self.categories[indexPath.row].id
+                        variablesViewController.game = self.game
+                        variablesViewController.displayVariables = displayVariables
+                        self.navigationController?.pushViewController(variablesViewController, animated: true)
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                
+            }
+            dataTask.resume()
+            
+        
+
+
         
 
     }

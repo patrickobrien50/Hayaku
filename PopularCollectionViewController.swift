@@ -10,57 +10,96 @@ import UIKit
 import Kanna
 import Alamofire
 import Siesta
+import SafariServices
 
 
 private let reuseIdentifier = "Cell"
 
-class PopularCollectionViewController: UICollectionViewController, ResourceObserver {
+class PopularCollectionViewController: UICollectionViewController, ResourceObserver, SFSafariViewControllerDelegate {
     
-    var imageUrls = [String]()
-    var names = [String]()
-    var playerCount = [String]()
+    var streams = [PopularStream]()
+    var games = [PopularGame]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Popular"
-        self.view.layer.backgroundColor = UIColor.white.cgColor
-        collectionView!.transform = CGAffineTransform(translationX: 0, y: collectionView!.frame.height)
-        Alamofire.request("https://www.speedrun.com/ajax_gameslist.php").responseString { response in
+        navigationController?.navigationBar.prefersLargeTitles = true
+
+        
+        Alamofire.request("https://www.speedrun.com/ajax_streamslist.php").responseString { response in
             print("\(response.result.isSuccess)")
             if let html = response.result.value {
-                self.parseHTML(html: html)
+                self.parseStreamsHTML(html: html)
                 for cell in (self.collectionView?.visibleCells)! {
                     print(cell.bounds.height, cell.bounds.width)
                 }
                 self.collectionView?.reloadData()
-                self.animateTableViewCells()
-                print(self.imageUrls.count, self.names.count)
-
+                
+                
                 
             }
         }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
+        
+        
+        Alamofire.request("https://www.speedrun.com/ajax_gameslist.php").responseString { response in
+            print("\(response.result.isSuccess)")
+            if let html = response.result.value {
+                self.parseGamesHTML(html: html)
+                for cell in (self.collectionView?.visibleCells)! {
+                    print(cell.bounds.height, cell.bounds.width)
+                }
+                self.collectionView?.reloadData()
+                
+                
+                
+            }
+        }
+        
+        
+        
+        
         // Do any additional setup after loading the view.
     }
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-    func parseHTML(html: String) -> Void {
+    @IBAction func segmentedControl(_ sender: Any) {
+        collectionView?.reloadData()
+    }
+    
+    func parseGamesHTML(html: String) -> Void {
+        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
+            for gamesContainer in doc.css(".listcell") {
+                let players = gamesContainer.at_css("p")!.text
+                let gameName = gamesContainer.at_css("div")!.text
+                let img = gamesContainer.at_css("img")
+                let imageLink = "https://www.speedrun.com\(String(describing: img!["src"]!))"
+                print(imageLink)
+                games.append(PopularGame(name: String(describing: gameName!), playerCount: String(describing: players!), imageLink: String(describing: imageLink)))
+            }
+        }
+    }
+    
+    
+    func parseStreamsHTML(html: String) -> Void {
         if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
             
-            // #maincontainer .row #main .maincontent .panel #listingOptions
-            for item in doc.css(".listcell p") {
-                playerCount.append(String(describing: item.text!))
-            }
-            for item in doc.css(".listcell div") {
-                names.append(String(describing: item.text!))
-            }
-            for item in doc.css(".listcell a img") {
-                self.imageUrls.append("https://www.speedrun.com" + String(describing: item["src"]!))                
+            
+            for streamContainer in doc.css(".col-auto") {
+                var viewers: String?
+                var username: String?
+                
+                if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
+                    viewers = "\(splitViewersArray[0]) \(splitViewersArray[1])"
+                    username = "\(splitViewersArray[2])"
+                }
+                let weblink = streamContainer.at_css("a")
+                let imageLink = streamContainer.at_css(".stream-preview")
+                let title = streamContainer.at_css("a[title]")?.text
+                
+                
+                streams.append(PopularStream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: username!), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+                
+                
+                
             }
         }
     }
@@ -85,23 +124,63 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return names.count
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            return games.count
+        case 1:
+            return streams.count
+        default:
+            break
+        }
+        return 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PopularCell", for: indexPath) as! PopularGameCollectionViewCell
-        cell.popularGameImageView.kf.setImage(with: URL(string: imageUrls[indexPath.row]))
-        cell.popularGameLabel.text = names[indexPath.row]
-        cell.playerCountLabel.text = playerCount[indexPath.row]
-        cell.layer.cornerRadius = 10.0
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            cell.popularGameLabel.text = games[indexPath.row].name
+            cell.popularGameImageView.kf.setImage(with: URL(string: games[indexPath.row].imageLink))
+            cell.playerCountLabel.text = games[indexPath.row].playerCount
+        case 1:
+            cell.popularGameLabel.text = streams[indexPath.row].title
+            cell.popularGameImageView.kf.setImage(with: URL(string: streams[indexPath.row].imageLink))
+            cell.playerCountLabel.text = "\(streams[indexPath.row].viewers) watching \(streams[indexPath.row].username)"
+        default:
+            break
+        }
         return cell
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
-        gameViewController?.gameName = names[indexPath.row]
-        gameViewController?.navigationItem.rightBarButtonItem?.isEnabled = false
-        self.navigationController?.pushViewController(gameViewController!, animated: true)
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
+            gameViewController?.gameName = games[indexPath.row].name
+            gameViewController?.navigationItem.rightBarButtonItem?.isEnabled = false
+            self.navigationController?.pushViewController(gameViewController!, animated: true)
+        case 1:
+            guard let url = URL(string: streams[indexPath.row].weblink) else { return }
+            presentSafariVC(url: url) 
+        default:
+            break
+        }
+
+    }
+    
+    func presentSafariVC(url: URL) {
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.delegate = self
+        present(safariVC, animated: true, completion: nil)
+        
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 
     // MARK: UICollectionViewDelegate
@@ -142,12 +221,9 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
     
     func animateTableViewCells() {
                 UIView.animate(
-                    withDuration: 1.0, delay: 0.0,
-                    usingSpringWithDamping: 1.0,
-                    initialSpringVelocity: 0.0,
-                    options: [.curveEaseIn],
+                    withDuration: 1.0,
                     animations: {
-                        self.collectionView!.transform = CGAffineTransform(translationX: 0, y: 0)
+                        self.collectionView!.alpha = 1
                 })
             }
     

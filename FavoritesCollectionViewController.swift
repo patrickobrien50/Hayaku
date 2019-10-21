@@ -9,8 +9,11 @@
 import UIKit
 import Kingfisher
 
-class FavoritesCollectionViewController: UICollectionViewController {
 
+class FavoritesManager {
+    
+    static let shared = FavoritesManager()
+    
     var favorites: [Game] {
         get {
             if let favoriteStuff = UserDefaults.standard.data(forKey: "favorites") {
@@ -31,6 +34,12 @@ class FavoritesCollectionViewController: UICollectionViewController {
         }
     }
     
+}
+
+
+class FavoritesCollectionViewController: UICollectionViewController {
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         collectionView!.reloadData()
     }
@@ -40,14 +49,14 @@ class FavoritesCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.navigationBar.prefersLargeTitles = true
+
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editingFavorites))
         longPressGesture.minimumPressDuration = 0.5
         self.view.addGestureRecognizer(longPressGesture)
         self.title = "Favorites"
         
         
-        print(favorites.count)
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -63,13 +72,18 @@ class FavoritesCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favorites.count
+        if FavoritesManager.shared.favorites.count == 0 {
+            self.collectionView?.setEmptyMessage("To add favorites, tap on the heart button when checking out a game!")
+        } else {
+            self.collectionView?.restore()
+        }
+        return FavoritesManager.shared.favorites.count
     }
 
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoritesCell", for: indexPath) as! FavoritesCollectionViewCell
-        let url = URL(string: favorites[indexPath.row].assets.coverMedium.uri)
+        let url = URL(string: FavoritesManager.shared.favorites[indexPath.row].assets.coverMedium.uri)
         cell.favoriteGameCellImageView.kf.setImage(with: url)
         cell.closeButton.layer.setValue(indexPath.row, forKey: "index")
         cell.closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
@@ -88,7 +102,7 @@ class FavoritesCollectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
-        gameViewController?.game = favorites[indexPath.row]
+        gameViewController?.game = FavoritesManager.shared.favorites[indexPath.row]
         gameViewController?.navigationItem.rightBarButtonItem?.isEnabled = false
         self.navigationController?.pushViewController(gameViewController!, animated: true)
         
@@ -98,13 +112,33 @@ class FavoritesCollectionViewController: UICollectionViewController {
         
         let index : Int = sender.layer.value(forKey: "index") as! Int
         print(index)
-        favorites.remove(at: index)
+        FavoritesManager.shared.favorites.remove(at: index)
         collectionView?.deleteItems(at: [IndexPath(row: index, section: 0)])
+    }
+    
+    @objc func doneButtonTapped(sender: UIBarButtonItem) {
+        isEditing = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.rightBarButtonItem = nil
+        if let cells = self.collectionView?.visibleCells {
+            for cell in cells {
+                if let cell = cell as? FavoritesCollectionViewCell {
+                    UIView.animate(withDuration: 0.20, animations: {
+                        cell.favoriteGameCellImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        cell.closeButton.alpha = 0
+                    })
+                }
+            }
+        }
     }
     
     @objc func editingFavorites(sender : UILongPressGestureRecognizer) {
         if sender.state == .began {
             self.isEditing = !isEditing
+            let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
+            self.navigationItem.rightBarButtonItem = done
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+
             if let cells = self.collectionView?.visibleCells {
                 switch isEditing {
                 case true:
@@ -140,5 +174,25 @@ class FavoritesCollectionViewController: UICollectionViewController {
 
     
     
+}
+
+
+extension UICollectionView {
+    
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center;
+        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
+        messageLabel.sizeToFit()
+        
+        self.backgroundView = messageLabel;
+    }
+    
+    func restore() {
+        self.backgroundView = nil
+    }
 }
 

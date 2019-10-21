@@ -13,15 +13,20 @@ class LeaderboardsTableViewController: UITableViewController {
     
     var runs = [RunPosition]()
     var players = [Player]()
+    var groupRun = false
     var game: Game?
     var leaderboardUrlString: String?
     var loaded = false
     var runInformation = ""
+    var groupStringArray = [String]()
+
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = 75
+        tableView.rowHeight = UITableViewAutomaticDimension
+        navigationItem.title = "Leaderboards"
+        navigationController?.navigationBar.prefersLargeTitles = false
         
         
         guard let url = URL(string: leaderboardUrlString!) else { return }
@@ -37,9 +42,15 @@ class LeaderboardsTableViewController: UITableViewController {
                 if let leaderboards = leaderboardsData?.data {
                     self.players = leaderboards.players!.data
                     self.runs = leaderboards.runs
+                    if self.runs[0].run.players.count > 1 {
+                        self.getGroups(runs: leaderboards.runs, players: leaderboards.players!.data)
+                        self.groupRun = true
+
+                    }
+                    
+                    
                     
                 }
-                
                 self.tableView.reloadData()
             }
         }
@@ -57,6 +68,47 @@ class LeaderboardsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    /*
+     
+     1: Loop through the players.
+     2: Use the run.players.count
+     3: Keep track of the
+     
+     
+     
+     */
+    func getGroups(runs: [RunPosition], players: [Player]) {
+        
+        for run in runs {
+            var string = ""
+            
+            for runner in run.run.players {
+                for player in players {
+                    print(runner)
+                    print(player)
+        
+                    if runner.id == nil {
+                        string.append("\(runner.name!)  \n")
+                        break
+       
+                    } else if runner.id == player.id {
+                        if player.rel == "guest" {
+                            string.append("\(String(describing: player.name!)) \n")
+                            
+                        } else {
+                            string.append("\(String(describing: player.names!.international)) \n")
+                        }
+                        break
+
+                    }
+                }
+            }
+            
+            groupStringArray.append(string)
+        }
+       
+ 
+    }
 
     // MARK: - Table view data source
 
@@ -67,22 +119,35 @@ class LeaderboardsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return players.count
+        return runs.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! RunTableViewCell
+        
         
 
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! RunTableViewCell
         
-        cell.runnerNameLabel.text = players[indexPath.row].names?.international
+        
+        
         cell.runTimeLabel.text = runs[indexPath.row].run.times.primary.replacingOccurrences(of: "PT", with: "").lowercased()
         cell.runPositionLabel.text = String(describing: runs[indexPath.row].place)
         
-        if players[indexPath.row].rel == "guest" {
-            cell.runnerNameLabel.text = players[indexPath.row].name
+
+        if !groupRun {
+            if players[indexPath.row].rel == "guest" {
+                cell.runnerNameLabel.text = players[indexPath.row].name
+            } else {
+                cell.runnerNameLabel.text = players[indexPath.row].names?.international
+
+            }
+        } else {
+            print(groupStringArray)
+            print(runs.count)
+            cell.runnerNameLabel.text = groupStringArray[indexPath.row]
         }
+
         
         if indexPath.row == 0 {
             cell.trophyImageView.kf.setImage(with: URL(string: game!.assets.trophy1st.uri))
@@ -126,11 +191,15 @@ class LeaderboardsTableViewController: UITableViewController {
  
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(runs[indexPath.row])
+        
+       
         let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
-        runViewController.runInformation = runInformation
         runViewController.run = runs[indexPath.row].run
         runViewController.player = players[indexPath.row]
+        if groupRun {
+            runViewController.groupPlayers = true
+            runViewController.groupString = groupStringArray[indexPath.row]
+        }
         runViewController.backgroundURL = game?.assets.background?.uri
         
         self.navigationController?.pushViewController(runViewController, animated: true)

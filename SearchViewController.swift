@@ -134,10 +134,29 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             dataRequest.resume()
+            
+            var urlComponents3 = URLComponents(string: "http://www.speedrun.com/api/v1/users")
+            urlComponents3?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "3")]
+            
+            guard let url3 = urlComponents3?.url else { return }
+            let dataRequest3 = URLSession.shared.dataTask(with: url3) {
+                (data, response, error) in
+                guard let data = data else { return }
+                let userData = try! JSONDecoder().decode(ResultsUsersResponse.self, from: data)
+                
+                DispatchQueue.main.async {
+                    if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
+                        resultsController.users = userData.data
+                        
+                    }
+                }
+            }
+            dataRequest3.resume()
         } else {
             if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
                 resultsController.games = []
                 resultsController.series = []
+                resultsController.users = []
             }
         }
         
@@ -218,7 +237,13 @@ class SearchResultsTableViewController: UITableViewController {
     
     var series = [ResultsSeries]() {
         didSet {
-            update(for: .series, isEmpty: series.isEmpty, prepend: true)
+            update(for: .series, isEmpty: series.isEmpty, prepend: false)
+        }
+    }
+    
+    var users = [ResultsUsers]() {
+        didSet {
+            update(for: .users, isEmpty: users.isEmpty, prepend: true)
         }
     }
     
@@ -226,12 +251,13 @@ class SearchResultsTableViewController: UITableViewController {
     
     enum Section {
         
+        case users
         case series
         case games
         
         var header : String {
             switch self {
-                
+                case .users : return "Users"
                 case .series: return "Series"
                 case .games : return "Games"
                 
@@ -240,7 +266,7 @@ class SearchResultsTableViewController: UITableViewController {
         
         var cellIdentifier : String {
             switch self {
-                
+                case .users : return "UsersTableViewCell"
                 case .series: return "SeriesTableViewCell"
                 case .games: return "GamesTableViewCell"
                 
@@ -260,6 +286,7 @@ class SearchResultsTableViewController: UITableViewController {
                 tableView.reloadSections(IndexSet(integer: index), with: .fade)
             }
         } else {
+        
             if !isEmpty {
                 if prepend {
                     sections.insert(section, at: 0)
@@ -282,8 +309,11 @@ class SearchResultsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch sections[section] {
+            case .users : return users.count
             case .series: return series.count
             case .games: return games.count
+    
+            
             
         }
     }
@@ -292,6 +322,7 @@ class SearchResultsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     
         switch sections[section] {
+            case .users: return sections[section].header
             case .series: return sections[section].header
             case .games: return sections[section].header
         }
@@ -304,6 +335,10 @@ class SearchResultsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultsCell", for: indexPath) as! GameResultTableViewCell
         let imageSize = cell.imageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
         switch sections[indexPath.section] {
+        case .users:
+            cell.resultsLabel?.text = users[indexPath.row].names.international
+            cell.resultsImageView.image = UIImage(systemName: "person")
+            
         case .series:
             cell.resultsLabel.text = series[indexPath.row].names.international
             let url = URL(string: (series[indexPath.row].assets.cover(for: imageSize)?.uri)!)
@@ -313,6 +348,9 @@ class SearchResultsTableViewController: UITableViewController {
             cell.resultsLabel?.text = games[indexPath.row].names.international
             let url = URL(string: (games[indexPath.row].assets.cover(for: imageSize)?.uri)!)
             cell.resultsImageView.kf.setImage(with: url)
+
+            
+            
 
         }
         
@@ -357,8 +395,10 @@ class SearchResultsTableViewController: UITableViewController {
             let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
             gameViewController?.gameId = games[indexPath.row].id
             self.navController?.pushViewController(gameViewController!, animated: true)
-
-            
+        case .users :
+            let userViewController = storyboard?.instantiateViewController(withIdentifier : "UserView") as? UserViewController
+            userViewController?.user = users[indexPath.row]
+            self.navController?.pushViewController(userViewController!, animated: true)
         }
     }
     

@@ -13,6 +13,7 @@ import Kingfisher
 class FavoritesManager {
     
     static let shared = FavoritesManager()
+
     
     var favorites: [Game] {
         get {
@@ -38,7 +39,8 @@ class FavoritesManager {
 
 
 class FavoritesCollectionViewController: UICollectionViewController {
-    
+    let unfavoriteButton = UIButton(type: .system)
+
     
     override func viewWillAppear(_ animated: Bool) {
         collectionView!.reloadData()
@@ -87,6 +89,7 @@ class FavoritesCollectionViewController: UICollectionViewController {
         cell.favoriteGameCellImageView.kf.setImage(with: url)
         cell.closeButton.layer.setValue(indexPath.row, forKey: "index")
         cell.closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        cell.favoritesNameLabel.text = FavoritesManager.shared.favorites[indexPath.row].names.international
         
         //Configure cell shadow
         
@@ -101,9 +104,12 @@ class FavoritesCollectionViewController: UICollectionViewController {
     
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        unfavoriteButton.setImage(UIImage(systemName: "suit.heart.fill"), for: .normal)
+        unfavoriteButton.imageView?.contentMode = .scaleAspectFit
+
         let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
         gameViewController?.game = FavoritesManager.shared.favorites[indexPath.row]
-        gameViewController?.navigationItem.rightBarButtonItem?.isEnabled = false
+        gameViewController?.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
         self.navigationController?.pushViewController(gameViewController!, animated: true)
         
     }

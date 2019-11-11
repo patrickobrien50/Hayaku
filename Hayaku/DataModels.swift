@@ -9,7 +9,10 @@
 import Foundation
 import UIKit
 
-
+struct ResultsUsersResponse : Codable {
+    var data : [ResultsUsers]
+    var pagination : PaginationData?
+}
 
 struct ResultsSeriesResponse: Codable {
     var data : [ResultsSeries]
@@ -26,7 +29,16 @@ struct ResultsGameResponse : Codable {
     var pagination: PaginationData?
 }
 
-
+struct ResultsUsers : Codable {
+    var id : String
+    var names : Names
+    var weblink : String
+    var twitch : SocialMediaLink?
+    var youtube : SocialMediaLink?
+    var speedrunslive: SocialMediaLink?
+    var twitter : SocialMediaLink?
+    
+}
 struct ResultsSeries : Codable {
     var id : String
     var names : Names
@@ -60,9 +72,53 @@ struct GamesResponse : Codable {
 
 }
 
+struct UserResponse : Codable {
+    var data: [User]
+    var pagination : PaginationData?
+    
+}
+
+
 struct PopularGamesResponse : Codable {
     var data : [Game]
     var pagination: PaginationData?
+}
+
+struct User : Codable {
+    var place : Int
+    var game: PersonalBestGameResponse?
+    var category : PersonalBestCategoryResponse?
+    var run : Run
+    
+}
+
+struct PersonalBestGameResponse : Codable {
+    var data : PersonalBestGame
+    var pagination : PaginationData?
+}
+
+struct PersonalBestGame : Codable {
+
+    
+    var id: String
+    var names: Names
+    var categories: CategoriesResponse?
+    var releaseDate: String
+    var assets: GameAssets
+    var platforms: [String]
+    var variables: VariablesResponse?
+    var links : [Links]
+    
+    enum CodingKeys : String, CodingKey {
+        case id = "id"
+        case names = "names"
+        case categories = "categories"
+        case releaseDate = "release-date"
+        case assets = "assets"
+        case platforms = "platforms"
+        case variables = "variables"
+        case links = "links"
+    }
 }
 
 struct Game : Codable {
@@ -140,6 +196,11 @@ struct Names : Codable {
 
 struct CategoriesResponse : Codable {
     var data: [Category]
+
+}
+
+struct PersonalBestCategoryResponse : Codable {
+    var data: Category
 }
 
 struct Category : Codable {
@@ -148,6 +209,7 @@ struct Category : Codable {
     var rules: String?
     var variables: VariablesResponse?
     var links : [Links]
+    
 }
 
 struct PlatformsResponse : Codable {
@@ -229,12 +291,15 @@ struct RunPosition : Codable {
 }
 
 struct Run : Codable {
+    var id : String
     var players: [Player]
     var comment: String?
     var times: Times
     var weblink: String
     var videos: Video?
     var values: [String : String]?
+    var status : Status
+    var variablesText: String?
 }
 
 
@@ -253,10 +318,20 @@ struct MediaPlatform : Codable {
 }
 
 struct TwitchResponse : Codable {
+    var data: [Twitch]
+}
+
+struct Twitch : Codable {
     var title : String?
     var description : String?
-    var game : String?
-    var preview : String
+    var thumbnailUrl : String
+    
+    enum CodingKeys : String, CodingKey{
+        case title = "title"
+        case description = "description"
+        case thumbnailUrl = "thumbnail_url"
+    }
+    
 }
 
 struct PopularStream {
@@ -272,4 +347,19 @@ struct PopularGame {
     var playerCount: String
     var imageLink: String
     
+}
+struct Status : Codable {
+    var status : String
+    var examiner : String
+    var verifiedDate : String?
+    
+    enum CodingKeys : String, CodingKey {
+        case status = "status"
+        case examiner = "examiner"
+        case verifiedDate = "verify-date"
+    }
+}
+
+struct SocialMediaLink : Codable {
+    var uri: String
 }

@@ -4,9 +4,7 @@
 //
 //  Created by Patrick O'Brien on 10/2/18.
 //  Copyright © 2018 Patrick O'Brien. All rights reserved.
-// <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
-// <div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/"                 title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"                 title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
 import UIKit
 import Siesta
@@ -147,7 +145,8 @@ class GameViewController: UITableViewController, ResourceObserver {
                         print("\(response.result.isSuccess)")
                         if let html = response.result.value {
                             let parameterString = self.getParameters(html: html)
-                            self.getStreams(string: parameterString)
+//                            self.getStreams(string: parameterString)
+                            self.getStreams(string: stringArray[4])
                             
                         }
                     }
@@ -171,7 +170,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                         self.platformsLabel.text = platformString
                     }
                     for favGame in FavoritesManager.shared.favorites {
-                        if gamesData?.data.id == favGame.id {
+                        if gamesData!.data.id == favGame.id {
                             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
                         }
                     }
@@ -179,11 +178,36 @@ class GameViewController: UITableViewController, ResourceObserver {
                 }
             }
             dataRequest.resume()
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         } else if game != nil && gameName == nil {
+ 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             //If coming from the FavoritesCollectionViewController
             
             if let game = game {
+                
                 
                 let urlString = self.game!.assets.coverSmall.uri
                 let stringArray = urlString.components(separatedBy: "/")
@@ -192,14 +216,16 @@ class GameViewController: UITableViewController, ResourceObserver {
                     print("\(response.result.isSuccess)")
                     if let html = response.result.value {
                         let parameterString = self.getParameters(html: html)
-                        self.getStreams(string: parameterString)
+//                        self.getStreams(string: parameterString)
+                        self.getStreams(string: stringArray[4])
+
                         
                     }
                 }
                 
                 self.tableView.reloadData()
                 self.title = game.names.international
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
+
                 if let url = URL(string: (game.assets.coverMedium.uri)) {
                     self.gameImageView.kf.setImage(with: url)
                     self.gameImageView.layer.shadowColor = UIColor.black.cgColor
@@ -239,9 +265,17 @@ class GameViewController: UITableViewController, ResourceObserver {
                     
                 }
                 
+                for favGame in FavoritesManager.shared.favorites {
+                    if game.id == favGame.id {
+                        print("Game Found")
+                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
+                    }
+                }
+                
             }
             self.animateGameViewStuff()
 
+            
         } else {
             
             //If coming from the PopularGamesCollectionViewController
@@ -322,7 +356,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                     for favGame in FavoritesManager.shared.favorites {
                         if gamesData?.data[0].id == favGame.id {
                             print("Game Found")
-                            self.navigationItem.rightBarButtonItem?.isEnabled = false
+                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
                         }
                     }
                     self.animateGameViewStuff()
@@ -343,18 +377,23 @@ class GameViewController: UITableViewController, ResourceObserver {
             
             for streamContainer in doc.css(".listcell") {
                 var viewers: String?
-                var username: String?
                 
                 if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
                     viewers = "\(splitViewersArray[0]) \(splitViewersArray[1])"
-                    username = "\(splitViewersArray[2])"
                 }
+                let username = streamContainer.at_css(".username-light")
                 let weblink = streamContainer.at_css("a")
-                let imageLink = streamContainer.at_css(".preview")
+                let imageLink = streamContainer.at_css(".stream-preview")
                 let title = streamContainer.at_css("a[title]")?.text
                 
+                if weblink!["href"]! == "https://www.twitch.tv/speedrun" {
+                    streams.append(Stream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: "Speedrun"), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+                } else {
+                    streams.append(Stream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: username!.content!), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+
+                }
                 
-                streams.append(Stream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: username!), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+                
                 
                 
                 
@@ -364,19 +403,15 @@ class GameViewController: UITableViewController, ResourceObserver {
     
     func getStreams(string: String) {
         if string != "" {
-            let headers : HTTPHeaders = ["Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"]
-            let separators = CharacterSet(charactersIn: "=&")
-            var stringArray = string.components(separatedBy: separators)
-            var index = 0
+            let headers : HTTPHeaders = ["Content-Type": "text/html; charset=UTF-8"]
             var parameters = [String: Any]()
             
-            while index < stringArray.count {
-                parameters[stringArray[index]] = stringArray[index + 1]
-                index += 2
-            }
-            parameters["pagelink"] = "/streams"
-            parameters["pagesize"] = 1
-            Alamofire.request("https://www.speedrun.com/ajax_streamslist.php", method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseString { response in
+            parameters["game"] = string
+            parameters["haspb"] = "no"
+            parameters["following"] = "no"
+            parameters["start"] = 0
+
+            Alamofire.request("https://www.speedrun.com/ajax_streams.php", parameters: parameters, encoding: URLEncoding.default, headers: headers).responseString { response in
                 
                 print("\(response.result.isSuccess)")
                 
@@ -432,18 +467,6 @@ class GameViewController: UITableViewController, ResourceObserver {
         self.navigationController?.pushViewController(streamsCollectionView!, animated: true)
     }
     
-
-    override func viewWillAppear(_ animated: Bool) {
-        if game != nil {
-            for favorite in FavoritesManager.shared.favorites {
-                if game?.id == favorite.id {
-                    navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: unfavoriteButton)
-                } else {
-                    navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: favoriteButton)
-                }
-            }
-        }
-    }
     
     
     @objc func favoriteButtonTapped() {

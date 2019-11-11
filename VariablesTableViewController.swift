@@ -29,10 +29,10 @@ class VariablesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Options"
+        self.title = "Subcategories"
         navigationController?.navigationBar.prefersLargeTitles = false
         
-        let leaderboardsBarButton = UIBarButtonItem(title: "Go!", style: .done, target: self, action: #selector(leaderboardsButtonPressed))
+        let leaderboardsBarButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(leaderboardsButtonPressed))
         self.navigationItem.rightBarButtonItem = leaderboardsBarButton
         self.navigationItem.rightBarButtonItem?.isEnabled = true
         

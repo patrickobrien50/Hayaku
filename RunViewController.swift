@@ -10,6 +10,7 @@ import UIKit
 import Kanna
 import Kingfisher
 import SafariServices
+import Alamofire
 
 class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     
@@ -65,29 +66,24 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
 
         if let videoLink = run?.videos?.links![0].uri {
             if videoLink.contains("twitch") {
+                print(videoLink)
                 var twitchLinkArray = videoLink.split(separator: "/")
-                print(twitchLinkArray[twitchLinkArray.count - 1])
+                let headers : HTTPHeaders = ["Client-ID" : twitchClientId]
                 
-                let imageRequestLink = "https://api.twitch.tv/kraken/videos/\(twitchLinkArray[twitchLinkArray.count - 1])?client_id=\(twitchClientId)"
-                
-                guard let url = URL(string: imageRequestLink) else { return }
-                
-                let dataTask = URLSession.shared.dataTask(with: url) {
-                    (data, respone, error) in
+                Alamofire.request("https://api.twitch.tv/helix/videos?id=\(twitchLinkArray[twitchLinkArray.count - 1])", headers: headers).response {
+                    response in
+                    print(response)
+                    guard let data = response.data else { return }
+                    let twitchData = try! JSONDecoder().decode(TwitchResponse.self, from: data)
+                    print(twitchData)
                     
-                    guard let data = data else { return }
-                    let twitchData = try? JSONDecoder().decode(TwitchResponse.self, from: data)
+                    self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.data[0].thumbnailUrl.replacingOccurrences(of: "%{width}", with: "175").replacingOccurrences(of: "%{height}", with: "100")))
+    
                     
-                    DispatchQueue.main.async {
-                        if let urlString = twitchData?.preview {
-                            self.thumbnailImageView.kf.setImage(with: URL(string: urlString))
 
-                        }
-                    }
-                    
                 }
-                dataTask.resume()
-                print(imageRequestLink)
+
+                
             } else if videoLink.contains("youtu.be") || videoLink.contains("youtube") {
                 var youtubeLinkArray = [Substring]()
                 var youtubeVideoId = ""
@@ -99,7 +95,8 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                     youtubeVideoId = String(describing: youtubeVideoId.prefix(11))
 
                 } else if youtubeLinkArray[1].contains("youtube") {
-                    youtubeLinkArray = youtubeLinkArray[2].split(separator: "=")
+                    print(youtubeLinkArray)
+                    youtubeLinkArray = youtubeLinkArray[3].split(separator: "=")
                     youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
                     print(youtubeVideoId)
 

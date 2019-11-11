@@ -13,10 +13,7 @@ class StreamsCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-//        streamerLabel.alpha = 0
-//        streamImageView.alpha = 0
-//        viewerCountLabel.alpha = 0
-//        streamTitleLabel.alpha = 0
+
     }
     @IBOutlet weak var streamImageView: UIImageView!
     @IBOutlet weak var streamTitleLabel: UILabel!

@@ -15,6 +15,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var favoriteGameCellImageView: UIImageView!
     @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var favoritesNameLabel: UILabel!
     
     
     

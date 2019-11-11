@@ -19,6 +19,7 @@ class LeaderboardsTableViewController: UITableViewController {
     var loaded = false
     var runInformation = ""
     var groupStringArray = [String]()
+    
 
     
 
@@ -42,16 +43,22 @@ class LeaderboardsTableViewController: UITableViewController {
                 if let leaderboards = leaderboardsData?.data {
                     self.players = leaderboards.players!.data
                     self.runs = leaderboards.runs
-                    if self.runs[0].run.players.count > 1 {
-                        self.getGroups(runs: leaderboards.runs, players: leaderboards.players!.data)
-                        self.groupRun = true
+                    if self.runs.count > 0 {
+                        if self.runs[0].run.players.count > 1 {
+                            self.getGroups(runs: leaderboards.runs, players: leaderboards.players!.data)
+                            self.groupRun = true
+                            
 
+                        }
                     }
+
                     
                     
                     
                 }
                 self.tableView.reloadData()
+                
+                
             }
         }
         dataTask.resume()
@@ -106,6 +113,7 @@ class LeaderboardsTableViewController: UITableViewController {
             
             groupStringArray.append(string)
         }
+        print(runs)
        
  
     }
@@ -119,6 +127,7 @@ class LeaderboardsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        
         return runs.count
     }
 
@@ -128,7 +137,6 @@ class LeaderboardsTableViewController: UITableViewController {
         
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! RunTableViewCell
-        
         
         
         cell.runTimeLabel.text = runs[indexPath.row].run.times.primary.replacingOccurrences(of: "PT", with: "").lowercased()
@@ -147,6 +155,8 @@ class LeaderboardsTableViewController: UITableViewController {
             print(runs.count)
             cell.runnerNameLabel.text = groupStringArray[indexPath.row]
         }
+        
+        
 
         
         if indexPath.row == 0 {
@@ -192,17 +202,19 @@ class LeaderboardsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-       
-        let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
-        runViewController.run = runs[indexPath.row].run
-        runViewController.player = players[indexPath.row]
-        if groupRun {
-            runViewController.groupPlayers = true
-            runViewController.groupString = groupStringArray[indexPath.row]
+        if runs.count > 0 {
+            let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
+            runViewController.run = runs[indexPath.row].run
+            runViewController.player = players[indexPath.row]
+            if groupRun {
+                runViewController.groupPlayers = true
+                runViewController.groupString = groupStringArray[indexPath.row]
+            }
+            runViewController.backgroundURL = game?.assets.background?.uri
+            
+            self.navigationController?.pushViewController(runViewController, animated: true)
         }
-        runViewController.backgroundURL = game?.assets.background?.uri
-        
-        self.navigationController?.pushViewController(runViewController, animated: true)
+
     }
 
 }

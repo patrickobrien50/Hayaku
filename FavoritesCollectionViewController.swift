@@ -92,11 +92,14 @@ class FavoritesCollectionViewController: UICollectionViewController {
         cell.favoritesNameLabel.text = FavoritesManager.shared.favorites[indexPath.row].names.international
         
         //Configure cell shadow
+
+        cell.layer.cornerRadius = 10
+        cell.layer.shadowOffset = CGSize(width: 2, height: 2)
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.masksToBounds = false
+        cell.layer.shadowOpacity = 0.25
+        cell.layer.shadowRadius = 10
         
-        
-        cell.favoriteGameCellImageView.layer.shadowColor = UIColor.black.cgColor
-        cell.favoriteGameCellImageView.layer.shadowOpacity = 1
-        cell.favoriteGameCellImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
      
         return cell
         
@@ -162,6 +165,7 @@ class FavoritesCollectionViewController: UICollectionViewController {
                             UIView.animate(withDuration: 0.20, animations: {
                                 cell.favoriteGameCellImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                                 cell.closeButton.alpha = 0
+                                self.navigationItem.rightBarButtonItem = nil
                             })
                         }
 
@@ -169,7 +173,7 @@ class FavoritesCollectionViewController: UICollectionViewController {
                     }
                 }
             }
-
+            
         }
         
         

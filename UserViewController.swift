@@ -86,20 +86,13 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
                             }
                             newRuns[runIndex].run.variablesText = variableText
                             self.gamesAndRuns[gamesIndex].runs[runIndex].run.variablesText = variableText
-                            print(self.gamesAndRuns[gamesIndex].runs[runIndex].run.variablesText)
                         }
                     }
                     self.personalBestsTableView.reloadData()
-
                 }
-
             }
             variablesDataRequest.resume()
-
-
         }
-        
-        
     }
     
     func getPersonalBests(userId : String) {
@@ -212,6 +205,8 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if gamesAndRuns[indexPath.section].runs.count > 0 {
             let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
             runViewController.run = gamesAndRuns[indexPath.section].runs[indexPath.row].run
+            runViewController.subcategories = gamesAndRuns[indexPath.section].runs[indexPath.row].run.variablesText
+            runViewController.category = gamesAndRuns[indexPath.section].runs[indexPath.row].category?.data.name
             
             self.navigationController?.pushViewController(runViewController, animated: true)
         }

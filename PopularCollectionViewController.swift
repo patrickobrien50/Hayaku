@@ -151,6 +151,12 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
         default:
             break
         }
+        cell.layer.cornerRadius = 10
+        cell.layer.shadowOffset = CGSize(width: 2, height: 2)
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.masksToBounds = false
+        cell.layer.shadowOpacity = 0.25
+        cell.layer.shadowRadius = 10
         return cell
 
     }

@@ -20,45 +20,51 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     var players : [Player]?
     var player : Player?
     var run : Run?
-    var groupPlayers = false
-    var groupString: String?
     var backgroundURL : String?
+    var category : String?
+    var subcategories : String?
+    
 
 
     @IBOutlet weak var runnerNameLabel: UILabel!
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var thumbnailImageView: UIImageView!
-    
+    @IBOutlet weak var subcategoriesLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var placeLabel: UILabel!
     
     override func viewDidLoad() {
         
         
         navigationController?.navigationBar.prefersLargeTitles = false
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         super.viewDidLoad()
         
-        if groupPlayers {
-            runnerNameLabel.text = groupString!
-            runnerNameLabel.numberOfLines = 0
-            runnerNameLabel.sizeToFit()
-            
+
+        if player?.rel == "guest" {
+            runnerNameLabel.text = player?.name
         } else {
-            if player?.rel == "guest" {
-                runnerNameLabel.text = player?.name
-            } else {
-                runnerNameLabel.text = player?.names?.international
-            }
+            runnerNameLabel.text = player?.names?.international
         }
+        
 //        if let url = URL(string: backgroundURL ?? "") {
 //            guard let data = try? Data(contentsOf: url) else { return }
 //            view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
 //        }
         
         thumbnailImageView.image = UIImage(named: "Close Button")
-        thumbnailImageView.isUserInteractionEnabled = true
-        thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
+        let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .default)
+        let playButton = UIButton(frame: CGRect(x: thumbnailImageView.frame.midX, y: thumbnailImageView.frame.minY, width: 20, height: 20))
+        playButton.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
+        playButton.imageView?.contentMode = .scaleAspectFill
+        playButton.addTarget(self, action: #selector(imageViewTapped), for: .touchUpInside)
+        thumbnailImageView.addSubview(playButton)
+        if let subcategoriesText = subcategories {
+            subcategoriesLabel.text = subcategoriesText
+        }
+        if let categoryText = category {
+            categoryLabel.text = categoryText
+        }
+
         timeLabel.text = String(describing: run!.times.primary).replacingOccurrences(of: "PT", with: "").lowercased()
         
         
@@ -67,7 +73,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         if let videoLink = run?.videos?.links![0].uri {
             if videoLink.contains("twitch") {
                 print(videoLink)
-                var twitchLinkArray = videoLink.split(separator: "/")
+                let twitchLinkArray = videoLink.split(separator: "/")
                 let headers : HTTPHeaders = ["Client-ID" : twitchClientId]
                 
                 Alamofire.request("https://api.twitch.tv/helix/videos?id=\(twitchLinkArray[twitchLinkArray.count - 1])", headers: headers).response {
@@ -96,7 +102,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
 
                 } else if youtubeLinkArray[1].contains("youtube") {
                     print(youtubeLinkArray)
-                    youtubeLinkArray = youtubeLinkArray[3].split(separator: "=")
+                    youtubeLinkArray = youtubeLinkArray[2].split(separator: "=")
                     youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
                     print(youtubeVideoId)
 
@@ -108,7 +114,6 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 thumbnailImageView.kf.setImage(with: URL(string: youtubeImageLink))
             } else if videoLink.contains("puu.sh") {
                 thumbnailImageView.image = UIImage(named: "Close Button")
-                commentLabel.text = "Video Not Available"
             }
         }
 

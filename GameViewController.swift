@@ -53,7 +53,7 @@ class GameViewController: UITableViewController, ResourceObserver {
 
     override func viewDidLoad() {
         
-        
+        tableView.sectionHeaderHeight = 50
         favoriteButton.setImage(UIImage(systemName: "suit.heart"), for: .normal)
         favoriteButton.imageView?.contentMode = .scaleAspectFit
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
@@ -134,8 +134,8 @@ class GameViewController: UITableViewController, ResourceObserver {
                     if let url = URL(string: (gamesData?.data.assets.coverMedium.uri)!) {
                         self.gameImageView.kf.setImage(with: url)
                         self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-                        self.gameImageView.layer.shadowOpacity = 1
-                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
+                        self.gameImageView.layer.shadowOpacity = 0.25
+                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
                     }
                     
                     let urlString = self.game!.assets.coverSmall.uri
@@ -229,8 +229,8 @@ class GameViewController: UITableViewController, ResourceObserver {
                 if let url = URL(string: (game.assets.coverMedium.uri)) {
                     self.gameImageView.kf.setImage(with: url)
                     self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-                    self.gameImageView.layer.shadowOpacity = 1
-                    self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
+                    self.gameImageView.layer.shadowOpacity = 0.25
+                    self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
                     
                 }
                 
@@ -323,8 +323,8 @@ class GameViewController: UITableViewController, ResourceObserver {
                     if let url = URL(string: (gamesData?.data[0].assets.coverMedium.uri)!) {
                         self.gameImageView.kf.setImage(with: url)
                         self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-                        self.gameImageView.layer.shadowOpacity = 1
-                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: -3)
+                        self.gameImageView.layer.shadowOpacity = 0.25
+                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
                     }
                     
                     
@@ -458,6 +458,7 @@ class GameViewController: UITableViewController, ResourceObserver {
     }
     
     @IBOutlet weak var gameImageView: UIImageView!
+    @IBOutlet weak var gameInfoView: UIView!
     @IBOutlet weak var streamsButton: UIButton!
     @IBAction func streamsButtonPressed(_ sender: Any) {
         let streamsCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "StreamsView") as? StreamsCollectionViewController
@@ -535,12 +536,24 @@ class GameViewController: UITableViewController, ResourceObserver {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoriesCell", for: indexPath)
         cell.textLabel?.text = categories[indexPath.row].name
+        cell.textLabel?.font = UIFont(name: "Futura", size: 18)
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Category"
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
+        let label = UILabel(frame: CGRect(x: 10, y: gameInfoView.frame.size.height, width: tableView.frame.size.width - 20, height: 50))
+        label.text = " Categories"
+        label.font = UIFont(name: "Futura", size: 20)
+        label.backgroundColor = UIColor(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 1.0)
+        view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
+        self.view.addSubview(label)
+        return view
+        
     }
+    
+
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

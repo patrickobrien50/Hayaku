@@ -206,10 +206,6 @@ class LeaderboardsTableViewController: UITableViewController {
             let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
             runViewController.run = runs[indexPath.row].run
             runViewController.player = players[indexPath.row]
-            if groupRun {
-                runViewController.groupPlayers = true
-                runViewController.groupString = groupStringArray[indexPath.row]
-            }
             runViewController.backgroundURL = game?.assets.background?.uri
             
             self.navigationController?.pushViewController(runViewController, animated: true)

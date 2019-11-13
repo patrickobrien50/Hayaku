@@ -30,12 +30,13 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var gamesAndRuns = [GamesAndRuns]()
     
     @IBOutlet weak var personalBestsTableView: UITableView!
+    let ordinalNumberFormatter = NumberFormatter()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.largeTitleDisplayMode = .always
-        
+        ordinalNumberFormatter.numberStyle = .ordinal
         personalBestsTableView.rowHeight = 135
         personalBestsTableView.dataSource = self
         personalBestsTableView.delegate = self
@@ -98,7 +99,6 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func getPersonalBests(userId : String) {
         guard let personalBestsUrl = URL(string: "http://speedrun.com/api/v1/users/\(userId)/personal-bests?embed=game,category")
             else { return }
-        print(personalBestsUrl)
         let dataRequest = URLSession.shared.dataTask(with: personalBestsUrl) {
             (data, response, error) in
             guard let data = data else { return }
@@ -161,6 +161,8 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
+ 
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let dateFormatter = DateFormatter()
@@ -169,14 +171,12 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         dateFormatter.dateFormat = "MM-dd-YYYY"
         
         
-        let ordinalNumberFormatter = NumberFormatter()
-        ordinalNumberFormatter.numberStyle = .ordinal
+
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "PersonalBestCell", for: indexPath) as! PersonalBestTableViewCell
         if let url = URL(string:gamesAndRuns[indexPath.section].game.assets.coverLarge.uri) {
             cell.gameImageView.kf.setImage(with: url)
         }
-        print(gamesAndRuns[indexPath.section].runs[indexPath.row].run)
         
         cell.subcategoriesLabel.text = gamesAndRuns[indexPath.section].runs[indexPath.row].run.variablesText
         cell.categoryNameLabel.text = "Date: " + dateFormatter.string(from: postDate!)
@@ -205,8 +205,13 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if gamesAndRuns[indexPath.section].runs.count > 0 {
             let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
             runViewController.run = gamesAndRuns[indexPath.section].runs[indexPath.row].run
+            runViewController.user = user
             runViewController.subcategories = gamesAndRuns[indexPath.section].runs[indexPath.row].run.variablesText
             runViewController.category = gamesAndRuns[indexPath.section].runs[indexPath.row].category?.data.name
+            runViewController.player = gamesAndRuns[indexPath.section].runs[indexPath.row].run.players[0]
+            runViewController.gameName = gamesAndRuns[indexPath.section].game.names.international
+            runViewController.place = ordinalNumberFormatter.string(from: NSNumber(value: gamesAndRuns[indexPath.section].runs[indexPath.row].place))
+            
             
             self.navigationController?.pushViewController(runViewController, animated: true)
         }

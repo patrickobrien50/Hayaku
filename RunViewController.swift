@@ -23,50 +23,55 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     var backgroundURL : String?
     var category : String?
     var subcategories : String?
+    var gameName : String?
+    var user : ResultsUsers?
+    var place : String?
     
 
 
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var runnerNameLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var subcategoriesLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var placeLabel: UILabel!
+    @IBOutlet weak var gameNameLabel: UILabel!
+    
     
     override func viewDidLoad() {
         
         
         navigationController?.navigationBar.prefersLargeTitles = false
         super.viewDidLoad()
-        
-
+        gameNameLabel.text = gameName
         if player?.rel == "guest" {
             runnerNameLabel.text = player?.name
         } else {
             runnerNameLabel.text = player?.names?.international
         }
-        
+        if user != nil {
+            runnerNameLabel.text = user?.names.international
+        }
 //        if let url = URL(string: backgroundURL ?? "") {
 //            guard let data = try? Data(contentsOf: url) else { return }
 //            view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
 //        }
         
         thumbnailImageView.image = UIImage(named: "Close Button")
-        let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .default)
-        let playButton = UIButton(frame: CGRect(x: thumbnailImageView.frame.midX, y: thumbnailImageView.frame.minY, width: 20, height: 20))
+        let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .medium)
         playButton.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
         playButton.imageView?.contentMode = .scaleAspectFill
         playButton.addTarget(self, action: #selector(imageViewTapped), for: .touchUpInside)
-        thumbnailImageView.addSubview(playButton)
         if let subcategoriesText = subcategories {
             subcategoriesLabel.text = subcategoriesText
         }
         if let categoryText = category {
             categoryLabel.text = categoryText
         }
-
         timeLabel.text = String(describing: run!.times.primary).replacingOccurrences(of: "PT", with: "").lowercased()
-        
+    
+        placeLabel.text = "\(place!) place"
         
         
 

@@ -19,19 +19,21 @@ class LeaderboardsTableViewController: UITableViewController {
     var loaded = false
     var runInformation = ""
     var groupStringArray = [String]()
+    let ordinalNumberFormatter = NumberFormatter()
     
 
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ordinalNumberFormatter.numberStyle = .ordinal
         tableView.rowHeight = UITableViewAutomaticDimension
         navigationItem.title = "Leaderboards"
         navigationController?.navigationBar.prefersLargeTitles = false
         
         
-        guard let url = URL(string: leaderboardUrlString!) else { return }
-        
+        guard let url = URL(string: leaderboardUrlString!.replacingOccurrences(of: "http", with: "https")) else { return }
+        print(url)
         let dataTask = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             
@@ -140,7 +142,7 @@ class LeaderboardsTableViewController: UITableViewController {
         
         
         cell.runTimeLabel.text = runs[indexPath.row].run.times.primary.replacingOccurrences(of: "PT", with: "").lowercased()
-        cell.runPositionLabel.text = String(describing: runs[indexPath.row].place)
+        cell.runPositionLabel.text = ordinalNumberFormatter.string(from: NSNumber(value: runs[indexPath.row].place))
         
 
         if !groupRun {
@@ -207,6 +209,8 @@ class LeaderboardsTableViewController: UITableViewController {
             runViewController.run = runs[indexPath.row].run
             runViewController.player = players[indexPath.row]
             runViewController.backgroundURL = game?.assets.background?.uri
+            runViewController.place = ordinalNumberFormatter.string(from: NSNumber(value: runs[indexPath.row].place))
+            
             
             self.navigationController?.pushViewController(runViewController, animated: true)
         }

@@ -59,12 +59,14 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
 //        }
         
         thumbnailImageView.image = UIImage(named: "Close Button")
-        let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .medium)
+        let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .small)
         playButton.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
         playButton.imageView?.contentMode = .scaleAspectFill
         playButton.addTarget(self, action: #selector(imageViewTapped), for: .touchUpInside)
         if let subcategoriesText = subcategories {
             subcategoriesLabel.text = subcategoriesText
+        } else {
+            subcategoriesLabel.text = ""
         }
         if let categoryText = category {
             categoryLabel.text = categoryText
@@ -85,10 +87,11 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                     response in
                     print(response)
                     guard let data = response.data else { return }
-                    let twitchData = try! JSONDecoder().decode(TwitchResponse.self, from: data)
-                    print(twitchData)
+                    if let twitchData = try? JSONDecoder().decode(TwitchResponse.self, from: data) {
+                        self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.data[0].thumbnailUrl.replacingOccurrences(of: "%{width}", with: "175").replacingOccurrences(of: "%{height}", with: "100")))
+                    }
                     
-                    self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.data[0].thumbnailUrl.replacingOccurrences(of: "%{width}", with: "175").replacingOccurrences(of: "%{height}", with: "100")))
+                    
     
                     
 
@@ -107,9 +110,16 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
 
                 } else if youtubeLinkArray[1].contains("youtube") {
                     print(youtubeLinkArray)
-                    youtubeLinkArray = youtubeLinkArray[2].split(separator: "=")
-                    youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
-                    print(youtubeVideoId)
+                    if youtubeLinkArray.count == 4 {
+                        youtubeLinkArray = youtubeLinkArray[3].split(separator: "=")
+                        youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
+                        print(youtubeVideoId)
+
+                    }
+                    if youtubeLinkArray.count == 3 {
+                        youtubeLinkArray = youtubeLinkArray[2].split(separator: "=")
+                        youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
+                    }
 
                 }
                 

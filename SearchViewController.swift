@@ -320,6 +320,7 @@ class SearchResultsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        tableView.sectionHeaderHeight = 50
     
         switch sections[section] {
             case .users: return sections[section].header
@@ -348,6 +349,7 @@ class SearchResultsTableViewController: UITableViewController {
             cell.resultsLabel?.text = games[indexPath.row].names.international
             let url = URL(string: (games[indexPath.row].assets.cover(for: imageSize)?.uri)!)
             cell.resultsImageView.kf.setImage(with: url)
+
 
             
             

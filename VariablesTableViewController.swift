@@ -29,6 +29,8 @@ class VariablesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.sectionHeaderHeight = 50
+
         self.title = "Subcategories"
         navigationController?.navigationBar.prefersLargeTitles = false
         

@@ -298,7 +298,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                             print("\(response.result.isSuccess)")
                             if let html = response.result.value {
                                 let parameterString = self.getParameters(html: html)
-                                self.getStreams(string: parameterString)
+                                self.getStreams(string: stringArray[4])
                                 
                             }
                         }
@@ -540,20 +540,23 @@ class GameViewController: UITableViewController, ResourceObserver {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
-        let label = UILabel(frame: CGRect(x: 10, y: gameInfoView.frame.size.height, width: tableView.frame.size.width - 20, height: 50))
-        label.text = " Categories"
-        label.font = UIFont(name: "Futura", size: 20)
-        label.backgroundColor = UIColor(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 1.0)
-        view.layer.cornerRadius = 10
-        view.layer.masksToBounds = true
-        self.view.addSubview(label)
-        return view
-        
-    }
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
+//        let label = UILabel(frame: CGRect(x: 10, y: gameInfoView.frame.size.height, width: tableView.frame.size.width - 20, height: 50))
+//        label.text = " Categories"
+//        label.font = UIFont(name: "Futura", size: 20)
+//        label.backgroundColor = UIColor(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 1.0)
+//        view.layer.cornerRadius = 10
+//        view.layer.masksToBounds = true
+//        self.view.addSubview(label)
+//        return view
+//
+//    }
     
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Categories"
+    }
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

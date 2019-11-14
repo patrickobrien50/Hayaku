@@ -78,16 +78,22 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         
 
         if let videoLink = run?.videos?.links![0].uri {
+            print(videoLink)
             if videoLink.contains("twitch") {
-                print(videoLink)
                 let twitchLinkArray = videoLink.split(separator: "/")
+                print(twitchLinkArray)
                 let headers : HTTPHeaders = ["Client-ID" : twitchClientId]
-                
-                Alamofire.request("https://api.twitch.tv/helix/videos?id=\(twitchLinkArray[twitchLinkArray.count - 1])", headers: headers).response {
+                var videoId: String?
+                videoId = String(describing: twitchLinkArray[twitchLinkArray.count - 1])
+                if twitchLinkArray[twitchLinkArray.count - 1].contains("?") {
+                    let idArray = twitchLinkArray[twitchLinkArray.count - 1].split(separator: "?")
+                    videoId = String(describing: idArray[0])
+                }
+                Alamofire.request("https://api.twitch.tv/helix/videos?id=\(videoId ?? "")", headers: headers).response {
                     response in
-                    print(response)
                     guard let data = response.data else { return }
                     if let twitchData = try? JSONDecoder().decode(TwitchResponse.self, from: data) {
+                        print(twitchData)
                         self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.data[0].thumbnailUrl.replacingOccurrences(of: "%{width}", with: "175").replacingOccurrences(of: "%{height}", with: "100")))
                     }
                     
@@ -103,7 +109,6 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 var youtubeVideoId = ""
                 
                 youtubeLinkArray = videoLink.split(separator: "/")
-                
                 if youtubeLinkArray[1].contains("youtu.be") {
                     youtubeVideoId = String(describing: youtubeLinkArray[2])
                     youtubeVideoId = String(describing: youtubeVideoId.prefix(11))

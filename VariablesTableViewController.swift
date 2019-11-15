@@ -123,6 +123,7 @@ class VariablesTableViewController: UITableViewController {
             cell.textLabel?.text = displayVariables[indexPath.section].choices[indexPath.row].label
 
         }
+        cell.textLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
         return cell
     }
     

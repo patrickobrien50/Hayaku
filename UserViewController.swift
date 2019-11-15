@@ -167,7 +167,7 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        let postDate = dateFormatter.date(from: gamesAndRuns[indexPath.section].runs[indexPath.row].run.status.verifiedDate!)
+        let postDate = dateFormatter.date(from: gamesAndRuns[indexPath.section].runs[indexPath.row].run.status!.verifiedDate!)
         dateFormatter.dateFormat = "MM-dd-YYYY"
         
         

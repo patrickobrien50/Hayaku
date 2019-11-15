@@ -36,11 +36,17 @@ class LeaderboardsTableViewController: UITableViewController {
         print(url)
         let dataTask = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
-            
+
             guard let data = data else { return }
             
-            let leaderboardsData = try? JSONDecoder().decode(LeaderboardsResponse.self, from: data)
+            var leaderboardsData : LeaderboardsResponse?
             
+            do {
+                leaderboardsData = try JSONDecoder().decode(LeaderboardsResponse.self, from: data)
+
+            } catch let error{
+                print(error)
+            }
             DispatchQueue.main.async {
                 if let leaderboards = leaderboardsData?.data {
                     self.players = leaderboards.players!.data

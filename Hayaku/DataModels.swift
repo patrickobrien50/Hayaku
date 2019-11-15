@@ -298,7 +298,7 @@ struct Run : Codable {
     var weblink: String
     var videos: Video?
     var values: [String : String]?
-    var status : Status
+    var status : Status?
     var variablesText: String?
 }
 
@@ -349,8 +349,8 @@ struct PopularGame {
     
 }
 struct Status : Codable {
-    var status : String
-    var examiner : String
+    var status : String?
+    var examiner : String?
     var verifiedDate : String?
     
     enum CodingKeys : String, CodingKey {

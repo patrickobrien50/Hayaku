@@ -14,7 +14,7 @@ import Kanna
 
 class GameViewController: UITableViewController, ResourceObserver {
     
-    
+//    let dataNetworkRequestManager = DataNetworkRequestManager()
     let favoriteButton = UIButton(type: .system)
     let unfavoriteButton = UIButton(type: .system)
     
@@ -536,7 +536,6 @@ class GameViewController: UITableViewController, ResourceObserver {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoriesCell", for: indexPath)
         cell.textLabel?.text = categories[indexPath.row].name
-        cell.textLabel?.font = UIFont(name: "Futura", size: 18)
         return cell
     }
     

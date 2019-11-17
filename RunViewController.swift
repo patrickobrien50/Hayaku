@@ -21,11 +21,12 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     var player : Player?
     var run : Run?
     var backgroundURL : String?
-    var category : String?
+    var category : Category?
     var subcategories : String?
     var gameName : String?
     var user : ResultsUsers?
     var place : String?
+    var groupString : String?
     
 
 
@@ -45,14 +46,22 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         navigationController?.navigationBar.prefersLargeTitles = false
         super.viewDidLoad()
         gameNameLabel.text = gameName
-        if player?.rel == "guest" {
-            runnerNameLabel.text = player?.name
+        
+        if let groupNames = groupString {
+            runnerNameLabel.text = groupNames
+            runnerNameLabel.lineBreakMode = .byWordWrapping
+            runnerNameLabel.numberOfLines = 0
         } else {
-            runnerNameLabel.text = player?.names?.international
+            if player?.rel == "guest" {
+                runnerNameLabel.text = player?.name
+            } else {
+                runnerNameLabel.text = player?.names?.international
+            }
+            if user != nil {
+                runnerNameLabel.text = user?.names.international
+            }
         }
-        if user != nil {
-            runnerNameLabel.text = user?.names.international
-        }
+
 //        if let url = URL(string: backgroundURL ?? "") {
 //            guard let data = try? Data(contentsOf: url) else { return }
 //            view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
@@ -68,8 +77,8 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         } else {
             subcategoriesLabel.text = ""
         }
-        if let categoryText = category {
-            categoryLabel.text = categoryText
+        if let categoryName = category?.name {
+            categoryLabel.text = categoryName
         }
         timeLabel.text = String(describing: run!.times.primary).replacingOccurrences(of: "PT", with: "").lowercased()
     

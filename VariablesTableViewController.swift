@@ -17,7 +17,7 @@ class VariablesTableViewController: UITableViewController {
     
     var leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/"
     var gameId: String?
-    var categoryId : String?
+    var category : Category?
     var variables = [Variable]()
     var variableURL: String?
     var keysForChoices = [[String]]()
@@ -157,7 +157,10 @@ class VariablesTableViewController: UITableViewController {
     @objc func leaderboardsButtonPressed() {
         let cells = tableView.visibleCells
         var runInformation = ""
-        leaderboardUrlString += "\(gameId!)/category/\(categoryId!)?"
+        if let categoryItem = category {
+            leaderboardUrlString += "\(gameId!)/category/\(categoryItem.id)?"
+
+        }
         
         for cell in cells {
             if cell.accessoryType == .checkmark {
@@ -173,6 +176,9 @@ class VariablesTableViewController: UITableViewController {
         let leaderboardsView = storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
         leaderboardsView.leaderboardUrlString = leaderboardUrlString
         leaderboardsView.runInformation = runInformation
+        if let categoryItem = category {
+            leaderboardsView.category = categoryItem
+        }
         print(leaderboardUrlString)
         leaderboardsView.game = self.game
         self.navigationController?.pushViewController(leaderboardsView, animated: true)

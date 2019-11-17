@@ -13,6 +13,7 @@ import Siesta
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating, UISearchControllerDelegate {
     
+    
     var searchController: UISearchController!
     
     var recentSearches: [String] {
@@ -42,7 +43,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         
     
-        
+
         
         previousSearchesTableView.tableFooterView = UIView()
         let searchResultsController = self.storyboard?.instantiateViewController(withIdentifier: "SearchResults") as? SearchResultsTableViewController
@@ -102,7 +103,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             urlComponents2?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "10")]
             
             guard let url2 = urlComponents2?.url else { return }
-            
+        
             let dataRequest2 = URLSession.shared.dataTask(with: url2) {
                 (data, response, error) in
                 guard let data = data else { return }
@@ -127,10 +128,11 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             urlComponents?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "10")]
             guard let url = urlComponents?.url else { return }
             print(url)
+            
             let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 guard let data = data else { return }
                 let gamesData = try! JSONDecoder().decode(ResultsGameResponse.self, from: data)
-                
+
                 DispatchQueue.main.async {
                     if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
                         resultsController.games = gamesData.data

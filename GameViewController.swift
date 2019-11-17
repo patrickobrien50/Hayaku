@@ -14,7 +14,6 @@ import Kanna
 
 class GameViewController: UITableViewController, ResourceObserver {
     
-//    let dataNetworkRequestManager = DataNetworkRequestManager()
     let favoriteButton = UIButton(type: .system)
     let unfavoriteButton = UIButton(type: .system)
     
@@ -609,15 +608,16 @@ class GameViewController: UITableViewController, ResourceObserver {
                     
                     
                     if displayVariables.count == 0 {
-        
+                        
                         let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
                         leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
                         leaderboardController.game = self.game
+                        leaderboardController.category = self.categories[indexPath.row]
                         self.navigationController?.pushViewController(leaderboardController, animated: true)
                         
                     } else {
+                        variablesViewController.category = self.categories[indexPath.row]
                         variablesViewController.gameId = self.game?.id
-                        variablesViewController.categoryId = self.categories[indexPath.row].id
                         variablesViewController.game = self.game
                         variablesViewController.displayVariables = displayVariables
                         self.navigationController?.pushViewController(variablesViewController, animated: true)

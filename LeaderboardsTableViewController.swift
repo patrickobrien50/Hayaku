@@ -6,6 +6,12 @@
 //  Copyright © 2019 Patrick O'Brien. All rights reserved.
 //
 
+/*
+ Fix issue with Group Runs not showing the correct information in the leaderboard screen.
+ When multiple players are part of the same run, implement logic that increases the size of the table view cell to accomodate the multiple lines on the label. Also increase the height of the label and number of lines based on how many players are in te run.
+ Make sure it adjusts for anywhere from 2-10 people.
+ */
+
 import UIKit
 import Kingfisher
 
@@ -20,13 +26,16 @@ class LeaderboardsTableViewController: UITableViewController {
     var runInformation = ""
     var groupStringArray = [String]()
     let ordinalNumberFormatter = NumberFormatter()
+    var category : Category?
     
 
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         ordinalNumberFormatter.numberStyle = .ordinal
+        tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
         navigationItem.title = "Leaderboards"
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -161,7 +170,10 @@ class LeaderboardsTableViewController: UITableViewController {
         } else {
             print(groupStringArray)
             print(runs.count)
+            cell.runnerNameLabel.lineBreakMode = .byWordWrapping
+            cell.runnerNameLabel.numberOfLines = 0
             cell.runnerNameLabel.text = groupStringArray[indexPath.row]
+            cell.runnerNameLabel.textAlignment = .right
         }
         
         
@@ -213,14 +225,23 @@ class LeaderboardsTableViewController: UITableViewController {
         if runs.count > 0 {
             let runViewController = storyboard?.instantiateViewController(withIdentifier: "RunView") as! RunViewController
             runViewController.run = runs[indexPath.row].run
+            runViewController.category = category!
             runViewController.player = players[indexPath.row]
             runViewController.backgroundURL = game?.assets.background?.uri
+            runViewController.gameName = game?.names.international
             runViewController.place = ordinalNumberFormatter.string(from: NSNumber(value: runs[indexPath.row].place))
+            if groupRun {
+                runViewController.groupString = groupStringArray[indexPath.row]
+            }
             
             
             self.navigationController?.pushViewController(runViewController, animated: true)
         }
 
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "  Rank                     Time                               Players"
     }
 
 }

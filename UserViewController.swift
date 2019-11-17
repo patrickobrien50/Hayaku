@@ -207,7 +207,7 @@ class UserViewController: UIViewController, UITableViewDataSource, UITableViewDe
             runViewController.run = gamesAndRuns[indexPath.section].runs[indexPath.row].run
             runViewController.user = user
             runViewController.subcategories = gamesAndRuns[indexPath.section].runs[indexPath.row].run.variablesText
-            runViewController.category = gamesAndRuns[indexPath.section].runs[indexPath.row].category?.data.name
+            runViewController.category = gamesAndRuns[indexPath.section].runs[indexPath.row].category?.data
             runViewController.player = gamesAndRuns[indexPath.section].runs[indexPath.row].run.players[0]
             runViewController.gameName = gamesAndRuns[indexPath.section].game.names.international
             runViewController.place = ordinalNumberFormatter.string(from: NSNumber(value: gamesAndRuns[indexPath.section].runs[indexPath.row].place))

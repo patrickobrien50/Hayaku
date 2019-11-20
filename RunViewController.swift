@@ -78,7 +78,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
             subcategoriesLabel.text = ""
         }
         if let categoryName = category?.name {
-            categoryLabel.text = categoryName
+            categoryLabel.text = categoryName 
         }
         timeLabel.text = String(describing: run!.times.primary).replacingOccurrences(of: "PT", with: "").lowercased()
     

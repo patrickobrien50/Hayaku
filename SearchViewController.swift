@@ -198,7 +198,11 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchController.searchBar.text = recentSearches[indexPath.row]
+        let tappedSearch = recentSearches[indexPath.row]
+        recentSearches.remove(at: indexPath.row)
+        recentSearches.insert(tappedSearch, at: 0)
         searchController.isActive = true
+        previousSearchesTableView.reloadData()
     }
     
 
@@ -310,6 +314,8 @@ class SearchResultsTableViewController: UITableViewController {
 
     
     override func numberOfSections(in tableView: UITableView) -> Int {
+        let view = UIView()
+        tableView.tableFooterView = view
         return sections.count
     }
     
@@ -337,7 +343,6 @@ class SearchResultsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        self.tableView.layer.backgroundColor = UIColor(red: 219/255.0, green: 219/255.0, blue: 219/255.0, alpha: 1.0).cgColor
         self.tableView.rowHeight = 95
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultsCell", for: indexPath) as! GameResultTableViewCell
         let imageSize = cell.imageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
@@ -361,7 +366,6 @@ class SearchResultsTableViewController: UITableViewController {
             
 
         }
-        cell.layer.backgroundColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1.0).cgColor
 
         return cell
     }

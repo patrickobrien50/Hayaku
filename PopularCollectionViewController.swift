@@ -85,18 +85,18 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
             
             for streamContainer in doc.css(".col-auto") {
                 var viewers: String?
-                var username: String?
                 
                 if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
-                    viewers = "\(splitViewersArray[0]) \(splitViewersArray[1])"
-                    username = "\(splitViewersArray[2])"
+                    print(splitViewersArray)
+                    viewers = "\(splitViewersArray[0]) watching "
                 }
+                let username = streamContainer.at_css(".username-light")
                 let weblink = streamContainer.at_css("a")
                 let imageLink = streamContainer.at_css(".stream-preview")
                 let title = streamContainer.at_css("a[title]")?.text
                 
                 
-                streams.append(PopularStream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: username!), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+                streams.append(PopularStream(title: String(describing: title!), viewers: String(describing: viewers!), username: username?.content ?? "Speedrun", imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
                 
                 
                 
@@ -147,7 +147,7 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
         case 1:
             cell.popularGameLabel.text = streams[indexPath.row].title
             cell.popularGameImageView.kf.setImage(with: URL(string: streams[indexPath.row].imageLink))
-            cell.playerCountLabel.text = "\(streams[indexPath.row].viewers) watching \(streams[indexPath.row].username)"
+            cell.playerCountLabel.text = "\(streams[indexPath.row].viewers) \(String(describing: streams[indexPath.row].username))"
         default:
             break
         }

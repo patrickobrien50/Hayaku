@@ -52,7 +52,7 @@ class LeaderboardsTableViewController: UITableViewController {
             
             do {
                 leaderboardsData = try JSONDecoder().decode(LeaderboardsResponse.self, from: data)
-
+                print(leaderboardsData)
             } catch let error{
                 print(error)
             }
@@ -144,9 +144,14 @@ class LeaderboardsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if runs.count == 0 {
+            return 1
+        }
         
         return runs.count
     }
+    
+
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -155,6 +160,14 @@ class LeaderboardsTableViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! RunTableViewCell
         
+        if runs.count == 0 {
+            cell.runTimeLabel.text = "No runs available"
+            cell.runnerNameLabel.text = ""
+            cell.runPositionLabel.text = ""
+            cell.accessoryType = .none
+            tableView.tableFooterView = UIView()
+            return cell
+        }
         
         cell.runTimeLabel.text = runs[indexPath.row].run.times.primary.replacingOccurrences(of: "PT", with: "").lowercased()
         cell.runPositionLabel.text = ordinalNumberFormatter.string(from: NSNumber(value: runs[indexPath.row].place))

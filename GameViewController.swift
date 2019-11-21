@@ -12,31 +12,21 @@ import Alamofire
 import Kanna
 
 
-class GameViewController: UITableViewController, ResourceObserver {
+class GameViewController: UITableViewController {
     
     let favoriteButton = UIButton(type: .system)
     let unfavoriteButton = UIButton(type: .system)
     
 
 
-    
+    var resultsGame : ResultsGame?
     var streams = [Stream]()
     var seriesId: String?
     var gameName : String?
-    var gameId : String?
     var game : Game?
     var seriesName : String?
     var categories = [Category]()
-    var gamesResource: Resource? {
-        didSet{
-            oldValue?.removeObservers(ownedBy: self)
-            oldValue?.cancelLoadIfUnobserved(afterDelay: 0.1)
-            
-            
-            gamesResource?.addObserver(self)
-                            .loadIfNeeded()
-        }
-    }
+
 
 
     func animateGameViewStuff() {
@@ -50,9 +40,8 @@ class GameViewController: UITableViewController, ResourceObserver {
     
     let testView = UIView()
 
-    override func viewDidLoad() {
-        
-        tableView.sectionHeaderHeight = 50
+    
+    func setBarButtonItems() {
         favoriteButton.setImage(UIImage(systemName: "suit.heart"), for: .normal)
         favoriteButton.imageView?.contentMode = .scaleAspectFit
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
@@ -62,6 +51,15 @@ class GameViewController: UITableViewController, ResourceObserver {
         unfavoriteButton.setImage(UIImage(systemName: "suit.heart.fill"), for: .normal)
         unfavoriteButton.imageView?.contentMode = .scaleAspectFit
         unfavoriteButton.addTarget(self, action: #selector(unfavoriteButtonTapped), for: .touchUpInside)
+    }
+    
+    override func viewDidLoad() {
+        
+        setBarButtonItems()
+        
+        
+        tableView.sectionHeaderHeight = 50
+
         
         
         
@@ -92,18 +90,49 @@ class GameViewController: UITableViewController, ResourceObserver {
         
         
         if game == nil && gameName == nil {
+            guard let resultGame = resultsGame else { return }
             
-            // If coming from SearchViewController or SeriesViewController.
-            let gameUrl = "http://www.speedrun.com/api/v1/games/" + gameId! + "?embed=categories,variables,platforms"
-            print(gameUrl)
+            APIManager.sharedInstance.getGameForGameView(gameId: resultGame.id, completion: {
+                result in
+                
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let data):
+                        do {
+                            let gameData = try JSONDecoder().decode(GamesResponse.self, from: data)
+                            let variablesData = try JSONDecoder().decode(VariablesResponse.self, from: data)
+                            self.setVariablesAndGame(game: gameData.data, variables: variablesData.data)
+                            
+                        } catch {
+                            
+                            
+                            
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            })
+            
+            
+            
+            // If coming from SearchViewController or SeriesViewController we need to make a search query for the game itself using the ID we have from the search view.
+            let gameUrl = "http://www.speedrun.com/api/v1/games/" + resultGame.id + "?embed=categories,variables,platforms"
             guard let url = URL(string: gameUrl) else { return }
             
             
             let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 guard let data = data else { return }
+                
+                // Decode games from the data. Categories are decoded automatically from the embedded json in the Games Response.
                 let gamesData = try? JSONDecoder().decode(GamesResponse.self, from: data)
+                
+                // Decode variables from the embedded json in the response data.
+                
+                
                 let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
                 DispatchQueue.main.async {
+                    
                     self.game = gamesData?.data
                     self.game?.variables = variablesData
                     self.title = gamesData?.data.names.international
@@ -118,17 +147,12 @@ class GameViewController: UITableViewController, ResourceObserver {
                             }
                         }
                         self.tableView.reloadData()
-//                        self.testView.frame.size.height = CGFloat(game.assets.coverLarge.height)
-//                        print(game.assets.coverLarge.height)
-//                        self.testView.frame.size.width = CGFloat(game.assets.coverLarge.width)
-//                        print(game.assets.coverLarge.width)
                         self.testView.layer.backgroundColor = UIColor.black.cgColor
                         self.testView.frame.origin = self.seriesNameLabel.frame.origin
                     }
 
 
-                    //                let imageSize = self.gameImageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
-                    // Do any additional setup after loading the view.
+
                     
                     if let url = URL(string: (gamesData?.data.assets.coverMedium.uri)!) {
                         self.gameImageView.kf.setImage(with: url)
@@ -140,15 +164,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                     let urlString = self.game!.assets.coverSmall.uri
                     let stringArray = urlString.components(separatedBy: "/")
                     print(stringArray[4])
-                    Alamofire.request("https://www.speedrun.com/" + stringArray[4] + "/streams").responseString { response in
-                        print("\(response.result.isSuccess)")
-                        if let html = response.result.value {
-                            let parameterString = self.getParameters(html: html)
-//                            self.getStreams(string: parameterString)
-                            self.getStreams(string: stringArray[4])
-                            
-                        }
-                    }
+                    self.getStreams(string: stringArray[4])
                     
                     
                     self.seriesNameLabel.text = self.seriesName
@@ -156,17 +172,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                         self.releasedLabel.text = releaseDateArray[0]
                     }
                     if let platforms = gamesData?.data.platforms?.data {
-                        var platformString = ""
-                        for (index, platform) in platforms.enumerated() {
-                            if index < platforms.count - 1 {
-                                platformString += platform.name + ", "
-                            } else {
-                                platformString += platform.name
-                            }
-                            
-                            
-                        }
-                        self.platformsLabel.text = platformString
+                        self.setPlatforms(platforms: platforms)
                     }
                     for favGame in FavoritesManager.shared.favorites {
                         if gamesData!.data.id == favGame.id {
@@ -210,17 +216,8 @@ class GameViewController: UITableViewController, ResourceObserver {
                 
                 let urlString = self.game!.assets.coverSmall.uri
                 let stringArray = urlString.components(separatedBy: "/")
-                
-                Alamofire.request("https://www.speedrun.com/" + stringArray[4] + "/streams").responseString { response in
-                    print("\(response.result.isSuccess)")
-                    if let html = response.result.value {
-                        let parameterString = self.getParameters(html: html)
-//                        self.getStreams(string: parameterString)
-                        self.getStreams(string: stringArray[4])
+                self.getStreams(string: stringArray[4])
 
-                        
-                    }
-                }
                 
                 self.tableView.reloadData()
                 self.title = game.names.international
@@ -244,25 +241,14 @@ class GameViewController: UITableViewController, ResourceObserver {
                         }
                     }
                 }
+                
+                
+                
                 if let platforms = game.platforms?.data {
-                    
-                    var platformString = ""
-                    
-                    for (index, platform) in platforms.enumerated() {
-                        if index < platforms.count - 1 {
-                            
-                            platformString += platform.name + ", "
-                            
-                        } else {
-                            
-                            platformString += platform.name
-                        }
-                        
-                    }
-                    
-                    self.platformsLabel.text = platformString
-                    
+                    setPlatforms(platforms: platforms)
                 }
+                
+                
                 
                 for favGame in FavoritesManager.shared.favorites {
                     if game.id == favGame.id {
@@ -292,15 +278,8 @@ class GameViewController: UITableViewController, ResourceObserver {
                         self.game = game
                         let urlString = self.game!.assets.coverSmall.uri
                         let stringArray = urlString.components(separatedBy: "/")
-                        
-                        Alamofire.request("https://www.speedrun.com/" + stringArray[4] + "/streams").responseString { response in
-                            print("\(response.result.isSuccess)")
-                            if let html = response.result.value {
-                                let parameterString = self.getParameters(html: html)
-                                self.getStreams(string: stringArray[4])
-                                
-                            }
-                        }
+                        self.getStreams(string: stringArray[4])
+
                         for category in game.categories!.data {
                             for link in category.links {
                                 if link.rel == "leaderboard" {
@@ -340,17 +319,7 @@ class GameViewController: UITableViewController, ResourceObserver {
                         }
                     }
                     if let platforms = gamesData?.data[0].platforms?.data {
-                        var platformString = ""
-                        for (index, platform) in platforms.enumerated() {
-                            if index < platforms.count - 1 {
-                                platformString += platform.name + ", "
-                            } else {
-                                platformString += platform.name
-                            }
-                            
-                            
-                        }
-                        self.platformsLabel.text = platformString
+                        self.setPlatforms(platforms: platforms)
                     }
                     for favGame in FavoritesManager.shared.favorites {
                         if gamesData?.data[0].id == favGame.id {
@@ -364,12 +333,45 @@ class GameViewController: UITableViewController, ResourceObserver {
             dataRequest.resume()
             
         }
-        
-        
-        
-       
     }
     
+    
+
+    
+    func setVariablesAndGame(game: Game, variables: [Variable]) {
+        
+        self.game = game
+        self.game?.variables?.data = variables
+        self.title = game.names.international
+        self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
+        for category in game.categories!.data {
+            for link in category.links {
+                if link.rel == "leaderboard" {
+                    self.categories.append(category)
+
+                }
+            }
+        }
+        self.tableView.reloadData()
+        
+            
+            
+    }
+    
+    func setPlatforms(platforms: [Platforms]) {
+        
+        var platformString = ""
+        for (index, platform) in platforms.enumerated() {
+            if index < platforms.count - 1 {
+                platformString += platform.name + ", "
+            } else {
+                platformString += platform.name
+            }
+            
+            
+        }
+        self.platformsLabel.text = platformString
+    }
     func parseHTML(html: String) -> Void {
         if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
             
@@ -391,14 +393,13 @@ class GameViewController: UITableViewController, ResourceObserver {
                     streams.append(Stream(title: String(describing: title!), viewers: String(describing: viewers!), username: String(describing: username!.content!), imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
 
                 }
-                
-                
-                
-                
-                
             }
         }
     }
+    
+    
+    
+    
     
     func getStreams(string: String) {
         if string != "" {
@@ -423,6 +424,10 @@ class GameViewController: UITableViewController, ResourceObserver {
             }
         }
     }
+    
+    
+    
+    
     
     func getParameters(html: String) -> String {
         var formString : String?
@@ -492,28 +497,7 @@ class GameViewController: UITableViewController, ResourceObserver {
     
     
     
-    
-    
-    
-    
-//    func setPlatformIcons(platforms: [String]) {
-//        let xbox = ["Xbox, Xbox 360, Xbox 360 Arcade,  Xbox One, Xbox One S, Xbox One X,"].split(separator: ", ")
-//        let playstation = ["Playstation, Playstation 2, Playstation 3, Playstation 4, Playstation Classic, Playstation Now, Playstation Portable, Playstation Vita, Playstation TV"].split(separator: ", ")
-//        let nintendo = ["Game Boy, Game Boy Advance, Game Boy Color, Game Boy Interface, GameCube, New Nintendo 3DS, Nintendo 3DS, Nintendo 64, Nintendo DS, Nintendo Entertainment System, SNES Classic Mini, Super Game Boy, Super Game Boy 2, Switch, Super Nintendo, Wii, Wii U, Wii U Virtual Console, Wii Virtual Console"].split(separator: ", ")
-//        let windows = ["PC"]
-//    }
-    
-    
-    
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     
     
@@ -538,18 +522,7 @@ class GameViewController: UITableViewController, ResourceObserver {
         return cell
     }
     
-//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
-//        let label = UILabel(frame: CGRect(x: 10, y: gameInfoView.frame.size.height, width: tableView.frame.size.width - 20, height: 50))
-//        label.text = " Categories"
-//        label.font = UIFont(name: "Futura", size: 20)
-//        label.backgroundColor = UIColor(red: 200/255.0, green: 200/255.0, blue: 200/255.0, alpha: 1.0)
-//        view.layer.cornerRadius = 10
-//        view.layer.masksToBounds = true
-//        self.view.addSubview(label)
-//        return view
-//
-//    }
+
     
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -589,13 +562,13 @@ class GameViewController: UITableViewController, ResourceObserver {
                             if variable.isSubcategory == true {
                                 
                                 var choices = [Choices]()
-                                var keys = [String]()
+//                                var keys = [String]()
                                 for key in variable.values.values.keys {
-                                    
-                                    keys.append("var-\(variable.id)=\(key)")
+
+//                                    keys.append("var-\(variable.id)=\(key)")
                                     choices.append(variable.values.values[key]!)
                                 }
-                                variablesViewController.keysForChoices.append(keys)
+//                                variablesViewController.keysForChoices.append(keys)
                                 variablesViewController.choices.append(choices)
                                 displayVariables.append(ResultVariable(name: variable.name, choices: choices))
                                 
@@ -640,9 +613,6 @@ class GameViewController: UITableViewController, ResourceObserver {
 
     }
     
-    func resourceChanged(_ resource: Resource, event: ResourceEvent) {
-        
-        
-    }
+
     
 }

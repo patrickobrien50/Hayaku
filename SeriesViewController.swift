@@ -85,7 +85,7 @@ class SeriesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
-        gameViewController?.gameId = games[indexPath.row].id
+        gameViewController?.resultsGame = games[indexPath.row]
         gameViewController?.seriesName = seriesName
         self.navigationController?.pushViewController(gameViewController!, animated: true)
     }

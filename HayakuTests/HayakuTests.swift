@@ -28,19 +28,10 @@ class HayakuTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
-    func test_title_is_Search() {
-        
-        
-
-    }
+  
     
-    func testFavorites() {
+    func testSearch(searchTerm: String) {
         
-        
-        
-
-        
-
     }
 
     

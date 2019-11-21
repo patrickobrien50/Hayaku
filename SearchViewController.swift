@@ -13,7 +13,6 @@ import Siesta
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating, UISearchControllerDelegate {
     
-    
     var searchController: UISearchController!
     
     var recentSearches: [String] {
@@ -50,7 +49,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchResultsController?.navController = self.navigationController
         searchController = UISearchController(searchResultsController: searchResultsController)
         self.title = "Search"
-        searchController.searchBar.placeholder = "Game or Series"
+        searchController.searchBar.placeholder = "Game or Series or Users"
 //        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: UIColor.white]
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
@@ -99,66 +98,55 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
         if searchText != "" {
-            var urlComponents2 = URLComponents(string: "http://www.speedrun.com/api/v1/series")
-            urlComponents2?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "10")]
-            
-            guard let url2 = urlComponents2?.url else { return }
-        
-            let dataRequest2 = URLSession.shared.dataTask(with: url2) {
-                (data, response, error) in
-                guard let data = data else { return }
-                var seriesData : ResultsSeriesResponse?
-                do {
-                     seriesData = try JSONDecoder().decode(ResultsSeriesResponse.self, from: data)
-                } catch let error {
-                    print(error)
-                }
-                
-                DispatchQueue.main.async {
-                    if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
-                        resultsController.series = seriesData?.data ?? []
-                    }
-                }
-                
-            }
-            dataRequest2.resume()
-            
-            
-            var urlComponents = URLComponents(string: "http://www.speedrun.com/api/v1/games")
-            urlComponents?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "10")]
-            guard let url = urlComponents?.url else { return }
-            print(url)
-            
-            let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                guard let data = data else { return }
-                let gamesData = try! JSONDecoder().decode(ResultsGameResponse.self, from: data)
 
+            APIManager.sharedInstance.getResultsSeries(searchText: searchText, completion: {
+                result in
                 DispatchQueue.main.async {
                     if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
-                        resultsController.games = gamesData.data
-                        print(gamesData.data)
+                        switch result {
+                        case.success(let series):
+                            resultsController.series = series
+                        case .failure(let error):
+                            print(error)
+                        }
                     }
                 }
-            }
-            dataRequest.resume()
+            })
+        
+
             
-            var urlComponents3 = URLComponents(string: "http://www.speedrun.com/api/v1/users")
-            urlComponents3?.queryItems = [URLQueryItem(name: "name", value: searchText), URLQueryItem(name: "max", value: "3")]
             
-            guard let url3 = urlComponents3?.url else { return }
-            let dataRequest3 = URLSession.shared.dataTask(with: url3) {
-                (data, response, error) in
-                guard let data = data else { return }
-                let userData = try! JSONDecoder().decode(ResultsUsersResponse.self, from: data)
-                
+
+            
+            APIManager.sharedInstance.getResultsGames(searchText: searchText, completion: {
+                result in
                 DispatchQueue.main.async {
                     if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
-                        resultsController.users = userData.data
-                        
+                        switch result {
+                        case.success(let games):
+                            resultsController.games = games
+                        case .failure(let error):
+                            print(error)
+                        }
                     }
                 }
-            }
-            dataRequest3.resume()
+            })
+            
+            APIManager.sharedInstance.getResultsUsers(searchText: searchText, completion: {
+                result in
+                DispatchQueue.main.async {
+                    if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
+                        switch result {
+                        case.success(let users):
+                            resultsController.users = users
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                }
+            })
+            
+            
         } else {
             if let resultsController = searchController.searchResultsController as? SearchResultsTableViewController {
                 resultsController.games = []
@@ -166,8 +154,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 resultsController.users = []
             }
         }
-        
-
     }
     
     
@@ -248,7 +234,7 @@ class SearchResultsTableViewController: UITableViewController {
     
     var series = [ResultsSeries]() {
         didSet {
-            update(for: .series, isEmpty: series.isEmpty, prepend: false)
+            update(for: .series, isEmpty: series.isEmpty, prepend: true)
         }
     }
     
@@ -405,7 +391,7 @@ class SearchResultsTableViewController: UITableViewController {
             
         case .games :
             let gameViewController = storyboard?.instantiateViewController(withIdentifier: "GameView") as? GameViewController
-            gameViewController?.gameId = games[indexPath.row].id
+            gameViewController?.resultsGame = games[indexPath.row]
             self.navController?.pushViewController(gameViewController!, animated: true)
         case .users :
             let userViewController = storyboard?.instantiateViewController(withIdentifier : "UserView") as? UserViewController

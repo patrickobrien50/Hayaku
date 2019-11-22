@@ -464,6 +464,50 @@ class GameViewController: UITableViewController {
     
     
     
+    
+    func setVariables(variables: [Variable], indexPath: IndexPath) {
+        let category = categories[indexPath.row]
+        let variablesViewController = storyboard?.instantiateViewController(withIdentifier: "VariablesView") as! VariablesTableViewController
+        var displayVariables = [ResultVariable]()
+        variablesViewController.variables = variables
+        for variable in variables {
+            if variable.isSubcategory == true {
+                
+                var choices = [Choices]()
+                var keys = [String]()
+                for key in variable.values.values.keys {
+
+                    keys.append("var-\(variable.id)=\(key)")
+                    choices.append(variable.values.values[key]!)
+                }
+                variablesViewController.keysForChoices.append(keys)
+                variablesViewController.choices.append(choices)
+                displayVariables.append(ResultVariable(name: variable.name, choices: choices))
+                
+                
+                
+            }
+            
+        }
+        
+        if displayVariables.count == 0 {
+            
+            let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
+            leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
+            leaderboardController.game = self.game
+            leaderboardController.category = self.categories[indexPath.row]
+            self.navigationController?.pushViewController(leaderboardController, animated: true)
+            
+        } else {
+            variablesViewController.category = self.categories[indexPath.row]
+            variablesViewController.gameId = self.game?.id
+            variablesViewController.game = self.game
+            variablesViewController.displayVariables = displayVariables
+            self.navigationController?.pushViewController(variablesViewController, animated: true)
+        }
+    }
+    
+    
 
 
     
@@ -499,14 +543,12 @@ class GameViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = categories[indexPath.row]
-        let variablesViewController = storyboard?.instantiateViewController(withIdentifier: "VariablesView") as! VariablesTableViewController
-        var variableURL = ""
-        var displayVariables = [ResultVariable]()
+        var variableUrl = ""
         
         
         for item in category.links {
             if item.rel == "variables" {
-                variableURL = item.uri
+                variableUrl = item.uri
                 print(item.uri)
             }
             if item.rel == "leaderboard" {
@@ -514,65 +556,84 @@ class GameViewController: UITableViewController {
             }
         }
         
-            guard let url = URL(string: variableURL) else { return }
+        
+        APIManager.sharedInstance.getVariables(variableUrlString: variableUrl, completion: {
+            result in
             
-            let dataTask = URLSession.shared.dataTask(with: url) {
-                (data, response, error) in
-                guard let data = data else { return }
-                
-                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
-                DispatchQueue.main.async {
-                    
-                    if let variables = variablesData?.data {
-                        variablesViewController.variables = variables
-                        for variable in variables {
-                            if variable.isSubcategory == true {
-                                
-                                var choices = [Choices]()
-                                var keys = [String]()
-                                for key in variable.values.values.keys {
-
-                                    keys.append("var-\(variable.id)=\(key)")
-                                    choices.append(variable.values.values[key]!)
-                                }
-                                variablesViewController.keysForChoices.append(keys)
-                                variablesViewController.choices.append(choices)
-                                displayVariables.append(ResultVariable(name: variable.name, choices: choices))
-                                
-                                
-                                
-                            }
-                            
-                        }
+            
+            switch result {
+            case .success(let data):
+                do {
+                    let variableData = try JSONDecoder().decode(VariablesResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        self.setVariables(variables: variableData.data, indexPath: indexPath)
                     }
-                    
-                    
-                    if displayVariables.count == 0 {
-                        
-                        let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
-                        leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
-                        leaderboardController.game = self.game
-                        leaderboardController.category = self.categories[indexPath.row]
-                        self.navigationController?.pushViewController(leaderboardController, animated: true)
-                        
-                    } else {
-                        variablesViewController.category = self.categories[indexPath.row]
-                        variablesViewController.gameId = self.game?.id
-                        variablesViewController.game = self.game
-                        variablesViewController.displayVariables = displayVariables
-                        self.navigationController?.pushViewController(variablesViewController, animated: true)
-                    }
-                    
-                    
-                    
-                    
-                    
+                } catch {
                     
                 }
-                
+            case .failure(let error):
+                print(error)
             }
-            dataTask.resume()
-            
+        })
+//            guard let url = URL(string: variableUrl) else { return }
+//
+//            let dataTask = URLSession.shared.dataTask(with: url) {
+//                (data, response, error) in
+//                guard let data = data else { return }
+//
+//                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
+//                DispatchQueue.main.async {
+//
+//                    if let variables = variablesData?.data {
+//                        variablesViewController.variables = variables
+//                        for variable in variables {
+//                            if variable.isSubcategory == true {
+//
+//                                var choices = [Choices]()
+//                                var keys = [String]()
+//                                for key in variable.values.values.keys {
+//
+//                                    keys.append("var-\(variable.id)=\(key)")
+//                                    choices.append(variable.values.values[key]!)
+//                                }
+//                                variablesViewController.keysForChoices.append(keys)
+//                                variablesViewController.choices.append(choices)
+//                                displayVariables.append(ResultVariable(name: variable.name, choices: choices))
+//
+//
+//
+//                            }
+//
+//                        }
+//                    }
+//
+//
+//                    if displayVariables.count == 0 {
+//
+//                        let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
+//                        leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
+//                        leaderboardController.game = self.game
+//                        leaderboardController.category = self.categories[indexPath.row]
+//                        self.navigationController?.pushViewController(leaderboardController, animated: true)
+//
+//                    } else {
+//                        variablesViewController.category = self.categories[indexPath.row]
+//                        variablesViewController.gameId = self.game?.id
+//                        variablesViewController.game = self.game
+//                        variablesViewController.displayVariables = displayVariables
+//                        self.navigationController?.pushViewController(variablesViewController, animated: true)
+//                    }
+//
+//
+//
+//
+//
+//
+//                }
+//
+//            }
+//            dataTask.resume()
+//
         
 
 

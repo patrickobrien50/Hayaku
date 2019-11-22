@@ -119,17 +119,16 @@ class APIManager  {
             var gameUrlComponents = URLComponents(string: baseUrl + "games")
             gameUrlComponents?.queryItems = [URLQueryItem(name: "name", value: gameInformation) , URLQueryItem(name: "embed", value: "categories,variables,platforms")]
             gameUrl = gameUrlComponents?.url
-            print(gameUrl)
         }
+        
+        
         if !popularController {
             var gameUrlComponents = URLComponents(string: baseUrl + "games/" + gameInformation)
             gameUrlComponents?.queryItems = [URLQueryItem(name: "embed", value: "categories,variables,platforms")]
             gameUrl = gameUrlComponents?.url
         }
         
-        
-
-        
+    
         
         let dataRequest = URLSession.shared.dataTask(with: gameUrl!) {
             (data, response, error) in
@@ -143,6 +142,27 @@ class APIManager  {
     }
     
     
+    
+    
+    
+    func getVariables(variableUrlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
+        
+        
+        
+        guard let variableURL = URL(string: variableUrlString) else { return }
+        let dataRequest = URLSession.shared.dataTask(with: variableURL) {
+            (data, response, error) in
+            
+            guard let data = data else { return }
+            
+            completion(.success(data))
+            
+        }
+        dataRequest.resume()
+    
+        
+        
+    }
     
     
     

@@ -24,26 +24,30 @@ class SeriesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         if let url = URL(string: (series?.assets.coverLarge.uri)!) {
             self.seriesImageView.kf.setImage(with: url)
-//            self.seriesImageView.frame = CGRect(x: 0, y: 0, width: (series?.assets.coverLarge.width)!
-//                , height:  (series?.assets.coverLarge.height)!)
-            
         }
             
-        guard let url = URL(string: "http://www.speedrun.com/api/v1/series/" + series!.id + "/games")    else { return }
-        print(url)
-        let dataRequest = URLSession.shared.dataTask(with: url) {
-            (data, response, error) in
-            guard let data = data else { return }
-            let gamesData = try? JSONDecoder().decode(ResultsGameResponse.self, from: data)
+        
+        APIManager.sharedInstance.getSeriesGames(seriesId: series!.id, completion: {
+            result in
             
-            DispatchQueue.main.async {
-                self.games = gamesData?.data ?? []
-                self.seriesTableView.reloadData()
-                self.animateTableViewCells()
+            switch result {
+            case .success(let data):
+                do {
+                    let resultsGames = try JSONDecoder().decode(ResultsGameResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        self.games = resultsGames.data
+                        self.seriesTableView.reloadData()
+                        self.animateTableViewCells()
+                    }
 
+                } catch {
+                    print(error)
+                }
+            case .failure(let error):
+                print("APIManager failed: \(error)")
             }
-        }
-        dataRequest.resume()
+        })
+
         // Do any additional setup after loading the view.
     }
     

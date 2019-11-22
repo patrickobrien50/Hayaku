@@ -50,7 +50,7 @@ class APIManager  {
     
     
     
-    //MARK: getSeries
+    //MARK: getResultsSeries
     
     
     func getResultsSeries(searchText: String, completion: @escaping(Result<[ResultsSeries], Error>) -> Void ) {
@@ -78,7 +78,7 @@ class APIManager  {
         dataRequest.resume()
     }
     
-    //MARK: getUsers
+    //MARK: getResultsUsers
     
     
     func getResultsUsers(searchText: String, completion: @escaping(Result<[ResultsUsers], Error>) -> Void) {
@@ -143,12 +143,10 @@ class APIManager  {
     
     
     
-    
+    //MARK: getVariables
     
     func getVariables(variableUrlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
-        
-        
-        
+    
         guard let variableURL = URL(string: variableUrlString) else { return }
         let dataRequest = URLSession.shared.dataTask(with: variableURL) {
             (data, response, error) in
@@ -159,12 +157,28 @@ class APIManager  {
             
         }
         dataRequest.resume()
-    
-        
-        
+
     }
     
     
     
+    
+    func getSeriesGames(seriesId: String, completion: @escaping(Result<Data, Error>) -> Void) {
+        guard let seriesUrl = URL(string: baseUrl + "series/\(seriesId)/games") else { return }
+        
+        let dataRequest = URLSession.shared.dataTask(with: seriesUrl) {
+            (data, response, error) in
+            
+            guard let data = data else { return }
+            
+            completion(.success(data))
+        }
+        dataRequest.resume()
+        
+        
+        
+        
+        
+    }
     //This is the bottom of the class.
 }

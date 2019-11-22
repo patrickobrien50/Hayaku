@@ -28,7 +28,9 @@ class GameViewController: UITableViewController {
     var categories = [Category]()
 
 
-
+    //MARK: animateGameViewStuff
+    
+    
     func animateGameViewStuff() {
         UIView.animate(withDuration: 1.0, animations: {
             self.gameImageView.alpha = 1
@@ -40,6 +42,10 @@ class GameViewController: UITableViewController {
     
     let testView = UIView()
 
+    
+    
+    //MARK: setBarButtonItems
+    
     
     func setBarButtonItems() {
         favoriteButton.setImage(UIImage(systemName: "suit.heart"), for: .normal)
@@ -169,15 +175,15 @@ class GameViewController: UITableViewController {
                      }
                 
             })
-        
-            
-//
+    
         }
     }
     
     
 
     // MARK: setGameInformation
+    
+    
     func setGameInformation(game: Game) {
         
         self.game = game
@@ -241,7 +247,7 @@ class GameViewController: UITableViewController {
     
     
     
-    
+    //MARK: setPlatforms
     
     
     func setPlatforms(platforms: [Platforms]) {
@@ -268,7 +274,7 @@ class GameViewController: UITableViewController {
     
     
     
-    
+    //MARK: parseHTML
     
     func parseHTML(html: String) -> Void {
         if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
@@ -302,7 +308,7 @@ class GameViewController: UITableViewController {
     
     
     
-    
+    //MARK: getStreams
     
     func getStreams(string: String) {
         if string != "" {
@@ -329,30 +335,6 @@ class GameViewController: UITableViewController {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func getParameters(html: String) -> String {
-        var formString : String?
-        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
-            for item in doc.css(".maincontent .panel.panel-body script"){
-                let testString = item.text!
-                let stringArray = testString.components(separatedBy: "'")
-                formString = stringArray[1]
-            }
-            // #maincontainer .row #main .maincontent .panel #listingOptions
-            
-        }
-        return formString ?? ""
-    }
 
     
     
@@ -363,10 +345,7 @@ class GameViewController: UITableViewController {
     
     
     
-    
-    
-    
-    
+    //MARK: getSeriesName
     func getSeriesName(seriesUrl: String) {
         print("Here")
         
@@ -405,6 +384,11 @@ class GameViewController: UITableViewController {
     @IBOutlet weak var gameImageView: UIImageView!
     @IBOutlet weak var gameInfoView: UIView!
     @IBOutlet weak var streamsButton: UIButton!
+    
+    
+    
+    //MARK: streamsButtonPressed
+    
     @IBAction func streamsButtonPressed(_ sender: Any) {
         let streamsCollectionView = self.storyboard?.instantiateViewController(withIdentifier: "StreamsView") as? StreamsCollectionViewController
         streamsCollectionView?.streams = streams
@@ -427,7 +411,7 @@ class GameViewController: UITableViewController {
     
     
     
-    
+    //MARK: favoriteButtonTapped
     @objc func favoriteButtonTapped() {
         FavoritesManager.shared.favorites.append(game!)
         print("Got here.")
@@ -447,7 +431,7 @@ class GameViewController: UITableViewController {
     
     
     
-    
+    //MARK: unfavoriteButtonTapped
     
     @objc func unfavoriteButtonTapped() {
         print("Got There")
@@ -465,6 +449,10 @@ class GameViewController: UITableViewController {
     
     
     
+    
+    
+    
+    //MARK: setVariables
     func setVariables(variables: [Variable], indexPath: IndexPath) {
         let category = categories[indexPath.row]
         let variablesViewController = storyboard?.instantiateViewController(withIdentifier: "VariablesView") as! VariablesTableViewController
@@ -575,69 +563,6 @@ class GameViewController: UITableViewController {
                 print(error)
             }
         })
-//            guard let url = URL(string: variableUrl) else { return }
-//
-//            let dataTask = URLSession.shared.dataTask(with: url) {
-//                (data, response, error) in
-//                guard let data = data else { return }
-//
-//                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
-//                DispatchQueue.main.async {
-//
-//                    if let variables = variablesData?.data {
-//                        variablesViewController.variables = variables
-//                        for variable in variables {
-//                            if variable.isSubcategory == true {
-//
-//                                var choices = [Choices]()
-//                                var keys = [String]()
-//                                for key in variable.values.values.keys {
-//
-//                                    keys.append("var-\(variable.id)=\(key)")
-//                                    choices.append(variable.values.values[key]!)
-//                                }
-//                                variablesViewController.keysForChoices.append(keys)
-//                                variablesViewController.choices.append(choices)
-//                                displayVariables.append(ResultVariable(name: variable.name, choices: choices))
-//
-//
-//
-//                            }
-//
-//                        }
-//                    }
-//
-//
-//                    if displayVariables.count == 0 {
-//
-//                        let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
-//                        leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
-//                        leaderboardController.game = self.game
-//                        leaderboardController.category = self.categories[indexPath.row]
-//                        self.navigationController?.pushViewController(leaderboardController, animated: true)
-//
-//                    } else {
-//                        variablesViewController.category = self.categories[indexPath.row]
-//                        variablesViewController.gameId = self.game?.id
-//                        variablesViewController.game = self.game
-//                        variablesViewController.displayVariables = displayVariables
-//                        self.navigationController?.pushViewController(variablesViewController, animated: true)
-//                    }
-//
-//
-//
-//
-//
-//
-//                }
-//
-//            }
-//            dataTask.resume()
-//
-        
-
-
-        
 
     }
     

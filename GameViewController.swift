@@ -95,94 +95,92 @@ class GameViewController: UITableViewController {
             APIManager.sharedInstance.getGameForGameView(gameId: resultGame.id, completion: {
                 result in
                 
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let data):
-                        do {
-                            let gameData = try JSONDecoder().decode(GamesResponse.self, from: data)
-                            let variablesData = try JSONDecoder().decode(VariablesResponse.self, from: data)
-                            self.setVariablesAndGame(game: gameData.data, variables: variablesData.data)
-                            
-                        } catch {
-                            
-                            
-                            
-                        }
+                switch result {
+                case .success(let data):
+                    do {
+                        let gameData = try JSONDecoder().decode(GamesResponse.self, from: data)
+                        DispatchQueue.main.async {
+                            self.setVariablesAndGame(game: gameData.data)
+                        }                        
+                    } catch let error {
+                        print(error)
+                    }
                     case .failure(let error):
                         print(error)
                     }
                 }
-            })
+                
+        )
             
             
             
             // If coming from SearchViewController or SeriesViewController we need to make a search query for the game itself using the ID we have from the search view.
-            let gameUrl = "http://www.speedrun.com/api/v1/games/" + resultGame.id + "?embed=categories,variables,platforms"
-            guard let url = URL(string: gameUrl) else { return }
-            
-            
-            let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                guard let data = data else { return }
-                
-                // Decode games from the data. Categories are decoded automatically from the embedded json in the Games Response.
-                let gamesData = try? JSONDecoder().decode(GamesResponse.self, from: data)
-                
-                // Decode variables from the embedded json in the response data.
-                
-                
-                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
-                DispatchQueue.main.async {
-                    
-                    self.game = gamesData?.data
-                    self.game?.variables = variablesData
-                    self.title = gamesData?.data.names.international
-                    if let game = gamesData?.data {
-                        self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
-                        for category in game.categories!.data {
-                            for link in category.links {
-                                if link.rel == "leaderboard" {
-                                    self.categories.append(category)
-
-                                }
-                            }
-                        }
-                        self.tableView.reloadData()
-                        self.testView.layer.backgroundColor = UIColor.black.cgColor
-                        self.testView.frame.origin = self.seriesNameLabel.frame.origin
-                    }
-
-
-
-                    
-                    if let url = URL(string: (gamesData?.data.assets.coverMedium.uri)!) {
-                        self.gameImageView.kf.setImage(with: url)
-                        self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-                        self.gameImageView.layer.shadowOpacity = 0.25
-                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
-                    }
-                    
-                    let urlString = self.game!.assets.coverSmall.uri
-                    let stringArray = urlString.components(separatedBy: "/")
-                    print(stringArray[4])
-                    self.getStreams(string: stringArray[4])
-                    
-                    
-                    self.seriesNameLabel.text = self.seriesName
-                    if let  releaseDateArray = gamesData?.data.releaseDate.components(separatedBy: "-") {
-                        self.releasedLabel.text = releaseDateArray[0]
-                    }
-                    if let platforms = gamesData?.data.platforms?.data {
-                        self.setPlatforms(platforms: platforms)
-                    }
-                    for favGame in FavoritesManager.shared.favorites {
-                        if gamesData!.data.id == favGame.id {
-                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
-                        }
-                    }
-                    self.animateGameViewStuff()
-                }
-            }
-            dataRequest.resume()
+//            let gameUrl = "http://www.speedrun.com/api/v1/games/" + resultGame.id + "?embed=categories,variables,platforms"
+//            guard let url = URL(string: gameUrl) else { return }
+//
+//
+//            let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//                guard let data = data else { return }
+//
+//                // Decode games from the data. Categories are decoded automatically from the embedded json in the Games Response.
+//                let gamesData = try? JSONDecoder().decode(GamesResponse.self, from: data)
+//
+//                // Decode variables from the embedded json in the response data.
+//
+//
+//                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
+//                DispatchQueue.main.async {
+//
+//                    self.game = gamesData?.data
+//                    self.game?.variables = variablesData
+//                    self.title = gamesData?.data.names.international
+//                    if let game = gamesData?.data {
+//                        self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
+//                        for category in game.categories!.data {
+//                            for link in category.links {
+//                                if link.rel == "leaderboard" {
+//                                    self.categories.append(category)
+//
+//                                }
+//                            }
+//                        }
+//                        self.tableView.reloadData()
+//                        self.testView.layer.backgroundColor = UIColor.black.cgColor
+//                        self.testView.frame.origin = self.seriesNameLabel.frame.origin
+//                    }
+//
+//
+//
+//
+//                    if let url = URL(string: (gamesData?.data.assets.coverMedium.uri)!) {
+//                        self.gameImageView.kf.setImage(with: url)
+//                        self.gameImageView.layer.shadowColor = UIColor.black.cgColor
+//                        self.gameImageView.layer.shadowOpacity = 0.25
+//                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
+//                    }
+//
+//                    let urlString = self.game!.assets.coverSmall.uri
+//                    let stringArray = urlString.components(separatedBy: "/")
+//                    print(stringArray[4])
+//                    self.getStreams(string: stringArray[4])
+//
+//
+//                    self.seriesNameLabel.text = self.seriesName
+//                    if let  releaseDateArray = gamesData?.data.releaseDate.components(separatedBy: "-") {
+//                        self.releasedLabel.text = releaseDateArray[0]
+//                    }
+//                    if let platforms = gamesData?.data.platforms?.data {
+//                        self.setPlatforms(platforms: platforms)
+//                    }
+//                    for favGame in FavoritesManager.shared.favorites {
+//                        if gamesData!.data.id == favGame.id {
+//                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
+//                        }
+//                    }
+//                    self.animateGameViewStuff()
+//                }
+//            }
+//            dataRequest.resume()
             
             
             
@@ -322,7 +320,7 @@ class GameViewController: UITableViewController {
                         self.setPlatforms(platforms: platforms)
                     }
                     for favGame in FavoritesManager.shared.favorites {
-                        if gamesData?.data[0].id == favGame.id {
+                        if self.game?.id == favGame.id {
                             print("Game Found")
                             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
                         }
@@ -338,12 +336,12 @@ class GameViewController: UITableViewController {
     
 
     
-    func setVariablesAndGame(game: Game, variables: [Variable]) {
+    func setVariablesAndGame(game: Game) {
         
         self.game = game
-        self.game?.variables?.data = variables
         self.title = game.names.international
         self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
+        self.seriesNameLabel.text = self.seriesName
         for category in game.categories!.data {
             for link in category.links {
                 if link.rel == "leaderboard" {
@@ -352,8 +350,40 @@ class GameViewController: UITableViewController {
                 }
             }
         }
-        self.tableView.reloadData()
         
+        if let url = URL(string: (game.assets.coverMedium.uri)) {
+            self.gameImageView.kf.setImage(with: url)
+            self.gameImageView.layer.shadowColor = UIColor.black.cgColor
+            self.gameImageView.layer.shadowOpacity = 0.25
+            self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        }
+        self.tableView.reloadData()
+        if let platforms = game.platforms?.data {
+            self.setPlatforms(platforms: platforms)
+        }
+        
+        for category in (game.categories?.data)! {
+            for link in category.links {
+                if link.rel == "leaderboard" {
+                    self.categories.append(category)
+                    
+                }
+            }
+        }
+        
+        
+        let  releaseDateArray = game.releaseDate.components(separatedBy: "-")
+        self.releasedLabel.text = releaseDateArray[0]
+        
+        
+        
+        for favGame in FavoritesManager.shared.favorites {
+            if self.game?.id == favGame.id {
+                print("Game Found")
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
+            }
+        }
+        self.animateGameViewStuff()
             
             
     }
@@ -372,6 +402,9 @@ class GameViewController: UITableViewController {
         }
         self.platformsLabel.text = platformString
     }
+    
+    
+    
     func parseHTML(html: String) -> Void {
         if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
             
@@ -562,13 +595,13 @@ class GameViewController: UITableViewController {
                             if variable.isSubcategory == true {
                                 
                                 var choices = [Choices]()
-//                                var keys = [String]()
+                                var keys = [String]()
                                 for key in variable.values.values.keys {
 
-//                                    keys.append("var-\(variable.id)=\(key)")
+                                    keys.append("var-\(variable.id)=\(key)")
                                     choices.append(variable.values.values[key]!)
                                 }
-//                                variablesViewController.keysForChoices.append(keys)
+                                variablesViewController.keysForChoices.append(keys)
                                 variablesViewController.choices.append(choices)
                                 displayVariables.append(ResultVariable(name: variable.name, choices: choices))
                                 

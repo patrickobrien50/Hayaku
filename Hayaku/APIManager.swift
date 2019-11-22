@@ -113,15 +113,16 @@ class APIManager  {
     
     func getGameForGameView(gameId: String, completion: @escaping(Result<Data, Error>) -> Void) {
         var gameUrlComponents = URLComponents(string: baseUrl + "games/" + gameId)
-        gameUrlComponents?.queryItems = [URLQueryItem(name: "embed", value: "categories, variables, platforms")]
-        guard let gameUrl = gameUrlComponents?.url else { return }
-        
+        gameUrlComponents?.queryItems = [URLQueryItem(name: "embed", value: "categories,variables,platforms")]
+        guard let gameUrl = URL(string: baseUrl + "games/" + gameId + "?embed=categories,variables,platforms") else { return }
         
         
         let dataRequest = URLSession.shared.dataTask(with: gameUrl) {
             (data, response, error) in
             guard let data = data else { return }
+        
             completion(.success(data))
+            print("APIManager" , data)
             
         }
         dataRequest.resume()

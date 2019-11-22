@@ -111,13 +111,27 @@ class APIManager  {
     //MARK: getGameForGameView
     
     
-    func getGameForGameView(gameId: String, completion: @escaping(Result<Data, Error>) -> Void) {
-        var gameUrlComponents = URLComponents(string: baseUrl + "games/" + gameId)
-        gameUrlComponents?.queryItems = [URLQueryItem(name: "embed", value: "categories,variables,platforms")]
-        guard let gameUrl = URL(string: baseUrl + "games/" + gameId + "?embed=categories,variables,platforms") else { return }
+    func getGameForGameView(gameInformation: String, popularController: Bool, completion: @escaping(Result<Data, Error>) -> Void) {
+        
+        var gameUrl : URL?
+    
+        if popularController {
+            var gameUrlComponents = URLComponents(string: baseUrl + "games")
+            gameUrlComponents?.queryItems = [URLQueryItem(name: "name", value: gameInformation) , URLQueryItem(name: "embed", value: "categories,variables,platforms")]
+            gameUrl = gameUrlComponents?.url
+            print(gameUrl)
+        }
+        if !popularController {
+            var gameUrlComponents = URLComponents(string: baseUrl + "games/" + gameInformation)
+            gameUrlComponents?.queryItems = [URLQueryItem(name: "embed", value: "categories,variables,platforms")]
+            gameUrl = gameUrlComponents?.url
+        }
         
         
-        let dataRequest = URLSession.shared.dataTask(with: gameUrl) {
+
+        
+        
+        let dataRequest = URLSession.shared.dataTask(with: gameUrl!) {
             (data, response, error) in
             guard let data = data else { return }
         

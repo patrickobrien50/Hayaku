@@ -90,9 +90,12 @@ class GameViewController: UITableViewController {
         
         
         if game == nil && gameName == nil {
+            
+            // If coming from the Search or Series View Controller.
+            
             guard let resultGame = resultsGame else { return }
             
-            APIManager.sharedInstance.getGameForGameView(gameId: resultGame.id, completion: {
+            APIManager.sharedInstance.getGameForGameView(gameInformation: resultGame.id, popularController: false, completion: {
                 result in
                 
                 switch result {
@@ -100,7 +103,7 @@ class GameViewController: UITableViewController {
                     do {
                         let gameData = try JSONDecoder().decode(GamesResponse.self, from: data)
                         DispatchQueue.main.async {
-                            self.setVariablesAndGame(game: gameData.data)
+                            self.setGameInformation(game: gameData.data)
                         }                        
                     } catch let error {
                         print(error)
@@ -110,151 +113,37 @@ class GameViewController: UITableViewController {
                     }
                 }
                 
-        )
-            
-            
-            
-            // If coming from SearchViewController or SeriesViewController we need to make a search query for the game itself using the ID we have from the search view.
-//            let gameUrl = "http://www.speedrun.com/api/v1/games/" + resultGame.id + "?embed=categories,variables,platforms"
-//            guard let url = URL(string: gameUrl) else { return }
-//
-//
-//            let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
-//                guard let data = data else { return }
-//
-//                // Decode games from the data. Categories are decoded automatically from the embedded json in the Games Response.
-//                let gamesData = try? JSONDecoder().decode(GamesResponse.self, from: data)
-//
-//                // Decode variables from the embedded json in the response data.
-//
-//
-//                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
-//                DispatchQueue.main.async {
-//
-//                    self.game = gamesData?.data
-//                    self.game?.variables = variablesData
-//                    self.title = gamesData?.data.names.international
-//                    if let game = gamesData?.data {
-//                        self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
-//                        for category in game.categories!.data {
-//                            for link in category.links {
-//                                if link.rel == "leaderboard" {
-//                                    self.categories.append(category)
-//
-//                                }
-//                            }
-//                        }
-//                        self.tableView.reloadData()
-//                        self.testView.layer.backgroundColor = UIColor.black.cgColor
-//                        self.testView.frame.origin = self.seriesNameLabel.frame.origin
-//                    }
-//
-//
-//
-//
-//                    if let url = URL(string: (gamesData?.data.assets.coverMedium.uri)!) {
-//                        self.gameImageView.kf.setImage(with: url)
-//                        self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-//                        self.gameImageView.layer.shadowOpacity = 0.25
-//                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
-//                    }
-//
-//                    let urlString = self.game!.assets.coverSmall.uri
-//                    let stringArray = urlString.components(separatedBy: "/")
-//                    print(stringArray[4])
-//                    self.getStreams(string: stringArray[4])
-//
-//
-//                    self.seriesNameLabel.text = self.seriesName
-//                    if let  releaseDateArray = gamesData?.data.releaseDate.components(separatedBy: "-") {
-//                        self.releasedLabel.text = releaseDateArray[0]
-//                    }
-//                    if let platforms = gamesData?.data.platforms?.data {
-//                        self.setPlatforms(platforms: platforms)
-//                    }
-//                    for favGame in FavoritesManager.shared.favorites {
-//                        if gamesData!.data.id == favGame.id {
-//                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
-//                        }
-//                    }
-//                    self.animateGameViewStuff()
-//                }
-//            }
-//            dataRequest.resume()
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            )
             
         } else if game != nil && gameName == nil {
  
+    
+            //If coming from the Favorites View Controller.
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            //If coming from the FavoritesCollectionViewController
             
             if let game = game {
                 
-                
-                let urlString = self.game!.assets.coverSmall.uri
-                let stringArray = urlString.components(separatedBy: "/")
-                self.getStreams(string: stringArray[4])
-
-                
-                self.tableView.reloadData()
-                self.title = game.names.international
-
-                if let url = URL(string: (game.assets.coverMedium.uri)) {
-                    self.gameImageView.kf.setImage(with: url)
-                    self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-                    self.gameImageView.layer.shadowOpacity = 0.25
-                    self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
+                APIManager.sharedInstance.getGameForGameView(gameInformation: game.id, popularController: false, completion: {
+                    result in
                     
-                }
-                
-                getSeriesName(seriesUrl: game.links[6].uri)
-                let releaseDateArray = game.releaseDate.components(separatedBy: "-")
-                self.releasedLabel.text = releaseDateArray[0]
-                for category in game.categories!.data {
-                    for link in category.links {
-                        if link.rel == "leaderboard" {
-                            self.categories.append(category)
-                            
+                    switch result {
+                    case .success(let data):
+                        do {
+                            let gameData = try JSONDecoder().decode(GamesResponse.self, from: data)
+                            DispatchQueue.main.async {
+                                self.setGameInformation(game: gameData.data)
+                            }
+                        } catch let error {
+                            print(error)
+                        }
+                        case .failure(let error):
+                            print(error)
                         }
                     }
-                }
-                
-                
-                
-                if let platforms = game.platforms?.data {
-                    setPlatforms(platforms: platforms)
-                }
-                
-                
-                
-                for favGame in FavoritesManager.shared.favorites {
-                    if game.id == favGame.id {
-                        print("Game Found")
-                        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
-                    }
-                }
-                
+                    
+                )
+
             }
             self.animateGameViewStuff()
 
@@ -263,85 +152,41 @@ class GameViewController: UITableViewController {
             
             //If coming from the PopularGamesCollectionViewController
             
-            let gameUrl = "http://www.speedrun.com/api/v1/games?name=" + gameName!.replacingOccurrences(of: " ", with: "%20") + "&embed=categories,variables,platforms&max=1"
-            guard let url = URL(string: gameUrl) else { return }
+            APIManager.sharedInstance.getGameForGameView(gameInformation: gameName ?? "", popularController: true, completion: {
+                result in
+                switch result {
+                 case .success(let data):
+                     do {
+                         let gameData = try JSONDecoder().decode(PopularGamesResponse.self, from: data)
+                         DispatchQueue.main.async {
+                             self.setGameInformation(game: gameData.data[0])
+                         }
+                     } catch let error {
+                         print(error)
+                     }
+                     case .failure(let error):
+                         print(error)
+                     }
+                
+            })
+        
             
-            print(url)
-            
-            let dataRequest = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                guard let data = data else { return }
-                let gamesData = try? JSONDecoder().decode(PopularGamesResponse.self, from: data)
-                DispatchQueue.main.async {
-                    if let game = gamesData?.data[0] {
-                        self.game = game
-                        let urlString = self.game!.assets.coverSmall.uri
-                        let stringArray = urlString.components(separatedBy: "/")
-                        self.getStreams(string: stringArray[4])
-
-                        for category in game.categories!.data {
-                            for link in category.links {
-                                if link.rel == "leaderboard" {
-                                    self.categories.append(category)
-                                    
-                                }
-                            }
-                        }
-                        print(self.categories)
-                        self.tableView.reloadData()
-
-
-                    }
-                    
-                    self.getSeriesName(seriesUrl: String(describing: gamesData!.data[0].links[6].uri))
-                    self.title = gamesData?.data[0].names.international
-
-                    
-                    if let url = URL(string: (gamesData?.data[0].assets.coverMedium.uri)!) {
-                        self.gameImageView.kf.setImage(with: url)
-                        self.gameImageView.layer.shadowColor = UIColor.black.cgColor
-                        self.gameImageView.layer.shadowOpacity = 0.25
-                        self.gameImageView.layer.shadowOffset = CGSize(width: 3, height: 3)
-                    }
-                    
-                    
-                    self.seriesNameLabel.text = self.seriesName
-                    if let  releaseDateArray = gamesData?.data[0].releaseDate.components(separatedBy: "-") {
-                        self.releasedLabel.text = releaseDateArray[0]
-                    }
-                    for category in (gamesData?.data[0].categories?.data)! {
-                        for link in category.links {
-                            if link.rel == "leaderboard" {
-                                self.categories.append(category)
-                                
-                            }
-                        }
-                    }
-                    if let platforms = gamesData?.data[0].platforms?.data {
-                        self.setPlatforms(platforms: platforms)
-                    }
-                    for favGame in FavoritesManager.shared.favorites {
-                        if self.game?.id == favGame.id {
-                            print("Game Found")
-                            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.unfavoriteButton)
-                        }
-                    }
-                    self.animateGameViewStuff()
-                }
-            }
-            dataRequest.resume()
-            
+//
         }
     }
     
     
 
-    
-    func setVariablesAndGame(game: Game) {
+    // MARK: setGameInformation
+    func setGameInformation(game: Game) {
         
         self.game = game
         self.title = game.names.international
         self.getSeriesName(seriesUrl: String(describing: game.links[6].uri))
         self.seriesNameLabel.text = self.seriesName
+        let urlString = self.game!.assets.coverSmall.uri
+        let stringArray = urlString.components(separatedBy: "/")
+        self.getStreams(string: stringArray[4])
         for category in game.categories!.data {
             for link in category.links {
                 if link.rel == "leaderboard" {
@@ -388,6 +233,17 @@ class GameViewController: UITableViewController {
             
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func setPlatforms(platforms: [Platforms]) {
         
         var platformString = ""
@@ -402,6 +258,15 @@ class GameViewController: UITableViewController {
         }
         self.platformsLabel.text = platformString
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -429,6 +294,11 @@ class GameViewController: UITableViewController {
             }
         }
     }
+    
+    
+    
+    
+    
     
     
     
@@ -462,6 +332,14 @@ class GameViewController: UITableViewController {
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
     func getParameters(html: String) -> String {
         var formString : String?
         if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
@@ -476,6 +354,18 @@ class GameViewController: UITableViewController {
         return formString ?? ""
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func getSeriesName(seriesUrl: String) {
         print("Here")
@@ -494,6 +384,24 @@ class GameViewController: UITableViewController {
             dataRequest.resume()
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @IBOutlet weak var gameImageView: UIImageView!
     @IBOutlet weak var gameInfoView: UIView!
     @IBOutlet weak var streamsButton: UIButton!
@@ -507,12 +415,38 @@ class GameViewController: UITableViewController {
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @objc func favoriteButtonTapped() {
         FavoritesManager.shared.favorites.append(game!)
         print("Got here.")
         navigationItem.rightBarButtonItem? = UIBarButtonItem(customView: unfavoriteButton)
 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     @objc func unfavoriteButtonTapped() {

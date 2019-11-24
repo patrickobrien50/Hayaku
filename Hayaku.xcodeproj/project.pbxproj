@@ -19,7 +19,6 @@
 		6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */; };
 		6C61AF8D234E610A00DCE54A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDABA120B22F2E002D8B86 /* Assets.xcassets */; };
 		6C744E72235FECE30003A394 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C744E71235FECE30003A394 /* UserViewController.swift */; };
-		6C99DC8522A84642004FC199 /* SpeedRunAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */; };
 		6CCDAB9B20B22F2E002D8B86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */; };
 		6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */; };
 		6CCDABA020B22F2E002D8B86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */; };
@@ -28,7 +27,6 @@
 		6CCDABBB20B22F2E002D8B86 /* HayakuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABBA20B22F2E002D8B86 /* HayakuUITests.swift */; };
 		6CCDABCB20B23032002D8B86 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCA20B23032002D8B86 /* SearchViewController.swift */; };
 		6CCDABCD20B2326E002D8B86 /* DataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCC20B2326E002D8B86 /* DataModels.swift */; };
-		6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */; };
 		6CE5166F2285407700CE492A /* PopularCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */; };
 		6CE51671228541C400CE492A /* PopularGameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */; };
 		6CE6838122946FB900E5E544 /* LeaderboardsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */; };
@@ -70,7 +68,6 @@
 		6C36C6CA2165428F00CDCF1D /* GameResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResultTableViewCell.swift; sourceTree = "<group>"; };
 		6C4CB7F6228E6A210084C365 /* VariablesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariablesTableViewController.swift; sourceTree = "<group>"; };
 		6C744E71235FECE30003A394 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
-		6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedRunAPI.swift; sourceTree = "<group>"; };
 		6CCDAB9720B22F2E002D8B86 /* Hayaku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hayaku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCollectionViewController.swift; sourceTree = "<group>"; };
@@ -86,7 +83,6 @@
 		6CCDABBC20B22F2E002D8B86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6CCDABCA20B23032002D8B86 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		6CCDABCC20B2326E002D8B86 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
-		6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableController.swift; sourceTree = "<group>"; };
 		6CE5166E2285407700CE492A /* PopularCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCollectionViewController.swift; sourceTree = "<group>"; };
 		6CE51670228541C400CE492A /* PopularGameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularGameCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CE6838022946FB900E5E544 /* LeaderboardsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableViewController.swift; sourceTree = "<group>"; };
@@ -130,7 +126,6 @@
 		6C99DC8822A8465F004FC199 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				6CCDABCE20B55344002D8B86 /* ResultsTableController.swift */,
 				6CCDAB9C20B22F2E002D8B86 /* FavoritesCollectionViewController.swift */,
 				6CCDABCA20B23032002D8B86 /* SearchViewController.swift */,
 				6C744E71235FECE30003A394 /* UserViewController.swift */,
@@ -188,7 +183,6 @@
 				6C326D88237F34A400F744BB /* APIManager.swift */,
 				6CCDABCC20B2326E002D8B86 /* DataModels.swift */,
 				6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */,
-				6C99DC8422A84642004FC199 /* SpeedRunAPI.swift */,
 				6C99DC8922A8468A004FC199 /* Custom Cells */,
 				6CCDABA120B22F2E002D8B86 /* Assets.xcassets */,
 				6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */,
@@ -467,10 +461,8 @@
 				6C4CB7F7228E6A210084C365 /* VariablesTableViewController.swift in Sources */,
 				6C328EBB227A17610011EB99 /* SeriesTableViewCell.swift in Sources */,
 				6C0E36E622865CAF0068F91D /* StreamsCollectionViewCell.swift in Sources */,
-				6C99DC8522A84642004FC199 /* SpeedRunAPI.swift in Sources */,
 				6C36C6CB2165428F00CDCF1D /* GameResultTableViewCell.swift in Sources */,
 				6CE5166F2285407700CE492A /* PopularCollectionViewController.swift in Sources */,
-				6CCDABCF20B55344002D8B86 /* ResultsTableController.swift in Sources */,
 				6CE68385229528D800E5E544 /* RunViewController.swift in Sources */,
 				6CCDAB9D20B22F2E002D8B86 /* FavoritesCollectionViewController.swift in Sources */,
 				6CCDABCD20B2326E002D8B86 /* DataModels.swift in Sources */,

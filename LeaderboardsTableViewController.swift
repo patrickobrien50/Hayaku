@@ -27,6 +27,7 @@ class LeaderboardsTableViewController: UITableViewController {
     var groupStringArray = [String]()
     let ordinalNumberFormatter = NumberFormatter()
     var category : Category?
+    var leaderboards : Leaderboards?
     
 
     
@@ -40,57 +41,24 @@ class LeaderboardsTableViewController: UITableViewController {
         navigationItem.title = "Leaderboards"
         navigationController?.navigationBar.prefersLargeTitles = false
         
-        
-        guard let url = URL(string: leaderboardUrlString!.replacingOccurrences(of: "http", with: "https")) else { return }
-        print(url)
-        let dataTask = URLSession.shared.dataTask(with: url) {
-            (data, response, error) in
+        if let leaderboards = leaderboards {
+            self.players = leaderboards.players!.data
+            self.runs = leaderboards.runs
+            if self.runs.count > 0 {
+                if self.runs[0].run.players.count > 1 {
+                    self.getGroups(runs: leaderboards.runs, players: leaderboards.players!.data)
+                    self.groupRun = true
 
-            guard let data = data else { return }
-            
-            var leaderboardsData : LeaderboardsResponse?
-            
-            do {
-                leaderboardsData = try JSONDecoder().decode(LeaderboardsResponse.self, from: data)
-                print(leaderboardsData)
-            } catch let error{
-                print(error)
-            }
-            DispatchQueue.main.async {
-                if let leaderboards = leaderboardsData?.data {
-                    self.players = leaderboards.players!.data
-                    self.runs = leaderboards.runs
-                    if self.runs.count > 0 {
-                        if self.runs[0].run.players.count > 1 {
-                            self.getGroups(runs: leaderboards.runs, players: leaderboards.players!.data)
-                            self.groupRun = true
-                            
 
-                        }
-                    }
-
-                    
-                    
-                    
                 }
-                self.tableView.reloadData()
-                
-                
             }
+
+
+
+
         }
-        dataTask.resume()
-        
-        
-        
-        
-        
-        
+        self.tableView.reloadData()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     /*
      

@@ -12,6 +12,8 @@ import XCTest
 
 class HayakuTests: XCTestCase {
     
+    let apiManager = APIManager()
+    
     override func setUp() {
         super.setUp()
 
@@ -30,7 +32,27 @@ class HayakuTests: XCTestCase {
     
   
     
-    func testSearch(searchTerm: String) {
+    func testGetGames() {
+        
+        apiManager.getResultsGames(searchText: "Super Mario 64", completion: {
+            result in
+            
+            switch result {
+            case .success(let data):
+                do {
+                    let resultsGame = data
+                    XCTAssertEqual("Super Mario 64", resultsGame[0].names.international)
+                    
+                } catch let error {
+                    print(error)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
+    func testParsingHTML() {
         
     }
 

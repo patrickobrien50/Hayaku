@@ -16,6 +16,7 @@ struct ResultVariable {
 class VariablesTableViewController: UITableViewController {
     
     var leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/"
+    var variableString = ""
     var gameId: String?
     var category : Category?
     var variables = [Variable]()
@@ -38,55 +39,8 @@ class VariablesTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = leaderboardsBarButton
         self.navigationItem.rightBarButtonItem?.isEnabled = true
         
-        if let variableUrl = variableURL {
-            guard let url = URL(string: variableUrl) else { return }
-            
-            let dataTask = URLSession.shared.dataTask(with: url) {
-                (data, response, error) in
-                guard let data = data else { return }
-                
-                let variablesData = try? JSONDecoder().decode(VariablesResponse.self, from: data)
-                DispatchQueue.main.async {
-                    
-                    if let variables = variablesData?.data {
-                        self.variables = variables
-                        for variable in variables {
-                            if variable.isSubcategory == true {
-                                
-                                var choices = [Choices]()
-                                var keys = [String]()
-                                for key in variable.values.values.keys {
-                                    
-                                    keys.append("var-\(variable.id)=\(key)")
-                                    choices.append(variable.values.values[key]!)
-                                }
-                                self.keysForChoices.append(keys)
-                                self.choices.append(choices)
-                                self.displayVariables.append(ResultVariable(name: variable.name, choices: choices))
 
-                            }
 
-                        }
-            
-                        self.tableView.reloadData()
-                    }
-                    
-
-                }
-                
-                
-            }
-            dataTask.resume()
-        }
-
-        
-        
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -115,14 +69,10 @@ class VariablesTableViewController: UITableViewController {
         if indexPath.row == 0 {
             cell.accessoryType = .checkmark
         }
-        if displayVariables.count == 0 {
-            cell.textLabel?.text = "No options available! Press Go!"
-            cell.accessoryType = .none
 
-        } else {
-            cell.textLabel?.text = displayVariables[indexPath.section].choices[indexPath.row].label
+        cell.textLabel?.text = displayVariables[indexPath.section].choices[indexPath.row].label
 
-        }
+        
         cell.textLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
         return cell
     }
@@ -155,34 +105,55 @@ class VariablesTableViewController: UITableViewController {
     
     
     @objc func leaderboardsButtonPressed() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         let cells = tableView.visibleCells
         var runInformation = ""
-        if let categoryItem = category {
-            leaderboardUrlString += "\(gameId!)/category/\(categoryItem.id)?"
 
-        }
         
         for cell in cells {
             if cell.accessoryType == .checkmark {
                 if let indexPath = tableView.indexPath(for: cell) {
                     runInformation += "| \(choices[indexPath.section][indexPath.row].label) |"
-                    leaderboardUrlString += "\(keysForChoices[indexPath.section][indexPath.row])&"
+                    variableString += "\(keysForChoices[indexPath.section][indexPath.row])&"
+                    print(keysForChoices[indexPath.section][indexPath.row])
+                    
                 }
             }
         }
-        leaderboardUrlString += "embed=players"
         
-        
-        let leaderboardsView = storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
-        leaderboardsView.leaderboardUrlString = leaderboardUrlString
-        leaderboardsView.runInformation = runInformation
-        if let categoryItem = category {
-            leaderboardsView.category = categoryItem
-        }
-        print(leaderboardUrlString)
-        leaderboardsView.game = self.game
-        self.navigationController?.pushViewController(leaderboardsView, animated: true)
-        leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/"
+        APIManager.sharedInstance.getLeaderboards(gameId: game?.id ?? "", categoryId: category?.id ?? "", leaderboardComponents: variableString, completion: {
+            result in
+
+            switch result {
+            case .success(let data):
+                
+                do {
+                    let leaderboardsData = try JSONDecoder().decode(LeaderboardsResponse.self, from: data)
+                    
+                    DispatchQueue.main.async {
+                        let leaderboardsView = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
+                        leaderboardsView.leaderboards = leaderboardsData.data
+                        leaderboardsView.runInformation = runInformation
+                        leaderboardsView.game = self.game
+                        if let categoryItem = self.category {
+                            leaderboardsView.category = categoryItem
+                        }
+                        self.navigationController?.pushViewController(leaderboardsView, animated: true)
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    }
+
+
+
+
+                    
+                } catch let error {
+                    print(error)
+                }
+            case .failure(let error):
+                print("APIManager \(error)")
+                
+            }
+        })
 
     }
  

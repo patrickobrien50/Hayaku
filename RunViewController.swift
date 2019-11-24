@@ -11,10 +11,12 @@ import Kanna
 import Kingfisher
 import SafariServices
 import Alamofire
+import AVKit
 
 class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     
     private var twitchClientId = "tkcu7nhde15jr0qpw6yoy2lp57xkuz"
+    
     
     
     var players : [Player]?
@@ -98,9 +100,11 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                     let idArray = twitchLinkArray[twitchLinkArray.count - 1].split(separator: "?")
                     videoId = String(describing: idArray[0])
                 }
-                Alamofire.request("https://api.twitch.tv/helix/videos?id=\(videoId ?? "")", headers: headers).response {
+                Alamofire.request("https://api.twitch.tv/helix/videos?id=\(videoId ?? "")", headers: headers).responseJSON {
                     response in
+                    print(response)
                     guard let data = response.data else { return }
+                    
                     if let twitchData = try? JSONDecoder().decode(TwitchResponse.self, from: data) {
                         print(twitchData)
                         self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.data[0].thumbnailUrl.replacingOccurrences(of: "%{width}", with: "175").replacingOccurrences(of: "%{height}", with: "100")))
@@ -150,9 +154,18 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     
 
     @objc func imageViewTapped(gesture: UITapGestureRecognizer) {
-        guard let url = URL(string: run!.weblink) else { return }
-        presentSafariVC(url: url)
+//        guard let videoURL = URL(string: (run!.videos?.links![0].uri!.replacingOccurrences(of: "www", with: "player"))!) else { return }
+        guard let videoURL = URL(string: "https://player.twitch.tv/?video=v106400740&allowfullscreen=true") else { return }
+        let player = AVPlayer(url: videoURL)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        
+        present(playerViewController, animated: true) {
+            player.play()
+        }
+        
     }
+    
     
 
     func presentSafariVC(url: URL) {

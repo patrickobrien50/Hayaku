@@ -175,10 +175,38 @@ class APIManager  {
         }
         dataRequest.resume()
         
+    }
+    
+    
+    func getLeaderboards(gameId: String, categoryId: String, leaderboardComponents: String, completion: @escaping(Result<Data, Error>) -> Void ) {
         
+        guard let leaderboardsURL = URL(string: baseUrl + "leaderboards/\(gameId)/category/\(categoryId)?\(leaderboardComponents)&embed=players") else { return }
+        print(leaderboardsURL)
         
-        
+        let dataRequest = URLSession.shared.dataTask(with: leaderboardsURL) {
+            (data, response, error) in
+            guard let data = data else {return }
+            
+            completion(.success(data))
+            
+        }
+        dataRequest.resume()
         
     }
+    
+    func parseHTML(type: String, html: String, completion: @escaping() -> Void {
+        switch type {
+        case "Games":
+            
+            
+            break
+        case "Streams":
+            break
+        default:
+            break
+            
+        }
+    }
+    
     //This is the bottom of the class.
 }

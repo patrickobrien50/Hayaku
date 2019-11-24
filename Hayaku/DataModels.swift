@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+enum parseFor {
+    case games
+    case streams
+}
 struct ResultsUsersResponse : Codable {
     var data : [ResultsUsers]
     var pagination : PaginationData?

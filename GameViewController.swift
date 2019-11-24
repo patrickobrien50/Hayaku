@@ -464,11 +464,13 @@ class GameViewController: UITableViewController {
                 var choices = [Choices]()
                 var keys = [String]()
                 for key in variable.values.values.keys {
-
+                    print(key)
                     keys.append("var-\(variable.id)=\(key)")
+                    
                     choices.append(variable.values.values[key]!)
                 }
                 variablesViewController.keysForChoices.append(keys)
+                
                 variablesViewController.choices.append(choices)
                 displayVariables.append(ResultVariable(name: variable.name, choices: choices))
                 

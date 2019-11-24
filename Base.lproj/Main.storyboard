@@ -536,8 +536,10 @@
                             <constraint firstItem="b6Q-3k-xDa" firstAttribute="leading" secondItem="08o-Nh-hhO" secondAttribute="leading" constant="20" id="Fdc-HM-UCv"/>
                             <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="4Ob-6p-dL7" secondAttribute="trailing" constant="20" id="GYd-40-LgZ"/>
                             <constraint firstItem="4Ob-6p-dL7" firstAttribute="top" secondItem="Cml-hm-b8C" secondAttribute="bottom" constant="23" id="JPF-Cp-Isb"/>
+                            <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="b6Q-3k-xDa" secondAttribute="trailing" constant="24" id="fYE-sK-tXU"/>
                             <constraint firstItem="Cml-hm-b8C" firstAttribute="leading" secondItem="08o-Nh-hhO" secondAttribute="leading" constant="20" id="jhN-lj-wGD"/>
                             <constraint firstItem="UIh-gX-FbQ" firstAttribute="leading" secondItem="PRR-Ip-84g" secondAttribute="leadingMargin" constant="20" id="ju2-Ut-6hf"/>
+                            <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="Cml-hm-b8C" secondAttribute="trailing" constant="20" id="o1Q-2m-OSV"/>
                             <constraint firstItem="4Ob-6p-dL7" firstAttribute="leading" secondItem="08o-Nh-hhO" secondAttribute="leading" constant="20" id="o3q-8k-ygA"/>
                             <constraint firstItem="UIh-gX-FbQ" firstAttribute="top" secondItem="08o-Nh-hhO" secondAttribute="top" constant="22" id="qIf-Dd-oqD"/>
                             <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="UIh-gX-FbQ" secondAttribute="trailing" constant="20" id="r7J-fN-rRN"/>

@@ -494,7 +494,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="UIh-gX-FbQ">
-                                <rect key="frame" x="40" y="66" width="354" height="153"/>
+                                <rect key="frame" x="28" y="65" width="354" height="153"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVw-2s-C2J">
                                         <rect key="frame" x="107" y="0.0" width="140.5" height="29.5"/>
@@ -528,21 +528,34 @@
                                     </label>
                                 </subviews>
                             </stackView>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Vv-4W-Y6C">
+                                <rect key="frame" x="20" y="242" width="370" height="241"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="4Vv-4W-Y6C" firstAttribute="leading" secondItem="Cml-hm-b8C" secondAttribute="leading" id="0Xw-ki-fBt"/>
                             <constraint firstItem="Cml-hm-b8C" firstAttribute="top" secondItem="PRR-Ip-84g" secondAttribute="topMargin" constant="198" id="4kb-8W-YdE"/>
                             <constraint firstItem="b6Q-3k-xDa" firstAttribute="top" secondItem="PRR-Ip-84g" secondAttribute="topMargin" constant="198" id="A8K-86-pWj"/>
                             <constraint firstItem="b6Q-3k-xDa" firstAttribute="leading" secondItem="08o-Nh-hhO" secondAttribute="leading" constant="20" id="Fdc-HM-UCv"/>
                             <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="4Ob-6p-dL7" secondAttribute="trailing" constant="20" id="GYd-40-LgZ"/>
                             <constraint firstItem="4Ob-6p-dL7" firstAttribute="top" secondItem="Cml-hm-b8C" secondAttribute="bottom" constant="23" id="JPF-Cp-Isb"/>
+                            <constraint firstItem="4Vv-4W-Y6C" firstAttribute="top" secondItem="b6Q-3k-xDa" secondAttribute="top" id="Pug-yw-tyJ"/>
+                            <constraint firstItem="4Ob-6p-dL7" firstAttribute="top" secondItem="4Vv-4W-Y6C" secondAttribute="bottom" constant="20" id="TNp-fG-p19"/>
+                            <constraint firstItem="4Vv-4W-Y6C" firstAttribute="trailing" secondItem="b6Q-3k-xDa" secondAttribute="trailing" id="dsy-hd-UVY"/>
                             <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="b6Q-3k-xDa" secondAttribute="trailing" constant="24" id="fYE-sK-tXU"/>
                             <constraint firstItem="Cml-hm-b8C" firstAttribute="leading" secondItem="08o-Nh-hhO" secondAttribute="leading" constant="20" id="jhN-lj-wGD"/>
-                            <constraint firstItem="UIh-gX-FbQ" firstAttribute="leading" secondItem="PRR-Ip-84g" secondAttribute="leadingMargin" constant="20" id="ju2-Ut-6hf"/>
+                            <constraint firstItem="UIh-gX-FbQ" firstAttribute="leading" secondItem="PRR-Ip-84g" secondAttribute="leadingMargin" constant="8" id="ju2-Ut-6hf"/>
                             <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="Cml-hm-b8C" secondAttribute="trailing" constant="20" id="o1Q-2m-OSV"/>
                             <constraint firstItem="4Ob-6p-dL7" firstAttribute="leading" secondItem="08o-Nh-hhO" secondAttribute="leading" constant="20" id="o3q-8k-ygA"/>
-                            <constraint firstItem="UIh-gX-FbQ" firstAttribute="top" secondItem="08o-Nh-hhO" secondAttribute="top" constant="22" id="qIf-Dd-oqD"/>
-                            <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="UIh-gX-FbQ" secondAttribute="trailing" constant="20" id="r7J-fN-rRN"/>
+                            <constraint firstItem="UIh-gX-FbQ" firstAttribute="top" secondItem="08o-Nh-hhO" secondAttribute="top" constant="21" id="qIf-Dd-oqD"/>
+                            <constraint firstItem="08o-Nh-hhO" firstAttribute="trailing" secondItem="UIh-gX-FbQ" secondAttribute="trailing" constant="32" id="r7J-fN-rRN"/>
+                            <constraint firstItem="4Vv-4W-Y6C" firstAttribute="top" secondItem="UIh-gX-FbQ" secondAttribute="bottom" constant="24" id="xxg-fG-uC3"/>
                             <constraint firstItem="4Ob-6p-dL7" firstAttribute="top" secondItem="b6Q-3k-xDa" secondAttribute="bottom" constant="23" id="yTx-8J-jM9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="08o-Nh-hhO"/>
@@ -556,6 +569,7 @@
                         <outlet property="subcategoriesLabel" destination="Pm2-UK-uJN" id="tPL-r3-hIX"/>
                         <outlet property="thumbnailImageView" destination="b6Q-3k-xDa" id="Qkb-FF-fl9"/>
                         <outlet property="timeLabel" destination="FQd-Bj-fDs" id="IMr-GB-YkB"/>
+                        <outlet property="videoPlayerWebView" destination="4Vv-4W-Y6C" id="ESR-he-LTB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JZI-cT-lNR" userLabel="First Responder" sceneMemberID="firstResponder"/>

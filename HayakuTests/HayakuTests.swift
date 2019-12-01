@@ -8,6 +8,7 @@
 
 
 import XCTest
+import Alamofire
 @testable import Hayaku
 
 class HayakuTests: XCTestCase {
@@ -33,28 +34,48 @@ class HayakuTests: XCTestCase {
   
     
     func testGetGames() {
-        
+        var resultsGames : [ResultsGame]?
+                
         apiManager.getResultsGames(searchText: "Super Mario 64", completion: {
             result in
-            
+            print("Here")
             switch result {
             case .success(let data):
-                do {
-                    let resultsGame = data
-                    XCTAssertEqual("Super Mario 64", resultsGame[0].names.international)
-                    
-                } catch let error {
-                    print(error)
-                }
+                resultsGames = data
             case .failure(let error):
                 print(error)
             }
         })
+        DispatchQueue.main.async {
+            guard let resultsGame = resultsGames else { return }
+            XCTAssertEqual("Donkey Kong", resultsGame[0].names.international)
+        }
+
     }
     
     func testParsingHTML() {
-        
+        Alamofire.request("https://www.speedrun.com/ajax_streamslist.php").responseString { response in
+            print("\(response.result.isSuccess)")
+            if let html = response.result.value {
+                self.apiManager.parseStreamsHTML(html: html, completion: {
+                    result in
+                    switch result {
+                    case .success(let popularStreams):
+                        let popularStream = popularStreams[0]
+                        break
+                    case .failure(let error):
+                        print(error)
+                    }
+                })
+                
+                
+                
+            }
+        }
     }
+    
+    
+    
 
     
     func testPerformanceExample() {

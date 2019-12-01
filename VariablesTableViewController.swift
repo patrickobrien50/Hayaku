@@ -16,7 +16,7 @@ struct ResultVariable {
 class VariablesTableViewController: UITableViewController {
     
     var leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/"
-    var variableString = ""
+    var variableString = "?"
     var gameId: String?
     var category : Category?
     var variables = [Variable]()

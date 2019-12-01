@@ -12,6 +12,7 @@ import Kingfisher
 import SafariServices
 import Alamofire
 import AVKit
+import WebKit
 
 class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     
@@ -29,6 +30,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     var user : ResultsUsers?
     var place : String?
     var groupString : String?
+    var twitchVideoLink : String?
     
 
 
@@ -40,10 +42,12 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var placeLabel: UILabel!
     @IBOutlet weak var gameNameLabel: UILabel!
+    @IBOutlet weak var videoPlayerWebView: WKWebView!
     
     
     override func viewDidLoad() {
-        
+        thumbnailImageView.isHidden = true
+        playButton.isHidden = true
         
         navigationController?.navigationBar.prefersLargeTitles = false
         super.viewDidLoad()
@@ -64,11 +68,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
             }
         }
 
-//        if let url = URL(string: backgroundURL ?? "") {
-//            guard let data = try? Data(contentsOf: url) else { return }
-//            view.backgroundColor = UIColor(patternImage: UIImage(data: data)!)
-//        }
-        
+
         thumbnailImageView.image = UIImage(named: "Close Button")
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .small)
         playButton.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
@@ -96,7 +96,21 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 let headers : HTTPHeaders = ["Client-ID" : twitchClientId]
                 var videoId: String?
                 videoId = String(describing: twitchLinkArray[twitchLinkArray.count - 1])
+                twitchVideoLink = "https://player.twitch.tv/?video=v\(videoId)"
+                let embeddedTwitchPlayer = """
+                <iframe
+                src="https://player.twitch.tv/?video=v\(twitchLinkArray[twitchLinkArray.count - 1])&autoplay=false"
+                    height="720"
+                    width="1280"
+                    frameborder="0"
+                    scrolling="no"
+                    allowfullscreen="true">
+                </iframe>
+                """
+                videoPlayerWebView.loadHTMLString(embeddedTwitchPlayer, baseURL: nil)
                 if twitchLinkArray[twitchLinkArray.count - 1].contains("?") {
+                    
+
                     let idArray = twitchLinkArray[twitchLinkArray.count - 1].split(separator: "?")
                     videoId = String(describing: idArray[0])
                 }
@@ -109,13 +123,8 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                         print(twitchData)
                         self.thumbnailImageView.kf.setImage(with: URL(string: twitchData.data[0].thumbnailUrl.replacingOccurrences(of: "%{width}", with: "175").replacingOccurrences(of: "%{height}", with: "100")))
                     }
-                    
-                    
-    
-                    
 
                 }
-
                 
             } else if videoLink.contains("youtu.be") || videoLink.contains("youtube") {
                 var youtubeLinkArray = [Substring]()
@@ -143,19 +152,22 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 
                 
                 let youtubeImageLink = "https://img.youtube.com/vi/\(youtubeVideoId)/hqdefault.jpg"
-                
                 thumbnailImageView.kf.setImage(with: URL(string: youtubeImageLink))
             } else if videoLink.contains("puu.sh") {
                 thumbnailImageView.image = UIImage(named: "Close Button")
             }
         }
+        
 
     }
     
+    
+    
+
+    
 
     @objc func imageViewTapped(gesture: UITapGestureRecognizer) {
-//        guard let videoURL = URL(string: (run!.videos?.links![0].uri!.replacingOccurrences(of: "www", with: "player"))!) else { return }
-        guard let videoURL = URL(string: "https://player.twitch.tv/?video=v106400740&allowfullscreen=true") else { return }
+        guard let videoURL = URL(string: (run!.videos?.links![0].uri!.replacingOccurrences(of: "www", with: "player"))!) else { return }
         let player = AVPlayer(url: videoURL)
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player

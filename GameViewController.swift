@@ -90,7 +90,7 @@ class GameViewController: UITableViewController {
 
         
         
-        seriesNameLabel.textColor = UIColor(red: 120/255, green: 0/255, blue: 237/255, alpha: 1.0)
+//        seriesNameLabel.textColor = UIColor(red: 120/255, green: 0/255, blue: 237/255, alpha: 1.0)
         
         
         
@@ -482,11 +482,29 @@ class GameViewController: UITableViewController {
         
         if displayVariables.count == 0 {
             
-            let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
-            leaderboardController.leaderboardUrlString = "http://speedrun.com/api/v1/leaderboards/\(self.game!.id)/category/\(category.id)?embed=players"
-            leaderboardController.game = self.game
-            leaderboardController.category = self.categories[indexPath.row]
-            self.navigationController?.pushViewController(leaderboardController, animated: true)
+            
+            APIManager.sharedInstance.getLeaderboards(gameId: self.game!.id, categoryId: category.id, leaderboardComponents: "", completion: {
+                result in
+                switch result {
+                case .success(let data):
+                    print(data)
+                    do {
+                        let leaderboards = try JSONDecoder().decode(LeaderboardsResponse.self, from: data)
+                        DispatchQueue.main.async {
+                            let leaderboardController = self.storyboard?.instantiateViewController(withIdentifier: "LeaderboardsView") as! LeaderboardsTableViewController
+                            leaderboardController.leaderboards = leaderboards.data
+                            leaderboardController.game = self.game
+                            leaderboardController.category = self.categories[indexPath.row]
+                            self.navigationController?.pushViewController(leaderboardController, animated: true)
+                        }
+                    } catch let error {
+                        print(error)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            })
+
             
         } else {
             variablesViewController.category = self.categories[indexPath.row]

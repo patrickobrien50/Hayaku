@@ -7,6 +7,8 @@
 
 import UIKit
 import Foundation
+import Kanna
+
 class APIManager  {
     
     
@@ -179,13 +181,21 @@ class APIManager  {
     
     
     func getLeaderboards(gameId: String, categoryId: String, leaderboardComponents: String, completion: @escaping(Result<Data, Error>) -> Void ) {
+        var leaderboardComponents = leaderboardComponents
+        if leaderboardComponents == "" {
+            leaderboardComponents = "?"
+        } else {
+            leaderboardComponents += "&"
+        }
+        guard let leaderboardsURL = URL(string: baseUrl + "leaderboards/\(gameId)/category/\(categoryId)\(leaderboardComponents)embed=players") else { return }
         
-        guard let leaderboardsURL = URL(string: baseUrl + "leaderboards/\(gameId)/category/\(categoryId)?\(leaderboardComponents)&embed=players") else { return }
         print(leaderboardsURL)
         
         let dataRequest = URLSession.shared.dataTask(with: leaderboardsURL) {
             (data, response, error) in
             guard let data = data else {return }
+            
+            
             
             completion(.success(data))
             
@@ -194,18 +204,47 @@ class APIManager  {
         
     }
     
-    func parseHTML(type: String, html: String, completion: @escaping() -> Void {
-        switch type {
-        case "Games":
-            
-            
-            break
-        case "Streams":
-            break
-        default:
-            break
-            
+    func parseGamesHTML(html: String, completion: @escaping(Result<[PopularGame], Error>) -> Void) {
+        var games: [PopularGame] = []
+        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
+            for gamesContainer in doc.css(".listcell") {
+                let players = gamesContainer.at_css("p")!.text
+                let gameName = gamesContainer.at_css("div")!.text
+                let img = gamesContainer.at_css("img")
+                let imageLink = "https://www.speedrun.com\(String(describing: img!["src"]!))"
+                print(imageLink)
+                games.append(PopularGame(name: String(describing: gameName!), playerCount: String(describing: players!), imageLink: String(describing: imageLink)))
+            }
         }
+        
+        completion(.success(games))
+    }
+    
+    func parseStreamsHTML(html: String, completion: @escaping(Result<[PopularStream], Error>) -> Void) {
+        var popularStreams: [PopularStream] = []
+        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
+            
+            
+            for streamContainer in doc.css(".col-auto") {
+                var viewers: String?
+                
+                if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
+                    print(splitViewersArray)
+                    viewers = "\(splitViewersArray[0]) watching "
+                }
+                let username = streamContainer.at_css(".username-light")
+                let weblink = streamContainer.at_css("a")
+                let imageLink = streamContainer.at_css(".stream-preview")
+                let title = streamContainer.at_css("a[title]")?.text
+                
+                
+                popularStreams.append(PopularStream(title: String(describing: title!), viewers: String(describing: viewers!), username: username?.content ?? "Speedrun", imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
+                
+                
+                
+            }
+        }
+        completion(.success(popularStreams))
     }
     
     //This is the bottom of the class.

@@ -22,16 +22,23 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         navigationController?.navigationBar.prefersLargeTitles = true
 
         
         Alamofire.request("https://www.speedrun.com/ajax_streamslist.php").responseString { response in
             print("\(response.result.isSuccess)")
             if let html = response.result.value {
-                self.parseStreamsHTML(html: html)
-                for cell in (self.collectionView?.visibleCells)! {
-                    print(cell.bounds.height, cell.bounds.width)
-                }
+                APIManager.sharedInstance.parseStreamsHTML(html: html, completion: {
+                    result in
+                    switch result {
+                    case .success(let popularStreams):
+                        self.streams = popularStreams
+                    case .failure(let error):
+                        print(error)
+                    }
+                })
                 self.collectionView?.reloadData()
                 
                 
@@ -43,10 +50,15 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
         Alamofire.request("https://www.speedrun.com/ajax_gameslist.php").responseString { response in
             print("\(response.result.isSuccess)")
             if let html = response.result.value {
-                self.parseGamesHTML(html: html)
-                for cell in (self.collectionView?.visibleCells)! {
-                    print(cell.bounds.height, cell.bounds.width)
-                }
+                APIManager.sharedInstance.parseGamesHTML(html: html, completion: {
+                    result in
+                    switch result {
+                    case .success(let popularGames):
+                        self.games = popularGames
+                    case .failure(let error):
+                        print(error)
+                    }
+                })
                 self.collectionView?.reloadData()
                 
                 
@@ -65,43 +77,10 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
         collectionView?.reloadData()
     }
     
-    func parseGamesHTML(html: String) -> Void {
-        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
-            for gamesContainer in doc.css(".listcell") {
-                let players = gamesContainer.at_css("p")!.text
-                let gameName = gamesContainer.at_css("div")!.text
-                let img = gamesContainer.at_css("img")
-                let imageLink = "https://www.speedrun.com\(String(describing: img!["src"]!))"
-                print(imageLink)
-                games.append(PopularGame(name: String(describing: gameName!), playerCount: String(describing: players!), imageLink: String(describing: imageLink)))
-            }
-        }
-    }
     
     
     func parseStreamsHTML(html: String) -> Void {
-        if let doc = try? Kanna.HTML(html: html, encoding: .utf8) {
-            
-            
-            for streamContainer in doc.css(".col-auto") {
-                var viewers: String?
-                
-                if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
-                    print(splitViewersArray)
-                    viewers = "\(splitViewersArray[0]) watching "
-                }
-                let username = streamContainer.at_css(".username-light")
-                let weblink = streamContainer.at_css("a")
-                let imageLink = streamContainer.at_css(".stream-preview")
-                let title = streamContainer.at_css("a[title]")?.text
-                
-                
-                streams.append(PopularStream(title: String(describing: title!), viewers: String(describing: viewers!), username: username?.content ?? "Speedrun", imageLink: String(describing: imageLink!["src"]!), weblink: String(describing: weblink!["href"]!)))
-                
-                
-                
-            }
-        }
+
     }
 
     /*

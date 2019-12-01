@@ -221,8 +221,6 @@ class LeaderboardsTableViewController: UITableViewController {
 
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "  Rank                     Time                               Players"
-    }
+
 
 }

@@ -127,6 +127,8 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                 }
                 
             } else if videoLink.contains("youtu.be") || videoLink.contains("youtube") {
+                
+            
                 var youtubeLinkArray = [Substring]()
                 var youtubeVideoId = ""
                 
@@ -141,11 +143,16 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
                         youtubeLinkArray = youtubeLinkArray[3].split(separator: "=")
                         youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
                         print(youtubeVideoId)
+                        let url = URL(string: "https://www.youtube.com/embed/\(youtubeVideoId)")
+                        videoPlayerWebView.load(URLRequest(url: url!))
 
                     }
                     if youtubeLinkArray.count == 3 {
                         youtubeLinkArray = youtubeLinkArray[2].split(separator: "=")
                         youtubeVideoId = String(describing: youtubeLinkArray[1].prefix(11))
+                        print(youtubeVideoId)
+                        let url = URL(string: "https://www.youtube.com/embed/\(youtubeVideoId)")
+                        videoPlayerWebView.load(URLRequest(url: url!))
                     }
 
                 }

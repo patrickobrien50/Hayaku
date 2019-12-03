@@ -35,6 +35,7 @@ class HayakuTests: XCTestCase {
     
     func testGetGames() {
         var resultsGames : [ResultsGame]?
+        let expectation = XCTestExpectation(description: "Got the games")
                 
         apiManager.getResultsGames(searchText: "Super Mario 64", completion: {
             result in
@@ -42,18 +43,19 @@ class HayakuTests: XCTestCase {
             switch result {
             case .success(let data):
                 resultsGames = data
+                XCTAssertEqual("Super Mario 64", resultsGames![0].names.international)
+                XCTAssertNotNil(data, "Did not get the Games")
             case .failure(let error):
                 print(error)
             }
+            expectation.fulfill()
         })
-        DispatchQueue.main.async {
-            guard let resultsGame = resultsGames else { return }
-            XCTAssertEqual("Donkey Kong", resultsGame[0].names.international)
-        }
-
+        
+        wait(for: [expectation], timeout: 20)
     }
     
     func testParsingHTML() {
+        let expectation = XCTestExpectation(description: "Parsing the HTML")
         Alamofire.request("https://www.speedrun.com/ajax_streamslist.php").responseString { response in
             print("\(response.result.isSuccess)")
             if let html = response.result.value {
@@ -62,20 +64,42 @@ class HayakuTests: XCTestCase {
                     switch result {
                     case .success(let popularStreams):
                         let popularStream = popularStreams[0]
+                        XCTAssertNotNil(popularStream)
                         break
                     case .failure(let error):
                         print(error)
                     }
+                    expectation.fulfill()
                 })
                 
                 
                 
             }
         }
+        wait(for: [expectation], timeout: 10)
     }
     
     
-    
+    func testGetSeries() {
+        var resultsSeries : [ResultsSeries]?
+        
+        let expectation = XCTestExpectation(description: "Got the Series")
+        
+        apiManager.getResultsSeries(searchText: "Super Mario", completion: {
+            result in
+            switch result {
+            case .success(let data):
+                resultsSeries = data
+                XCTAssertNotNil(resultsSeries)
+            case .failure(let error):
+                print(error)
+                
+            }
+            expectation.fulfill()
+        })
+        
+        wait(for: [expectation], timeout: 10)
+    }
 
     
     func testPerformanceExample() {

@@ -11,7 +11,6 @@ import Kanna
 import Kingfisher
 import SafariServices
 import Alamofire
-import AVKit
 import WebKit
 
 class RunViewController: UIViewController, SFSafariViewControllerDelegate {
@@ -73,7 +72,7 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .black, scale: .small)
         playButton.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
         playButton.imageView?.contentMode = .scaleAspectFill
-        playButton.addTarget(self, action: #selector(imageViewTapped), for: .touchUpInside)
+//        playButton.addTarget(self, action: #selector(imageViewTapped), for: .touchUpInside)
         if let subcategoriesText = subcategories {
             subcategoriesLabel.text = subcategoriesText
         } else {
@@ -172,18 +171,18 @@ class RunViewController: UIViewController, SFSafariViewControllerDelegate {
     
 
     
-
-    @objc func imageViewTapped(gesture: UITapGestureRecognizer) {
-        guard let videoURL = URL(string: (run!.videos?.links![0].uri!.replacingOccurrences(of: "www", with: "player"))!) else { return }
-        let player = AVPlayer(url: videoURL)
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        
-        present(playerViewController, animated: true) {
-            player.play()
-        }
-        
-    }
+//
+//    @objc func imageViewTapped(gesture: UITapGestureRecognizer) {
+//        guard let videoURL = URL(string: (run!.videos?.links![0].uri!.replacingOccurrences(of: "www", with: "player"))!) else { return }
+//        let player = AVPlayer(url: videoURL)
+//        let playerViewController = AVPlayerViewController()
+//        playerViewController.player = player
+//        
+//        present(playerViewController, animated: true) {
+//            player.play()
+//        }
+//        
+//    }
     
     
 

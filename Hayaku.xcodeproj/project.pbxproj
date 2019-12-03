@@ -138,6 +138,7 @@
 				6CE68384229528D800E5E544 /* RunViewController.swift */,
 			);
 			name = UI;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		6C99DC8922A8468A004FC199 /* Custom Cells */ = {
@@ -157,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				6CCDAB9E20B22F2E002D8B86 /* Main.storyboard */,
-				6C99DC8822A8465F004FC199 /* UI */,
 				6CCDAB9920B22F2E002D8B86 /* Hayaku */,
 				6CCDABAE20B22F2E002D8B86 /* HayakuTests */,
 				6CCDABB920B22F2E002D8B86 /* HayakuUITests */,
@@ -183,6 +183,7 @@
 				6C326D88237F34A400F744BB /* APIManager.swift */,
 				6CCDABCC20B2326E002D8B86 /* DataModels.swift */,
 				6CCDAB9A20B22F2E002D8B86 /* AppDelegate.swift */,
+				6C99DC8822A8465F004FC199 /* UI */,
 				6C99DC8922A8468A004FC199 /* Custom Cells */,
 				6CCDABA120B22F2E002D8B86 /* Assets.xcassets */,
 				6CCDABA320B22F2E002D8B86 /* LaunchScreen.storyboard */,
@@ -650,7 +651,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = Pidove.Hayaku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -672,7 +673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = Pidove.Hayaku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

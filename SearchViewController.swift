@@ -113,11 +113,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             })
         
-
-            
-            
-
-            
             APIManager.sharedInstance.getResultsGames(searchText: searchText, completion: {
                 result in
                 DispatchQueue.main.async {

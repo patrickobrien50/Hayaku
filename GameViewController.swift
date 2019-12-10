@@ -63,14 +63,9 @@ class GameViewController: UITableViewController {
         
         setBarButtonItems()
         
-        
+        streamsButton.isHidden = true
         tableView.sectionHeaderHeight = 50
 
-        
-        
-        
-        
-        
         
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -327,7 +322,7 @@ class GameViewController: UITableViewController {
                 if let html = response.result.value {
                     self.parseHTML(html: html)
                     if self.streams.count > 0 {
-                        self.streamsButton.isEnabled = true
+                        self.streamsButton.isHidden = false
                     }
                 }
             }
@@ -457,8 +452,11 @@ class GameViewController: UITableViewController {
         let category = categories[indexPath.row]
         let variablesViewController = storyboard?.instantiateViewController(withIdentifier: "VariablesView") as! VariablesTableViewController
         var displayVariables = [ResultVariable]()
-        variablesViewController.variables = variables
-        for variable in variables {
+        var sortedVariables = variables
+        sortedVariables.sort(by: {$0.name > $1.name})
+        variablesViewController.variables = sortedVariables
+
+        for variable in sortedVariables {
             if variable.isSubcategory == true {
                 
                 var choices = [Choices]()
@@ -507,6 +505,7 @@ class GameViewController: UITableViewController {
 
             
         } else {
+
             variablesViewController.category = self.categories[indexPath.row]
             variablesViewController.gameId = self.game?.id
             variablesViewController.game = self.game

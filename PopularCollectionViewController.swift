@@ -28,7 +28,6 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
 
         
         Alamofire.request("https://www.speedrun.com/ajax_streamslist.php").responseString { response in
-            print("\(response.result.isSuccess)")
             if let html = response.result.value {
                 APIManager.sharedInstance.parseStreamsHTML(html: html, completion: {
                     result in
@@ -48,7 +47,6 @@ class PopularCollectionViewController: UICollectionViewController, ResourceObser
         
         
         Alamofire.request("https://www.speedrun.com/ajax_gameslist.php").responseString { response in
-            print("\(response.result.isSuccess)")
             if let html = response.result.value {
                 APIManager.sharedInstance.parseGamesHTML(html: html, completion: {
                     result in

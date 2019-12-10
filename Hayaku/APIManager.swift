@@ -137,7 +137,6 @@ class APIManager  {
             guard let data = data else { return }
         
             completion(.success(data))
-            print("APIManager" , data)
             
         }
         dataRequest.resume()
@@ -148,7 +147,6 @@ class APIManager  {
     //MARK: getVariables
     
     func getVariables(variableUrlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
-    
         guard let variableURL = URL(string: variableUrlString) else { return }
         let dataRequest = URLSession.shared.dataTask(with: variableURL) {
             (data, response, error) in
@@ -182,13 +180,14 @@ class APIManager  {
     
     func getLeaderboards(gameId: String, categoryId: String, leaderboardComponents: String, completion: @escaping(Result<Data, Error>) -> Void ) {
         var leaderboardComponents = leaderboardComponents
+        var leaderboardURL : URL?
         if leaderboardComponents == "" {
             leaderboardComponents = "?"
         } else {
             leaderboardComponents += "&"
         }
         guard let leaderboardsURL = URL(string: baseUrl + "leaderboards/\(gameId)/category/\(categoryId)\(leaderboardComponents)embed=players") else { return }
-        
+
         print(leaderboardsURL)
         
         let dataRequest = URLSession.shared.dataTask(with: leaderboardsURL) {
@@ -212,7 +211,6 @@ class APIManager  {
                 let gameName = gamesContainer.at_css("div")!.text
                 let img = gamesContainer.at_css("img")
                 let imageLink = "https://www.speedrun.com\(String(describing: img!["src"]!))"
-                print(imageLink)
                 games.append(PopularGame(name: String(describing: gameName!), playerCount: String(describing: players!), imageLink: String(describing: imageLink)))
             }
         }
@@ -229,7 +227,6 @@ class APIManager  {
                 var viewers: String?
                 
                 if let splitViewersArray = streamContainer.at_css(".text-muted")?.content?.split(separator: " ") {
-                    print(splitViewersArray)
                     viewers = "\(splitViewersArray[0]) watching "
                 }
                 let username = streamContainer.at_css(".username-light")

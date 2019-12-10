@@ -312,6 +312,17 @@ class SearchResultsTableViewController: UITableViewController {
         }
     }
     
+
+    override func tableView(_ tableView: UITableView!, viewForHeaderInSection section: Int) -> UIView! {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 100))
+        let label = UILabel()
+        label.text = sections[section].header
+        label.font = UIFont(name: "Menlo", size: 18)
+        label.frame = CGRect(x: 10, y: 3, width: tableView.bounds.width - 10, height: 18)
+        headerView.addSubview(label)
+        headerView.backgroundColor = UIColor(red: 174/255, green: 152/255, blue: 249/255, alpha: 1)
+        return headerView
+    }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         tableView.sectionHeaderHeight = 50
@@ -327,6 +338,7 @@ class SearchResultsTableViewController: UITableViewController {
         self.tableView.rowHeight = 95
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultsCell", for: indexPath) as! GameResultTableViewCell
         let imageSize = cell.imageView!.bounds.size.applying(CGAffineTransform(scaleX: self.traitCollection.displayScale, y: self.traitCollection.displayScale))
+
         switch sections[indexPath.section] {
         case .users:
             cell.resultsLabel?.text = users[indexPath.row].names.international

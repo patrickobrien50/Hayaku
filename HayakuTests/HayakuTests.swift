@@ -100,7 +100,101 @@ class HayakuTests: XCTestCase {
         
         wait(for: [expectation], timeout: 10)
     }
+    
+    func testGetUsers() {
+        var resultsUsers : [ResultsUsers]?
+        
+        let expectation = XCTestExpectation(description: "Getting users")
+        
+        apiManager.getResultsUsers(searchText: "AnEternalEnigma", completion: {
+            result in
+            switch result {
+            case .success(let data):
+                resultsUsers = data
+                XCTAssertEqual("AnEternalEnigma", resultsUsers![0].names.international)
+                XCTAssertNotNil(resultsUsers)
+            case .failure(let error):
+                print(error)
+            }
+            expectation.fulfill()
+        })
+        
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    
+    func testParsingGames() {
+        let expectation = XCTestExpectation(description: "Parsing Games")
+        Alamofire.request("https://www.speedrun.com/ajax_gameslist.php").responseString { response in
+            print("\(response.result.isSuccess)")
+            if let html = response.result.value {
+                self.apiManager.parseGamesHTML(html: html, completion: {
+                    result in
+                    switch result {
+                    case .success(let popularGames):
+                        let popularStream = popularGames[0]
+                        XCTAssertNotNil(popularStream)
+                        break
+                    case .failure(let error):
+                        print(error)
+                    }
+                    expectation.fulfill()
+                })
+                
+                
+                
+            }
+        }
+        wait(for: [expectation], timeout: 10)
+        
+    }
+    
+    func testGetVariables() {
+        let expectation = XCTestExpectation(description: "Get Variables for Super Mario 64")
+        var variables : [Variable]?
+        apiManager.getVariables(variableUrlString: "https://www.speedrun.com/api/v1/categories/wkpoo02r/variables", completion: {
+            result in
+            switch result {
+            case .success(let data):
+                do {
+                    variables = try JSONDecoder().decode(VariablesResponse.self, from: data).data
+                    XCTAssertNotNil(variables)
+                    print(variables)
+                } catch let error {
+                    print(error)
+                }
+            case .failure(let error):
+                print("Result Error", error)
+            }
+            expectation.fulfill()
+        })
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    
+    func testGetLeaderboards() {
+        let expectation = XCTestExpectation(description: "Get leaderboards")
+        var leaderboards : Leaderboards?
+        
+        apiManager.getLeaderboards(gameId: "o1y9wo6q", categoryId: "wkpoo02r", leaderboardComponents: "?var-e8m7em86=jq6540ol", completion: {
+            result in
+            switch result {
+            case .success(let data):
+                do {
+                    leaderboards = try JSONDecoder().decode(LeaderboardsResponse.self, from: data).data
+                    XCTAssertNotNil(leaderboards)
+                } catch let error {
+                    print(error)
+                }
+            case .failure(let error):
+                print("Result Error", error)
 
+            }
+            expectation.fulfill()
+        })
+        wait(for: [expectation], timeout: 20)
+    }
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
